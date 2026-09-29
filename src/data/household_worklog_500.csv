@@ -1,0 +1,501 @@
+Group name,Issue ID,Issue Summary,Date,Author,Type,Comment,Spent time,Estimation
+-,TODO-33261,Der Glasmüll ist entsorgt.,2026-04-14,Ally,No type,,13,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-01-03,Robert,No type,Automated work entry,33,0
+-,TODO-33265,Es ist Essen gekocht.,2025-09-07,Robert,No type,nur das Nötigste gemacht,160,0
+-,TODO-691,Der Rasen ist gemäht.,2025-06-22,Ally,No type,alles kontrolliert,66,0
+-,TODO-1466,Die Wohnung ist gewischt.,2024-11-27,Robert,No type,alles kontrolliert,44,0
+-,TODO-691,Der Rasen ist gemäht.,2025-05-30,Ally,No type,kurzer Check,76,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2025-03-25,Ally,No type,,10,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-01-10,Ally,No type,gründlich erledigt,50,0
+-,TODO-33240,Der Keller ist gesaugt.,2025-12-08,Ally,No type,,10,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-08-09,Robert,No type,,54,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2026-05-01,Ally,No type,,120,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2026-01-31,Ally,No type,inklusive Aufräumen,28,0
+-,TODO-33245,Der Einkauf ist erledigt.,2024-10-15,Ally,No type,,136,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2025-08-26,Ally,No type,,3,0
+-,TODO-1465,Das Bad ist geputzt.,2026-07-29,Robert,No type,gründlich erledigt,80,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2026-08-23,Robert,No type,alles kontrolliert,2,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-04-29,Ally,No type,,9,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2025-01-07,Robert,No type,,20,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-03-10,Ally,No type,,6,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2026-04-17,Robert,No type,,10,0
+-,TODO-33255,Der Papiermüll ist geleert.,2025-09-07,Ally,No type,gründlich erledigt,2,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2026-07-13,Ally,No type,Automated work entry,5,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2024-09-30,Ally,No type,kurzer Check,45,0
+-,TODO-691,Der Rasen ist gemäht.,2025-11-10,Robert,No type,Automated work entry,17,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2026-06-04,Ally,No type,inklusive Aufräumen,9,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2024-12-02,Ally,No type,alles kontrolliert,5,0
+-,TODO-691,Der Rasen ist gemäht.,2025-02-21,Ally,No type,alles kontrolliert,76,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2025-11-01,Ally,No type,inklusive Aufräumen,38,0
+-,TODO-691,Der Rasen ist gemäht.,2025-10-24,Ally,No type,,37,0
+-,TODO-33240,Der Keller ist gesaugt.,2026-08-05,Ally,No type,kurzer Check,35,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2024-11-28,Ally,No type,kurzer Check,35,0
+-,TODO-691,Der Rasen ist gemäht.,2024-10-06,Ally,No type,gründlich erledigt,74,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-09-08,Ally,No type,kurzer Check,14,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2026-09-27,Ally,No type,,25,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2026-02-01,Robert,No type,,9,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2026-02-01,Ally,No type,gründlich erledigt,76,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2025-01-16,Ally,No type,alles kontrolliert,8,0
+-,TODO-1465,Das Bad ist geputzt.,2026-06-05,Ally,No type,Automated work entry,34,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2025-02-03,Ally,No type,gründlich erledigt,32,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2025-02-16,Ally,No type,inklusive Aufräumen,41,0
+-,TODO-33245,Der Einkauf ist erledigt.,2026-02-06,Ally,No type,Automated work entry,114,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-12-18,Ally,No type,alles kontrolliert,20,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-10-18,Ally,No type,,7,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-05-15,Ally,No type,Automated work entry,80,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2025-08-22,Robert,No type,,28,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2025-01-21,Ally,No type,alles kontrolliert,34,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2025-07-01,Ally,No type,inklusive Aufräumen,5,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-09-10,Ally,No type,,81,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2025-12-11,Ally,No type,,6,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2026-02-03,Ally,No type,,102,0
+-,TODO-33252,Der Restmüll ist geleert.,2025-07-02,Ally,No type,,6,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-04-23,Ally,No type,inklusive Aufräumen,12,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2026-03-25,Ally,No type,alles kontrolliert,15,0
+-,TODO-1466,Die Wohnung ist gewischt.,2025-10-25,Ally,No type,,59,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2026-06-02,Ally,No type,,4,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2026-08-14,Ally,No type,alles kontrolliert,101,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2026-06-27,Robert,No type,,5,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2026-08-02,Ally,No type,,86,0
+-,TODO-33265,Es ist Essen gekocht.,2024-12-09,Ally,No type,inklusive Aufräumen,90,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2026-04-12,Ally,No type,kurzer Check,42,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2026-02-02,Ally,No type,kurzer Check,12,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2026-03-21,Ally,No type,,98,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-04-16,Ally,No type,kurzer Check,6,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2026-07-24,Ally,No type,nur das Nötigste gemacht,82,0
+-,TODO-33240,Der Keller ist gesaugt.,2026-08-07,Ally,No type,inklusive Aufräumen,34,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2024-10-22,Ally,No type,nur das Nötigste gemacht,8,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2026-09-05,Ally,No type,nur das Nötigste gemacht,82,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2026-05-18,Ally,No type,kurzer Check,16,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-04-13,Robert,No type,,10,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2026-05-25,Ally,No type,inklusive Aufräumen,8,0
+-,TODO-33240,Der Keller ist gesaugt.,2026-03-25,Ally,No type,alles kontrolliert,31,0
+-,TODO-33252,Der Restmüll ist geleert.,2026-03-14,Ally,No type,kurzer Check,2,0
+-,TODO-691,Der Rasen ist gemäht.,2026-06-15,Robert,No type,kurzer Check,79,0
+-,TODO-33245,Der Einkauf ist erledigt.,2025-08-19,Ally,No type,gründlich erledigt,98,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-08-26,Ally,No type,kurzer Check,92,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2026-06-20,Ally,No type,gründlich erledigt,1,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2026-07-17,Ally,No type,kurzer Check,1,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2026-08-07,Ally,No type,,10,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-04-21,Ally,No type,,18,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2026-03-15,Ally,No type,alles kontrolliert,14,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2026-04-30,Ally,No type,,6,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2026-04-30,Ally,No type,alles kontrolliert,43,0
+-,TODO-33255,Der Papiermüll ist geleert.,2026-02-10,Ally,No type,,8,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2026-05-17,Ally,No type,Automated work entry,10,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2025-02-16,Ally,No type,Automated work entry,18,0
+-,TODO-33255,Der Papiermüll ist geleert.,2025-09-18,Robert,No type,alles kontrolliert,9,0
+-,TODO-691,Der Rasen ist gemäht.,2026-06-30,Ally,No type,kurzer Check,61,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2026-06-07,Ally,No type,alles kontrolliert,18,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2025-11-22,Robert,No type,,7,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-07-17,Ally,No type,nur das Nötigste gemacht,13,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-06-10,Ally,No type,,15,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2026-03-09,Robert,No type,inklusive Aufräumen,2,0
+-,TODO-33252,Der Restmüll ist geleert.,2024-11-11,Ally,No type,,1,0
+-,TODO-691,Der Rasen ist gemäht.,2026-02-16,Ally,No type,alles kontrolliert,45,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2025-08-16,Ally,No type,kurzer Check,54,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2025-01-26,Ally,No type,inklusive Aufräumen,14,0
+-,TODO-1466,Die Wohnung ist gewischt.,2025-05-11,Ally,No type,alles kontrolliert,108,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-01-18,Ally,No type,,14,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2026-03-26,Ally,No type,gründlich erledigt,7,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2025-02-21,Ally,No type,inklusive Aufräumen,2,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2025-11-21,Ally,No type,,17,0
+-,TODO-33252,Der Restmüll ist geleert.,2026-04-28,Robert,No type,alles kontrolliert,10,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-10-30,Ally,No type,Automated work entry,87,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2026-06-23,Ally,No type,inklusive Aufräumen,36,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2026-08-25,Robert,No type,alles kontrolliert,12,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2025-04-15,Ally,No type,inklusive Aufräumen,8,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-11-07,Ally,No type,nur das Nötigste gemacht,28,0
+-,TODO-33252,Der Restmüll ist geleert.,2026-08-06,Ally,No type,Automated work entry,1,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2026-05-31,Ally,No type,gründlich erledigt,1,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2025-05-31,Ally,No type,gründlich erledigt,15,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2025-02-15,Ally,No type,alles kontrolliert,57,0
+-,TODO-33265,Es ist Essen gekocht.,2026-04-10,Ally,No type,gründlich erledigt,80,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2025-05-10,Ally,No type,gründlich erledigt,1,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2025-07-30,Ally,No type,kurzer Check,41,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2024-10-18,Ally,No type,nur das Nötigste gemacht,71,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2025-02-05,Robert,No type,kurzer Check,7,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2025-08-17,Robert,No type,,64,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2026-07-05,Ally,No type,Automated work entry,20,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2025-11-11,Ally,No type,nur das Nötigste gemacht,3,0
+-,TODO-1465,Das Bad ist geputzt.,2026-04-18,Robert,No type,,71,0
+-,TODO-33255,Der Papiermüll ist geleert.,2025-10-17,Ally,No type,kurzer Check,7,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2026-08-20,Robert,No type,,131,0
+-,TODO-33252,Der Restmüll ist geleert.,2025-04-21,Robert,No type,inklusive Aufräumen,1,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2025-10-19,Ally,No type,nur das Nötigste gemacht,9,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-03-07,Ally,No type,,17,0
+-,TODO-33255,Der Papiermüll ist geleert.,2025-10-12,Ally,No type,gründlich erledigt,5,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2025-12-12,Robert,No type,Automated work entry,8,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2025-07-07,Robert,No type,Automated work entry,26,0
+-,TODO-33245,Der Einkauf ist erledigt.,2025-04-14,Ally,No type,,134,0
+-,TODO-33251,Der Biomüll ist entleert.,2026-08-10,Ally,No type,gründlich erledigt,4,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2024-11-29,Ally,No type,inklusive Aufräumen,174,0
+-,TODO-1466,Die Wohnung ist gewischt.,2026-09-01,Robert,No type,,73,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2026-07-09,Ally,No type,,15,0
+-,TODO-33255,Der Papiermüll ist geleert.,2026-01-07,Ally,No type,nur das Nötigste gemacht,4,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2024-12-27,Robert,No type,gründlich erledigt,2,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2025-05-10,Robert,No type,alles kontrolliert,3,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2025-05-04,Ally,No type,kurzer Check,37,0
+-,TODO-33240,Der Keller ist gesaugt.,2025-08-10,Ally,No type,alles kontrolliert,26,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-02-22,Ally,No type,,52,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2025-01-03,Ally,No type,gründlich erledigt,20,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2025-03-04,Ally,No type,gründlich erledigt,15,0
+-,TODO-33245,Der Einkauf ist erledigt.,2025-10-28,Ally,No type,kurzer Check,48,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2026-05-06,Robert,No type,gründlich erledigt,13,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-08-21,Ally,No type,kurzer Check,22,0
+-,TODO-33251,Der Biomüll ist entleert.,2025-06-05,Ally,No type,inklusive Aufräumen,2,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2026-01-24,Ally,No type,alles kontrolliert,8,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2026-08-04,Ally,No type,kurzer Check,18,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2026-06-29,Ally,No type,alles kontrolliert,26,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2026-02-26,Ally,No type,gründlich erledigt,21,0
+-,TODO-691,Der Rasen ist gemäht.,2025-03-03,Robert,No type,,23,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2025-07-23,Ally,No type,kurzer Check,87,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2026-03-18,Ally,No type,inklusive Aufräumen,9,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2026-01-18,Ally,No type,,19,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2026-08-09,Ally,No type,alles kontrolliert,7,0
+-,TODO-33255,Der Papiermüll ist geleert.,2025-05-05,Ally,No type,Automated work entry,2,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2025-07-29,Ally,No type,gründlich erledigt,10,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-11-03,Ally,No type,,14,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2026-01-24,Robert,No type,kurzer Check,9,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2026-02-23,Ally,No type,alles kontrolliert,3,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2025-10-24,Ally,No type,,13,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2025-08-07,Ally,No type,,4,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-05-06,Robert,No type,nur das Nötigste gemacht,14,0
+-,TODO-33240,Der Keller ist gesaugt.,2025-03-05,Ally,No type,,36,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2025-01-07,Ally,No type,nur das Nötigste gemacht,104,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2026-01-20,Ally,No type,alles kontrolliert,22,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2024-12-13,Robert,No type,,98,0
+-,TODO-33240,Der Keller ist gesaugt.,2025-06-29,Ally,No type,gründlich erledigt,45,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2025-09-13,Ally,No type,gründlich erledigt,50,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-02-03,Ally,No type,nur das Nötigste gemacht,92,0
+-,TODO-33251,Der Biomüll ist entleert.,2024-12-09,Ally,No type,Automated work entry,10,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-03-28,Ally,No type,Automated work entry,53,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2025-05-19,Ally,No type,Automated work entry,46,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2025-12-06,Robert,No type,alles kontrolliert,5,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2025-03-21,Ally,No type,nur das Nötigste gemacht,16,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2026-07-17,Ally,No type,,22,0
+-,TODO-33251,Der Biomüll ist entleert.,2025-02-17,Ally,No type,gründlich erledigt,1,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2025-08-28,Ally,No type,nur das Nötigste gemacht,62,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-01-13,Robert,No type,nur das Nötigste gemacht,53,0
+-,TODO-1466,Die Wohnung ist gewischt.,2026-04-21,Ally,No type,alles kontrolliert,90,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-02-16,Ally,No type,,70,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2025-07-31,Ally,No type,alles kontrolliert,54,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-06-03,Ally,No type,gründlich erledigt,27,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2025-10-01,Ally,No type,,12,0
+-,TODO-691,Der Rasen ist gemäht.,2026-09-23,Ally,No type,kurzer Check,72,0
+-,TODO-33252,Der Restmüll ist geleert.,2024-12-25,Ally,No type,Automated work entry,6,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2025-05-13,Ally,No type,,1,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2024-12-04,Ally,No type,kurzer Check,9,0
+-,TODO-33265,Es ist Essen gekocht.,2026-09-27,Ally,No type,nur das Nötigste gemacht,115,0
+-,TODO-33265,Es ist Essen gekocht.,2025-09-14,Ally,No type,,160,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2024-12-02,Ally,No type,gründlich erledigt,2,0
+-,TODO-33252,Der Restmüll ist geleert.,2024-12-25,Ally,No type,kurzer Check,2,0
+-,TODO-691,Der Rasen ist gemäht.,2025-01-12,Ally,No type,inklusive Aufräumen,48,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2025-01-15,Robert,No type,Automated work entry,7,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2026-01-15,Ally,No type,nur das Nötigste gemacht,7,0
+-,TODO-33265,Es ist Essen gekocht.,2026-08-22,Ally,No type,,149,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-07-12,Robert,No type,gründlich erledigt,74,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2025-05-22,Ally,No type,alles kontrolliert,146,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2025-07-25,Ally,No type,gründlich erledigt,16,0
+-,TODO-33245,Der Einkauf ist erledigt.,2026-09-09,Ally,No type,kurzer Check,108,0
+-,TODO-33245,Der Einkauf ist erledigt.,2025-03-17,Ally,No type,kurzer Check,38,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2026-05-17,Ally,No type,,37,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2025-10-17,Ally,No type,nur das Nötigste gemacht,9,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2025-06-24,Ally,No type,Automated work entry,3,0
+-,TODO-691,Der Rasen ist gemäht.,2026-03-19,Robert,No type,nur das Nötigste gemacht,28,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-01-27,Ally,No type,inklusive Aufräumen,73,0
+-,TODO-33255,Der Papiermüll ist geleert.,2026-05-27,Ally,No type,,10,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-08-01,Ally,No type,,7,0
+-,TODO-33265,Es ist Essen gekocht.,2024-10-28,Robert,No type,Automated work entry,72,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2026-06-05,Robert,No type,,51,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-02-23,Ally,No type,kurzer Check,89,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-06-28,Ally,No type,,27,0
+-,TODO-33252,Der Restmüll ist geleert.,2025-09-20,Ally,No type,alles kontrolliert,10,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-06-24,Ally,No type,,17,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2026-02-01,Ally,No type,nur das Nötigste gemacht,15,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2025-06-19,Ally,No type,nur das Nötigste gemacht,24,0
+-,TODO-1466,Die Wohnung ist gewischt.,2026-05-30,Robert,No type,kurzer Check,29,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2026-04-16,Ally,No type,nur das Nötigste gemacht,60,0
+-,TODO-33240,Der Keller ist gesaugt.,2025-03-04,Ally,No type,Automated work entry,54,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2025-07-02,Ally,No type,,26,0
+-,TODO-33240,Der Keller ist gesaugt.,2025-03-11,Ally,No type,,19,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2026-03-18,Ally,No type,Automated work entry,5,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2026-01-25,Ally,No type,,19,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2026-05-21,Ally,No type,,6,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2025-03-12,Ally,No type,nur das Nötigste gemacht,9,0
+-,TODO-33252,Der Restmüll ist geleert.,2026-08-14,Robert,No type,,9,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2025-05-11,Ally,No type,,8,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2025-07-15,Robert,No type,inklusive Aufräumen,119,0
+-,TODO-1465,Das Bad ist geputzt.,2025-10-11,Ally,No type,nur das Nötigste gemacht,83,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2026-07-04,Ally,No type,gründlich erledigt,49,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2026-04-16,Ally,No type,gründlich erledigt,4,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2026-07-03,Ally,No type,alles kontrolliert,2,0
+-,TODO-33252,Der Restmüll ist geleert.,2026-03-26,Ally,No type,,10,0
+-,TODO-1465,Das Bad ist geputzt.,2026-09-03,Robert,No type,kurzer Check,65,0
+-,TODO-33265,Es ist Essen gekocht.,2025-02-18,Ally,No type,gründlich erledigt,78,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-09-09,Ally,No type,kurzer Check,65,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2024-12-31,Ally,No type,gründlich erledigt,85,0
+-,TODO-33251,Der Biomüll ist entleert.,2025-11-19,Ally,No type,nur das Nötigste gemacht,3,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-07-23,Ally,No type,Automated work entry,4,0
+-,TODO-33265,Es ist Essen gekocht.,2025-12-31,Ally,No type,,44,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-03-05,Robert,No type,Automated work entry,79,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-05-04,Robert,No type,Automated work entry,56,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2026-05-24,Ally,No type,gründlich erledigt,16,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2026-03-31,Robert,No type,kurzer Check,14,0
+-,TODO-33251,Der Biomüll ist entleert.,2026-05-25,Ally,No type,Automated work entry,1,0
+-,TODO-33240,Der Keller ist gesaugt.,2026-08-11,Ally,No type,inklusive Aufräumen,35,0
+-,TODO-33240,Der Keller ist gesaugt.,2025-08-30,Ally,No type,inklusive Aufräumen,48,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-08-31,Ally,No type,kurzer Check,18,0
+-,TODO-33251,Der Biomüll ist entleert.,2026-03-13,Robert,No type,nur das Nötigste gemacht,7,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2025-05-08,Ally,No type,gründlich erledigt,3,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2025-09-09,Ally,No type,inklusive Aufräumen,14,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2025-08-11,Ally,No type,,15,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2026-04-27,Ally,No type,nur das Nötigste gemacht,69,0
+-,TODO-33245,Der Einkauf ist erledigt.,2025-08-02,Ally,No type,,124,0
+-,TODO-33252,Der Restmüll ist geleert.,2025-09-09,Ally,No type,,3,0
+-,TODO-33252,Der Restmüll ist geleert.,2026-03-27,Robert,No type,,5,0
+-,TODO-33255,Der Papiermüll ist geleert.,2026-06-02,Robert,No type,nur das Nötigste gemacht,1,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2024-12-03,Robert,No type,kurzer Check,39,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2025-03-10,Ally,No type,,84,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2025-12-05,Ally,No type,,100,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2026-07-23,Ally,No type,,52,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2025-06-07,Ally,No type,inklusive Aufräumen,29,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2025-09-24,Ally,No type,Automated work entry,3,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-01-28,Ally,No type,gründlich erledigt,7,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2025-04-01,Ally,No type,,6,0
+-,TODO-33245,Der Einkauf ist erledigt.,2026-05-05,Robert,No type,,118,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-07-23,Ally,No type,kurzer Check,82,0
+-,TODO-33255,Der Papiermüll ist geleert.,2025-04-05,Robert,No type,Automated work entry,8,0
+-,TODO-33251,Der Biomüll ist entleert.,2025-07-25,Robert,No type,,7,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-11-09,Ally,No type,gründlich erledigt,6,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2024-12-29,Ally,No type,,30,0
+-,TODO-33251,Der Biomüll ist entleert.,2025-08-18,Ally,No type,,1,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2026-02-25,Ally,No type,,54,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2024-12-11,Ally,No type,,126,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2026-04-16,Ally,No type,,112,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-09-24,Ally,No type,Automated work entry,38,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2026-06-01,Ally,No type,,10,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2025-04-22,Robert,No type,kurzer Check,63,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-06-05,Ally,No type,gründlich erledigt,5,0
+-,TODO-691,Der Rasen ist gemäht.,2025-07-30,Ally,No type,,81,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-08-13,Robert,No type,gründlich erledigt,17,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-11-29,Ally,No type,alles kontrolliert,7,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2025-04-12,Ally,No type,kurzer Check,36,0
+-,TODO-33265,Es ist Essen gekocht.,2024-11-15,Robert,No type,nur das Nötigste gemacht,97,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2026-07-21,Ally,No type,,15,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2024-10-15,Ally,No type,alles kontrolliert,12,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2025-02-27,Ally,No type,inklusive Aufräumen,6,0
+-,TODO-1465,Das Bad ist geputzt.,2025-05-29,Ally,No type,nur das Nötigste gemacht,59,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2025-08-07,Ally,No type,kurzer Check,10,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-02-12,Ally,No type,gründlich erledigt,88,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2026-06-04,Robert,No type,,38,0
+-,TODO-1466,Die Wohnung ist gewischt.,2024-12-27,Ally,No type,alles kontrolliert,98,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-10-02,Ally,No type,nur das Nötigste gemacht,1,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2026-04-17,Ally,No type,,6,0
+-,TODO-33251,Der Biomüll ist entleert.,2026-07-25,Ally,No type,kurzer Check,8,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2025-05-06,Ally,No type,,1,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2026-07-08,Ally,No type,alles kontrolliert,1,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2025-08-09,Ally,No type,alles kontrolliert,5,0
+-,TODO-33245,Der Einkauf ist erledigt.,2026-02-09,Robert,No type,,124,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-09-16,Ally,No type,inklusive Aufräumen,73,0
+-,TODO-33240,Der Keller ist gesaugt.,2026-05-22,Ally,No type,,28,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2025-03-08,Ally,No type,,45,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2025-02-16,Ally,No type,nur das Nötigste gemacht,6,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2026-01-07,Ally,No type,nur das Nötigste gemacht,9,0
+-,TODO-33252,Der Restmüll ist geleert.,2025-02-23,Ally,No type,kurzer Check,4,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2024-10-25,Ally,No type,inklusive Aufräumen,7,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2026-04-12,Ally,No type,inklusive Aufräumen,112,0
+-,TODO-33245,Der Einkauf ist erledigt.,2024-11-22,Ally,No type,,117,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2025-07-18,Robert,No type,alles kontrolliert,3,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2026-07-22,Ally,No type,gründlich erledigt,102,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2025-01-31,Ally,No type,Automated work entry,8,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2026-06-25,Ally,No type,kurzer Check,66,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2026-01-15,Robert,No type,,32,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2025-07-09,Ally,No type,Automated work entry,4,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2026-06-11,Ally,No type,,12,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2025-06-19,Ally,No type,,5,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-12-15,Ally,No type,nur das Nötigste gemacht,67,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-07-07,Ally,No type,,13,0
+-,TODO-33245,Der Einkauf ist erledigt.,2025-12-01,Ally,No type,,71,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2026-01-24,Ally,No type,,21,0
+-,TODO-33265,Es ist Essen gekocht.,2026-05-20,Ally,No type,inklusive Aufräumen,146,0
+-,TODO-33251,Der Biomüll ist entleert.,2026-09-26,Ally,No type,,9,0
+-,TODO-33252,Der Restmüll ist geleert.,2025-12-24,Ally,No type,nur das Nötigste gemacht,6,0
+-,TODO-33240,Der Keller ist gesaugt.,2025-07-23,Ally,No type,,53,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2026-08-03,Ally,No type,alles kontrolliert,12,0
+-,TODO-691,Der Rasen ist gemäht.,2026-01-18,Ally,No type,gründlich erledigt,68,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2026-03-06,Ally,No type,gründlich erledigt,104,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2026-01-07,Ally,No type,nur das Nötigste gemacht,12,0
+-,TODO-1466,Die Wohnung ist gewischt.,2026-09-20,Ally,No type,kurzer Check,100,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2025-03-10,Ally,No type,Automated work entry,4,0
+-,TODO-33245,Der Einkauf ist erledigt.,2024-11-04,Ally,No type,alles kontrolliert,148,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2025-07-08,Ally,No type,,10,0
+-,TODO-33255,Der Papiermüll ist geleert.,2025-09-04,Ally,No type,,5,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-03-09,Ally,No type,alles kontrolliert,77,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2025-07-02,Ally,No type,inklusive Aufräumen,15,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-07-08,Ally,No type,alles kontrolliert,18,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2026-03-15,Robert,No type,,5,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2026-05-26,Ally,No type,gründlich erledigt,16,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-07-13,Ally,No type,,16,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2025-03-13,Ally,No type,Automated work entry,159,0
+-,TODO-33240,Der Keller ist gesaugt.,2025-02-11,Ally,No type,Automated work entry,43,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2026-08-23,Robert,No type,kurzer Check,83,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-11-03,Ally,No type,,13,0
+-,TODO-1465,Das Bad ist geputzt.,2025-01-08,Ally,No type,kurzer Check,76,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2026-05-24,Ally,No type,,1,0
+-,TODO-33252,Der Restmüll ist geleert.,2026-02-22,Ally,No type,gründlich erledigt,5,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2026-01-14,Robert,No type,,22,0
+-,TODO-1466,Die Wohnung ist gewischt.,2025-07-02,Robert,No type,alles kontrolliert,107,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-03-15,Ally,No type,,52,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-06-26,Ally,No type,gründlich erledigt,50,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-02-08,Ally,No type,alles kontrolliert,11,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-06-29,Ally,No type,kurzer Check,3,0
+-,TODO-33251,Der Biomüll ist entleert.,2025-04-21,Ally,No type,,9,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-06-06,Ally,No type,,44,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2025-02-15,Ally,No type,kurzer Check,84,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2026-08-31,Ally,No type,kurzer Check,3,0
+-,TODO-1465,Das Bad ist geputzt.,2024-11-30,Ally,No type,,39,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-03-28,Ally,No type,,91,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2026-08-04,Ally,No type,inklusive Aufräumen,15,0
+-,TODO-691,Der Rasen ist gemäht.,2024-11-28,Ally,No type,inklusive Aufräumen,68,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2024-10-28,Ally,No type,kurzer Check,14,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2025-10-10,Ally,No type,nur das Nötigste gemacht,9,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2025-11-18,Ally,No type,inklusive Aufräumen,19,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2026-04-09,Robert,No type,Automated work entry,6,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2025-03-24,Ally,No type,gründlich erledigt,59,0
+-,TODO-1465,Das Bad ist geputzt.,2025-12-27,Robert,No type,,76,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2026-07-25,Ally,No type,gründlich erledigt,6,0
+-,TODO-33251,Der Biomüll ist entleert.,2024-11-30,Ally,No type,,6,0
+-,TODO-33252,Der Restmüll ist geleert.,2025-11-20,Ally,No type,,6,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-01-04,Ally,No type,nur das Nötigste gemacht,29,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2025-06-24,Ally,No type,inklusive Aufräumen,1,0
+-,TODO-33251,Der Biomüll ist entleert.,2025-01-24,Ally,No type,inklusive Aufräumen,10,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2024-12-09,Ally,No type,,75,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-09-16,Ally,No type,,77,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2026-07-25,Ally,No type,inklusive Aufräumen,76,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-02-24,Robert,No type,,83,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-05-07,Ally,No type,kurzer Check,77,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-08-01,Ally,No type,kurzer Check,11,0
+-,TODO-33255,Der Papiermüll ist geleert.,2025-07-20,Robert,No type,,9,0
+-,TODO-33243,Die Restmülltonne ist rausgestellt.,2026-07-14,Ally,No type,,3,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2026-04-09,Ally,No type,Automated work entry,6,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-11-08,Ally,No type,,14,0
+-,TODO-33252,Der Restmüll ist geleert.,2026-01-24,Ally,No type,inklusive Aufräumen,7,0
+-,TODO-33251,Der Biomüll ist entleert.,2026-02-25,Ally,No type,gründlich erledigt,4,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-11-27,Ally,No type,kurzer Check,43,0
+-,TODO-33265,Es ist Essen gekocht.,2026-05-17,Ally,No type,kurzer Check,38,0
+-,TODO-33252,Der Restmüll ist geleert.,2025-07-16,Ally,No type,kurzer Check,10,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2026-03-14,Ally,No type,,17,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2026-07-18,Ally,No type,gründlich erledigt,10,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2025-12-23,Ally,No type,,2,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-04-12,Ally,No type,inklusive Aufräumen,38,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2025-03-13,Ally,No type,inklusive Aufräumen,40,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2025-06-09,Ally,No type,gründlich erledigt,8,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2026-05-24,Ally,No type,,15,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2025-07-10,Ally,No type,,10,0
+-,TODO-33240,Der Keller ist gesaugt.,2026-09-21,Ally,No type,kurzer Check,27,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-09-29,Ally,No type,,1,0
+-,TODO-691,Der Rasen ist gemäht.,2026-03-28,Ally,No type,kurzer Check,46,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2024-11-21,Ally,No type,,6,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-09-07,Ally,No type,,15,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-07-29,Ally,No type,Automated work entry,25,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2025-12-12,Ally,No type,kurzer Check,25,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-11-20,Robert,No type,kurzer Check,16,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2026-03-03,Ally,No type,nur das Nötigste gemacht,22,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2026-04-14,Robert,No type,Automated work entry,20,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-04-05,Ally,No type,gründlich erledigt,7,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-04-12,Ally,No type,,90,0
+-,TODO-691,Der Rasen ist gemäht.,2025-03-25,Ally,No type,nur das Nötigste gemacht,54,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2025-10-04,Ally,No type,inklusive Aufräumen,20,0
+-,TODO-1465,Das Bad ist geputzt.,2025-10-08,Robert,No type,inklusive Aufräumen,43,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2026-02-07,Ally,No type,Automated work entry,8,0
+-,TODO-33265,Es ist Essen gekocht.,2026-04-14,Ally,No type,,130,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2025-07-02,Ally,No type,inklusive Aufräumen,62,0
+-,TODO-1465,Das Bad ist geputzt.,2026-08-27,Ally,No type,nur das Nötigste gemacht,81,0
+-,TODO-1465,Das Bad ist geputzt.,2025-10-02,Robert,No type,,55,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-09-21,Robert,No type,kurzer Check,65,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2025-11-04,Ally,No type,kurzer Check,45,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-10-22,Ally,No type,gründlich erledigt,84,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2024-12-07,Ally,No type,nur das Nötigste gemacht,7,0
+-,TODO-33251,Der Biomüll ist entleert.,2026-03-01,Ally,No type,Automated work entry,4,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-10-06,Robert,No type,kurzer Check,7,0
+-,TODO-33265,Es ist Essen gekocht.,2024-11-20,Ally,No type,Automated work entry,76,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2026-05-11,Ally,No type,inklusive Aufräumen,68,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2026-01-09,Ally,No type,nur das Nötigste gemacht,10,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-02-13,Robert,No type,alles kontrolliert,15,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2026-02-01,Ally,No type,kurzer Check,48,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2024-12-13,Robert,No type,nur das Nötigste gemacht,12,0
+-,TODO-33252,Der Restmüll ist geleert.,2025-09-20,Ally,No type,alles kontrolliert,8,0
+-,TODO-1465,Das Bad ist geputzt.,2026-09-08,Robert,No type,,89,0
+-,TODO-33251,Der Biomüll ist entleert.,2026-05-29,Ally,No type,inklusive Aufräumen,3,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2025-06-24,Robert,No type,nur das Nötigste gemacht,142,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-06-12,Ally,No type,kurzer Check,54,0
+-,TODO-33265,Es ist Essen gekocht.,2024-10-01,Robert,No type,,86,0
+-,TODO-33252,Der Restmüll ist geleert.,2026-04-05,Ally,No type,gründlich erledigt,2,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2024-12-18,Ally,No type,,11,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2026-04-19,Ally,No type,alles kontrolliert,96,0
+-,TODO-1466,Die Wohnung ist gewischt.,2025-11-24,Robert,No type,kurzer Check,97,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2025-08-19,Ally,No type,nur das Nötigste gemacht,81,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2024-11-17,Ally,No type,nur das Nötigste gemacht,118,0
+-,TODO-33251,Der Biomüll ist entleert.,2026-07-29,Ally,No type,nur das Nötigste gemacht,9,0
+-,TODO-33251,Der Biomüll ist entleert.,2025-08-24,Ally,No type,gründlich erledigt,9,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2026-05-25,Ally,No type,inklusive Aufräumen,46,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-01-04,Ally,No type,inklusive Aufräumen,18,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2026-05-18,Ally,No type,,57,0
+-,TODO-691,Der Rasen ist gemäht.,2025-11-10,Ally,No type,Automated work entry,75,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2025-11-06,Robert,No type,,58,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2025-09-26,Ally,No type,nur das Nötigste gemacht,13,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2026-06-17,Ally,No type,inklusive Aufräumen,2,0
+-,TODO-33252,Der Restmüll ist geleert.,2025-08-29,Ally,No type,,1,0
+-,TODO-691,Der Rasen ist gemäht.,2025-01-06,Ally,No type,kurzer Check,78,0
+-,TODO-33269,Die Oberschränke sind staubgewischt.,2025-07-15,Ally,No type,,51,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2025-11-06,Robert,No type,,4,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2025-04-16,Ally,No type,nur das Nötigste gemacht,47,0
+-,TODO-1466,Die Wohnung ist gewischt.,2026-05-20,Ally,No type,,68,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2025-09-05,Ally,No type,kurzer Check,70,0
+-,TODO-33245,Der Einkauf ist erledigt.,2026-08-30,Ally,No type,inklusive Aufräumen,125,0
+-,TODO-33270,Das Fallobst des Apfelbaums ist gerafft.,2026-05-15,Ally,No type,gründlich erledigt,67,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2025-08-13,Ally,No type,kurzer Check,28,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2025-01-12,Ally,No type,inklusive Aufräumen,9,0
+-,TODO-1465,Das Bad ist geputzt.,2025-02-07,Ally,No type,Automated work entry,31,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2025-04-02,Ally,No type,Automated work entry,5,0
+-,TODO-33265,Es ist Essen gekocht.,2026-09-10,Robert,No type,inklusive Aufräumen,169,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2024-10-03,Robert,No type,nur das Nötigste gemacht,10,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2026-02-20,Robert,No type,,8,0
+-,TODO-691,Der Rasen ist gemäht.,2026-05-14,Ally,No type,,41,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2025-03-28,Ally,No type,,34,0
+-,TODO-1466,Die Wohnung ist gewischt.,2025-08-06,Ally,No type,Automated work entry,56,0
+-,TODO-33266,Die Hochbeete sind gepflegt.,2025-06-20,Ally,No type,,83,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2024-12-01,Ally,No type,,87,0
+-,TODO-1466,Die Wohnung ist gewischt.,2025-04-28,Robert,No type,kurzer Check,31,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2026-01-17,Ally,No type,,9,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-06-29,Ally,No type,,52,0
+-,TODO-33251,Der Biomüll ist entleert.,2025-05-21,Robert,No type,,6,0
+-,TODO-33240,Der Keller ist gesaugt.,2025-10-17,Ally,No type,,30,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2024-10-10,Ally,No type,alles kontrolliert,5,0
+-,TODO-33251,Der Biomüll ist entleert.,2026-08-10,Robert,No type,nur das Nötigste gemacht,2,0
+-,TODO-691,Der Rasen ist gemäht.,2025-04-23,Ally,No type,inklusive Aufräumen,87,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-09-02,Ally,No type,kurzer Check,8,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2024-10-23,Ally,No type,kurzer Check,40,0
+-,TODO-1489,Die Dunstabzugshaube ist von Fett befreit.,2025-06-02,Ally,No type,kurzer Check,12,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-06-19,Ally,No type,nur das Nötigste gemacht,61,0
+-,TODO-1466,Die Wohnung ist gewischt.,2026-08-05,Robert,No type,,58,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2026-02-06,Ally,No type,gründlich erledigt,114,0
+-,TODO-33241,Die Papiertonne ist rausgestellt.,2026-08-03,Robert,No type,inklusive Aufräumen,5,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2025-11-04,Ally,No type,gründlich erledigt,6,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2024-10-08,Ally,No type,gründlich erledigt,15,0
+-,TODO-33242,Die gelben Säcke sind rausgestellt zur Abholung.,2025-02-15,Ally,No type,alles kontrolliert,1,0
+-,TODO-1472,Der Wasserkocher ist entkalkt.,2024-10-20,Robert,No type,gründlich erledigt,1,0
+-,TODO-33245,Der Einkauf ist erledigt.,2024-12-30,Ally,No type,nur das Nötigste gemacht,115,0
+-,TODO-33240,Der Keller ist gesaugt.,2024-10-01,Robert,No type,gründlich erledigt,31,0
+-,TODO-1468,Die Zählerstände sind abgelesen und ggf. übermittelt.,2024-10-02,Ally,No type,,16,0
+-,TODO-691,Der Rasen ist gemäht.,2025-03-15,Ally,No type,Automated work entry,87,0
+-,TODO-33261,Der Glasmüll ist entsorgt.,2025-12-31,Ally,No type,,19,0
+-,TODO-33247,Die Fliegengitter sind bei den Rollos montiert.,2026-03-24,Robert,No type,,170,0
+-,TODO-33256,Die Zimmerpflanzen sind gegossen worden.,2026-02-18,Ally,No type,,18,0
+-,TODO-33253,Der gelbe Sack ist getauscht.,2026-06-18,Ally,No type,,3,0
+-,TODO-4667,Die Wohnung ist gesaugt.,2025-08-27,Ally,No type,,53,0
+-,TODO-33258,Die Spülmaschine ist aus- und wieder eingeräumt worden.,2025-03-19,Ally,No type,gründlich erledigt,10,0
+-,TODO-1465,Das Bad ist geputzt.,2024-10-29,Ally,No type,alles kontrolliert,76,0
+-,TODO-33244,Der Hof ist frei von Fallobst.,2025-07-17,Ally,No type,nur das Nötigste gemacht,15,0
+-,TODO-1400,Der Kühlschrank ist geputzt.,2025-11-08,Ally,No type,kurzer Check,99,0
