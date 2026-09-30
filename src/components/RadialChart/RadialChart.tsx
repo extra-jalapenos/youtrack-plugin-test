@@ -1,0 +1,89 @@
+import {useRef, useEffect} from "react";
+import * as d3 from "d3";
+
+export interface dataPoint {
+    x: number;
+    y: number;
+}
+
+interface RadialChartData {
+    data: dataPoint[];
+    width: number;
+    height: number;
+}
+
+
+const RadialChart = ({data, width, height}: RadialChartData) => {
+
+    const svgRef = useRef<SVGSVGElement>(null);
+    const margin = {
+        left: 25,
+        top: 25,
+        right: 25,
+        bottom: 25
+    };
+
+    const canvasWidth = width - margin.left - margin.right;
+    const canvasHeight = height - margin.top - margin.bottom;
+
+    useEffect(() => {
+        const svg = d3.select(svgRef.current);
+
+        const xScale = d3
+            .scaleLinear()
+            .domain([0, 100])
+            .range([0, canvasWidth]);
+
+        const yScale = d3
+            .scaleLinear()
+            .domain([0, 100])
+            .range([canvasHeight, 0]);
+
+        const canvas = svg.select(".canvas");
+
+        canvas
+            .selectAll<SVGRectElement, dataPoint>("rect")
+            .data(data, (_, index) => index)
+            .join("rect")
+            .attr("x", d => xScale(d.x))
+            .attr("y", d => yScale(d.y))
+            .attr("width", 2)
+            .attr("height", 2);
+
+        svg.select(".axes g.x").call(d3.axisBottom(xScale));
+        svg.select(".axes g.y").call(d3.axisLeft(yScale));
+    }, [data, width, height]);
+
+
+    return (
+        <svg
+            ref={svgRef}
+            viewBox={`0 0 ${width} ${height}`}
+        >
+            <g
+                className="plot"
+                transform={`translate(${margin.left}, ${margin.top})`}
+            >
+
+            </g>
+            <g
+                className="axes"
+                transform={`translate(${margin.left}, ${margin.top})`}
+            >
+                <g
+                    className="x"
+                    transform={`translate(0, ${canvasHeight})`}
+                >
+
+                </g>
+                <g
+                    className="y"
+                >
+
+                </g>
+            </g>
+        </svg>
+    )
+}
+
+export default RadialChart;

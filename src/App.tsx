@@ -1,17 +1,38 @@
 // You need to import RingUI styles once
 import '@jetbrains/ring-ui-built/components/style.css';
+import RadialChart, {type dataPoint} from "./components/RadialChart/RadialChart.tsx";
+import {useEffect, useState} from "react";
 
-import { memo } from 'react'
+const regenerateArray = () => {
+    return Array(100).fill(0).map(_ => ({ x: Math.random() * 100, y: Math.random() * 100 }));
+}
+regenerateArray()
 
 function App() {
+    const [height, setHeight] = useState( 100);
+    const [data, setData] = useState<dataPoint[]>([]);
+    const changeRandomNumber = () => {
+        setHeight(Math.random() * 399);
+    }
 
+    const changeData = () => {
+        const newData = regenerateArray();
+        setData(newData);
+    }
+    useEffect(() => console.log("useEffect App.jsx"), []);
   return (
     // <App/>
     <>
-      <h1>Test</h1>
-      <p>This is some text</p>
+        <header>
+            <h1>My React App</h1>
+        </header>
+        <main>
+            <RadialChart data={data} width={340} height={height} />
+            <button onClick={changeRandomNumber}>height</button>
+            <button onClick={changeData}>Regenerate Array</button>
+        </main>
     </>
   )
 }
 
-export default memo(App)
+export default App
