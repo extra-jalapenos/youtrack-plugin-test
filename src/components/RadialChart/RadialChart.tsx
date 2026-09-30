@@ -1,7 +1,7 @@
-import {useRef, useEffect} from "react";
+import {useRef, useEffect, useState} from "react";
 import * as d3 from "d3";
 
-export interface dataPoint {
+export type dataPoint = {
     x: number;
     y: number;
 }
@@ -13,8 +13,8 @@ interface RadialChartData {
 }
 
 
-const RadialChart = ({data, width, height}: RadialChartData) => {
-
+const RadialChart = ({ data, width, height }: RadialChartData) => {
+    console.log(data[0])
     const svgRef = useRef<SVGSVGElement>(null);
     const margin = {
         left: 25,
@@ -39,11 +39,11 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
             .domain([0, 100])
             .range([canvasHeight, 0]);
 
-        const canvas = svg.select(".canvas");
+        const canvas = svg.select("g.canvas");
 
         canvas
             .selectAll<SVGRectElement, dataPoint>("rect")
-            .data(data, (_, index) => index)
+            .data(data)
             .join("rect")
             .attr("x", d => xScale(d.x))
             .attr("y", d => yScale(d.y))
@@ -61,7 +61,7 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
             viewBox={`0 0 ${width} ${height}`}
         >
             <g
-                className="plot"
+                className="canvas"
                 transform={`translate(${margin.left}, ${margin.top})`}
             >
 
@@ -86,4 +86,4 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
     )
 }
 
-export default RadialChart;
+export default RadialChart

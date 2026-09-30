@@ -10,13 +10,14 @@ regenerateArray()
 
 function App() {
     const [height, setHeight] = useState( 100);
-    const [data, setData] = useState<dataPoint[]>([]);
+    const [data, setData] = useState<Array<dataPoint>>([]);
     const changeRandomNumber = () => {
         setHeight(Math.random() * 399);
     }
 
     const changeData = () => {
         const newData = regenerateArray();
+        console.log(newData[0]);
         setData(newData);
     }
     useEffect(() => console.log("useEffect App.jsx"), []);
