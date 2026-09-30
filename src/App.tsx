@@ -1,7 +1,7 @@
 // You need to import RingUI styles once
 import '@jetbrains/ring-ui-built/components/style.css';
 import RadialChart, {type dataPoint} from "./components/RadialChart/RadialChart.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 const regenerateArray = () => {
     return Array(100).fill(0).map(_ => ({ x: Math.random() * 100, y: Math.random() * 100 }));
@@ -20,7 +20,7 @@ function App() {
         console.log(newData[0]);
         setData(newData);
     }
-    useEffect(() => console.log("useEffect App.jsx"), []);
+
   return (
     // <App/>
     <>
