@@ -50,11 +50,4 @@ class DataPoint implements dataPoint {
 	}
 };
 
-// Example usage
-const point1 = new DataPoint();
-const point2 = new DataPoint();
-
 export default DataPoint
-
-console.log(point1);
-console.log(point2);
