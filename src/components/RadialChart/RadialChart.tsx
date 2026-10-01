@@ -50,8 +50,17 @@ const RadialChart = ({ data, width, height }: RadialChartData) => {
             .attr("width", 2)
             .attr("height", 2);
 
-        svg.select(".axes g.x").call(d3.axisBottom(xScale));
-        svg.select(".axes g.y").call(d3.axisLeft(yScale));
+        console.log(typeof (svg.select(".axes g.x")))
+        svg.select(".axes")
+          .append("g")
+          .attr("class", "x")
+          .attr("transform", `translate(0, ${canvasHeight})`)
+          .call(d3.axisBottom(xScale));
+
+        svg.select(".axes")
+          .append("g")
+          .attr("class", "y")
+          .call(d3.axisLeft(yScale));
     }, [data, width, height]);
 
 
@@ -70,17 +79,7 @@ const RadialChart = ({ data, width, height }: RadialChartData) => {
                 className="axes"
                 transform={`translate(${margin.left}, ${margin.top})`}
             >
-                <g
-                    className="x"
-                    transform={`translate(0, ${canvasHeight})`}
-                >
-
-                </g>
-                <g
-                    className="y"
-                >
-
-                </g>
+            
             </g>
         </svg>
     )
