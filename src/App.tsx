@@ -7,11 +7,10 @@ import DataPoint from './data/fakingData.ts';
 const regenerateArray = () => {
     return Array(100).fill(0).map(_ => new DataPoint());
 }
-regenerateArray()
 
 function App() {
     const [height, setHeight] = useState(100);
-    const [data, setData] = useState<Array<dataPoint>>([]);
+    const [data, setData] = useState<Array<dataPoint>>(initArray);
     const changeRandomNumber = () => {
         setHeight(Math.random() * 399);
     }
