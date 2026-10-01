@@ -10,7 +10,7 @@ const regenerateArray = () => {
 
 function App() {
     const [height, setHeight] = useState(100);
-    const [data, setData] = useState<Array<dataPoint>>(initArray);
+    const [data, setData] = useState<Array<dataPoint>>(regenerateArray());
     const changeRandomNumber = () => {
         setHeight(Math.random() * 399);
     }

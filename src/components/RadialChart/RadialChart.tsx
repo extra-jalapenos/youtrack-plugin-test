@@ -21,25 +21,33 @@ interface RadialChartData {
 
 const RadialChart = ({data, width, height}: RadialChartData) => {
 
-    const formatDateToYYYYMM = (date: Date) => `${date.getFullYear()}-Q${Math.floor(date.getMonth() / 3) + 1}`
+    const formatDateToYYYYMM = (date: Date) => `${date.toLocaleDateString([], { month: "short" })}`
 
-    const preppedData = d3.map(data, d => ({ ...d, category: formatDateToYYYYMM(d.date) }))
-    const categories = d3.union(preppedData, d => d.category.sort())
-    console.log(preppedData)
-    const series = d3.union(data.map(d => d.author.login).sort())
+    const preppedData = data.map(d => {
+        return {
+            category: formatDateToYYYYMM(d.date),
+            author: d.author.login,
+            minutes: d.duration.minutes
+        }
+    })
 
-    const stackingFunction = (entries: dataPoint[]) => {
+
+    const categories = d3.sort(d3.union(preppedData.map(d => d.category)))
+    const series = d3.union(preppedData.map(d => d.author).sort())
+
+    const stackingFunction = (entries: { category: string, author: string, minutes: number}[]) => {
         const category = entries[0].category
         const totalMinutesByAuthor = d3.rollup(
             entries,
-            D => d3.sum(D, d => d.duration.minutes),
-            d => d.author.login
+            D => d3.sum(D, d => d.minutes),
+            d => d.author
         )
 
         // so order is established
         const authors = d3.intersection(series, totalMinutesByAuthor.keys())
 
         let currentValue = 0
+
         const stacked = Array.from(authors).map(author => {
             const valueByAuthor = totalMinutesByAuthor.get(author) || 0
             const object = { category, author, value: valueByAuthor, start: currentValue, end: currentValue + valueByAuthor}
@@ -49,12 +57,11 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
         return stacked
     }
 
-    const stackedValuesByCategoryAndPerson = d3.flatRollup(data,
+    const stackedValuesByCategoryAndPerson = d3.flatRollup(preppedData,
         D => stackingFunction(D),
         d => d.category
     )
 
-    console.log(stackedValuesByCategoryAndPerson)
     const flattened = d3.map(stackedValuesByCategoryAndPerson, d => d[1]).flat()
 
     const byPerson = d3.index(
@@ -63,8 +70,6 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
         d => d.category
     )
 
-    // const testStacking=stackyStack(); // group by stack then series key
-    // console.log(testStacking)
     const svgRef = useRef<SVGSVGElement>(null);
     const margin = {
         left: 25,
@@ -86,32 +91,28 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
 
         const xScale = d3
             .scaleBand()
-            .domain(categories.values())
+            .domain(categories)
             .range([0, 2 * Math.PI])
             .align(0);
 
         const yScale = d3
             .scaleRadial()
-            .domain([0, 100])
+            .domain([0, d3.max(flattened, d => d.end)])
             .range([innerRadius, outerRadius]);
 
 
-        const arc = d3.arc<{ date: string, author: string, start: number, end: number }>()
+        const arc = d3.arc<{ category: string, author: string, start: number, end: number }>()
             .innerRadius(d => yScale(d.start))
             .outerRadius(d => yScale(d.end))
-            .startAngle(d => xScale(d.date))
-            .endAngle(d => xScale("2025-Q1") + xScale.bandwidth())
+            .startAngle(d => xScale(d.category))
+            .endAngle(d => xScale(d.category) + xScale.bandwidth())
             .padAngle(1.5 / innerRadius)
             .padRadius(innerRadius);
-
-
-        const testDataPoint = {date: "2025-Q1", start: 2, end: 100}
-        console.log(arc(testDataPoint))
 
         const color = d3.scaleOrdinal()
             .domain(series)
             .range(Array.from(series).map((_, i) =>
-                d3.interpolateBrBG(i / (series.size - 1))
+                d3.interpolateRdYlBu(i / (series.size - 1))
             ));
 
         const canvas = svg.select("g.canvas");
@@ -153,12 +154,13 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
             .selectAll("g.series")
             .data(byPerson.keys())
             .join("g")
-            .attr("fill", d => color(String(d)))
+            .attr("fill", name => color(String(name)))
+            .attr("id", name => name)
             .selectAll("path")
-            .data(person => byPerson.get(person).keys())
+            .data(name => byPerson.get(name))
             .join("path")
-            .attr("timeslot", key => key)
-        // .attr("d", datapoint => console.log(datapoint))
+            .attr("timeslot", datapoint => datapoint[0])
+            .attr("d", datapoint => arc(datapoint[1]))
         // .append("title")
         //   .text(d => `${d.data[0]} ${d.key}\n${formatValue(d.data[1].get(d.key).population)}`);
 
@@ -178,7 +180,7 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
         >
             <g
                 className="canvas"
-                transform={`translate(${margin.left}, ${margin.top})`}
+                transform={`translate(${margin.left + canvasWidth / 2}, ${margin.top + canvasHeight / 2})`}
             >
 
             </g>
