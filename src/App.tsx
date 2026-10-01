@@ -2,14 +2,15 @@
 import '@jetbrains/ring-ui-built/components/style.css';
 import RadialChart, {type dataPoint} from "./components/RadialChart/RadialChart.tsx";
 import {useState} from "react";
+import DataPoint from './data/fakingData.ts';
 
 const regenerateArray = () => {
-    return Array(100).fill(0).map(_ => ({ x: Math.random() * 100, y: Math.random() * 100 }));
+    return Array(100).fill(0).map(_ => new DataPoint());
 }
 regenerateArray()
 
 function App() {
-    const [height, setHeight] = useState( 100);
+    const [height, setHeight] = useState(100);
     const [data, setData] = useState<Array<dataPoint>>([]);
     const changeRandomNumber = () => {
         setHeight(Math.random() * 399);
@@ -28,8 +29,7 @@ function App() {
             <h1>My React App</h1>
         </header>
         <main>
-            <RadialChart data={data} width={340} height={height} />
-            <button onClick={changeRandomNumber}>height</button>
+            <RadialChart data={data} width={500} height={500} />
             <button onClick={changeData}>Regenerate Array</button>
         </main>
     </>
