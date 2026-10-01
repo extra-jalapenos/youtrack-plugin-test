@@ -50,8 +50,12 @@ const RadialChart = ({ data, width, height }: RadialChartData) => {
             .attr("width", 2)
             .attr("height", 2);
 
-        svg.select(".axes g.x").call(d3.axisBottom(xScale));
-        svg.select(".axes g.y").call(d3.axisLeft(yScale));
+        svg.select(".axes g.x").selectChildren().remove()
+        svg.select(".axes g.x").append("g").attr("class", "x").call(d3.axisBottom(xScale));
+
+        svg.select(".axes g.y").selectChildren().remove()
+        svg.select(".axes g.y").append("g").attr("class", "x").call(d3.axisLeft(yScale));
+
     }, [data, width, height]);
 
 
