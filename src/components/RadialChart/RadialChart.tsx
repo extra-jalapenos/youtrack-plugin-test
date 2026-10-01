@@ -83,7 +83,7 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
     const canvasHeight = height - margin.top - margin.bottom;
 
     // const innerRadius = 180
-    const innerRadius = canvasWidth * 0.333;
+    const innerRadius = canvasWidth * 0.2;
     const outerRadius = Math.min(canvasWidth, canvasHeight) / 2;
 
     useEffect(() => {
