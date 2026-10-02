@@ -104,8 +104,8 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
         const arc = d3.arc<{ category: string, author: string, start: number, end: number }>()
             .innerRadius(d => yScale(d.start))
             .outerRadius(d => yScale(d.end))
-            .startAngle(d => xScale(d.category))
-            .endAngle(d => xScale(d.category) + xScale.bandwidth())
+            .startAngle(d => Number(xScale(d.category)))
+            .endAngle(d => Number(xScale(d.category)) + xScale.bandwidth())
             .padAngle(1.5 / innerRadius)
             .padRadius(innerRadius);
 
@@ -116,16 +116,6 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
             ));
 
         const canvas = svg.select("g.canvas");
-
-
-        // canvas
-        //     .selectAll<SVGRectElement, dataPoint>("rect")
-        //     .data(data)
-        //     .join("rect")
-        //     .attr("x", d => xScale(d.x))
-        //     .attr("y", d => yScale(d.y))
-        //     .attr("width", 2)
-        //     .attr("height", 2);
 
         // x axis
         svg.select("g.axes").append("g")
