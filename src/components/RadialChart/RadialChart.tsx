@@ -1,8 +1,9 @@
-import {useRef, useEffect, useState} from "react";
+import { useRef, useEffect } from "react";
 import * as d3 from "d3";
-import {configureGlobalControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height.js";
+import type {InternMap} from "d3";
+// import {configureGlobalControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height.js";
 
-export type dataPoint = {
+export type dataPointRaw = {
     duration: {
         minutes: number
     };
@@ -13,8 +14,10 @@ export type dataPoint = {
     date: Date
 }
 
+type dataPoint = { category: string, author: string, start: number, end: number, value: number }
+
 interface RadialChartData {
-    data: dataPoint[];
+    data: dataPointRaw[];
     width: number;
     height: number;
 }
@@ -48,9 +51,15 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
 
         let currentValue = 0
 
-        const stacked = Array.from(authors).map(author => {
+        const stacked: dataPoint[] = Array.from(authors).map(author => {
             const valueByAuthor = totalMinutesByAuthor.get(author) || 0
-            const object = { category, author, value: valueByAuthor, start: currentValue, end: currentValue + valueByAuthor}
+            const object = {
+                category,
+                author,
+                value: Number(valueByAuthor) || 0,
+                start: Number(currentValue),
+                end: Number(currentValue + valueByAuthor)
+            }
             currentValue += valueByAuthor
             return object
         })
@@ -79,12 +88,12 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
     };
 
 
-    const canvasWidth = width - margin.left - margin.right;
-    const canvasHeight = height - margin.top - margin.bottom;
+    const canvasWidth: number = width - margin.left - margin.right;
+    const canvasHeight: number = height - margin.top - margin.bottom;
 
     // const innerRadius = 180
-    const innerRadius = canvasWidth * 0.2;
-    const outerRadius = Math.min(canvasWidth, canvasHeight) / 2;
+    const innerRadius: number = canvasWidth * 0.2;
+    const outerRadius: number = Math.min(canvasWidth, canvasHeight) / 2;
 
     useEffect(() => {
         const svg = d3.select(svgRef.current);
@@ -100,12 +109,13 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
             .range([0, 2 * Math.PI])
             .align(0);
 
+        const maxY = Number(d3.max(flattened.map(d => d.end)))
         const yScale = d3
             .scaleRadial()
-            .domain([0, d3.max(flattened.map(d => Number(d.end)))])
+            .domain([0, maxY])
             .range([innerRadius, outerRadius]);
 
-        const arc = d3.arc<{ category: string, author: string, start: number, end: number }>()
+        const arc = d3.arc<dataPoint>()
             .innerRadius(d => yScale(d.start))
             .outerRadius(d => yScale(d.end))
             .startAngle(d => Number(xScale(d.category)))
@@ -113,11 +123,12 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
             .padAngle(1.5 / innerRadius)
             .padRadius(innerRadius);
 
-        const color = d3.scaleOrdinal()
-            .domain(series)
+        const colorScale = d3.scaleOrdinal<string, string>()
+            .domain(Array.from(series))
             .range(Array.from(series).map((_, i) =>
                 d3.interpolateRdYlBu(i / (series.size - 1))
-            ));
+            ))
+            .unknown("pink");
 
         // svg.select(".axes g.y").append("g").attr("class", "x").call(d3.axisLeft(yScale));
 
@@ -148,20 +159,31 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
 
         // A group for each series, and a rect for each element in the series
 
-        svg
+        const seriesGroups = svg
             .select("g.canvas")
             .selectAll("g.series")
             .data(byPerson.keys())
-            .join("g")
-            .attr("fill", name => color(String(name)))
-            .attr("id", name => name)
-            .selectAll("path")
-            .data(name => byPerson.get(name))
+            .join(
+                enter => enter.append("g"),
+                update => update.attr("class", "updated"),
+                exit => exit.remove()
+            )
+            .attr("fill", d => colorScale(d))
+            .attr("id", d => d)
+
+        seriesGroups.selectAll("path")
+            .data((d: string): InternMap<string, dataPoint> | [] => {
+                const personDatapoints = byPerson.get(d)
+
+                if (!personDatapoints) {
+                    return [];
+                }
+
+                return personDatapoints;
+            })
             .join("path")
             .attr("timeslot", datapoint => datapoint[0])
             .attr("d", datapoint => arc(datapoint[1]))
-        // .append("title")
-        //   .text(d => `${d.data[0]} ${d.key}\n${formatValue(d.data[1].get(d.key).population)}`);
 
 
     }, [data, width, height]);
