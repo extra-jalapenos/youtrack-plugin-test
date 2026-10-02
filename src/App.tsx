@@ -2,6 +2,7 @@
 import '@jetbrains/ring-ui-built/components/style.css';
 import RadialChart, {type dataPoint} from "./components/RadialChart/RadialChart.tsx";
 import {useEffect, useState} from "react";
+import "./App.css"
 import DataPoint from './data/fakingData.ts';
 
 const regenerateArray = () => {
@@ -9,17 +10,8 @@ const regenerateArray = () => {
 }
 
 function App() {
-    const [height, setHeight] = useState(0);
-    const [width, setWidth] = useState(0);
-
-    useEffect(() => {
-        setHeight(100);
-        setWidth(100);
-
-        const newData = regenerateArray();
-        setData(newData);
-    }, [])
-
+    const [height, setHeight] = useState(document.documentElement.clientHeight);
+    const [width, setWidth] = useState(document.documentElement.clientWidth);
     const [data, setData] = useState<Array<dataPoint>>(regenerateArray());
 
 

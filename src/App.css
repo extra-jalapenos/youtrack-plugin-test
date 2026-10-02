@@ -1,4 +1,7 @@
-svg {
-  fill: red;
-  stroke: white;
+* {
+  font-family: sans-serif;
+}
+
+.label {
+  font-size: 1em;
 }

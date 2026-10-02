@@ -88,6 +88,11 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
 
     useEffect(() => {
         const svg = d3.select(svgRef.current);
+        const canvas = svg.select("g.canvas");
+        canvas.selectChildren().remove()
+
+        svg.select(".axes g.x").selectChildren().remove()
+        svg.select(".axes g.y").selectChildren().remove()
 
         const xScale = d3
             .scaleBand()
@@ -97,9 +102,8 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
 
         const yScale = d3
             .scaleRadial()
-            .domain([0, d3.max(flattened, d => d.end)])
+            .domain([0, d3.max(flattened.map(d => Number(d.end)))])
             .range([innerRadius, outerRadius]);
-
 
         const arc = d3.arc<{ category: string, author: string, start: number, end: number }>()
             .innerRadius(d => yScale(d.start))
@@ -115,24 +119,29 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
                 d3.interpolateRdYlBu(i / (series.size - 1))
             ));
 
-        const canvas = svg.select("g.canvas");
+        // svg.select(".axes g.y").append("g").attr("class", "x").call(d3.axisLeft(yScale));
 
         // x axis
-        svg.select("g.axes").append("g")
+        svg.select("g.axes g.x")
             .attr("text-anchor", "middle")
-            .selectAll()
-            .data(xScale.domain())
-            .join("g")
             .attr("class", "x")
+            .selectAll()
+            .data(categories)
+            .join(
+                enter => enter.append("g"),
+                update => update.attr("fill", "gray"),
+                exit => exit.remove()
+            )
             .attr("transform", d => `
-              rotate(${((xScale(d) + xScale.bandwidth() / 2) * 180 / Math.PI - 90)})
+              rotate(${((Number(xScale(d)) + xScale.bandwidth() / 2) * 180 / Math.PI - 90)})
               translate(${innerRadius},0)
             `)
             .call(g => g.append("line")
                 .attr("x2", -5)
                 .attr("stroke", "#000"))
             .call(g => g.append("text")
-                .attr("transform", d => (xScale(d) + xScale.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
+                .attr("class", "label")
+                .attr("transform", d => (Number(xScale(d)) + xScale.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
                     ? "rotate(90)translate(0,16)"
                     : "rotate(-90)translate(0,-9)")
                 .text(d => d));
@@ -154,11 +163,6 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
         // .append("title")
         //   .text(d => `${d.data[0]} ${d.key}\n${formatValue(d.data[1].get(d.key).population)}`);
 
-        svg.select(".axes g.x").selectChildren().remove()
-        // svg.select(".axes g.x").append("g").attr("class", "x").call(d3.axisBottom(xScale));
-
-        svg.select(".axes g.y").selectChildren().remove()
-        svg.select(".axes g.y").append("g").attr("class", "x").call(d3.axisLeft(yScale));
 
     }, [data, width, height]);
 
