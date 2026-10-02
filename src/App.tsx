@@ -1,6 +1,6 @@
 // You need to import RingUI styles once
 import '@jetbrains/ring-ui-built/components/style.css';
-import RadialChart, {type dataPoint} from "./components/RadialChart/RadialChart.tsx";
+import RadialChart, {type dataPointRaw} from "./components/RadialChart/RadialChart.tsx";
 import {useEffect, useState} from "react";
 import "./App.css"
 import DataPoint from './data/fakingData.ts';
@@ -10,11 +10,13 @@ const regenerateArray = () => {
 }
 
 function App() {
-    const [height, setHeight] = useState(document.documentElement.clientHeight);
-    const [width, setWidth] = useState(document.documentElement.clientWidth);
-    const [data, setData] = useState<Array<dataPoint>>(regenerateArray());
+    const [height, _setHeight] = useState(document.documentElement.clientHeight);
+    const [width, _setWidth] = useState(document.documentElement.clientWidth);
+    const [data, _setData] = useState<Array<dataPointRaw>>(regenerateArray());
 
-
+    useEffect(() => {
+        console.log("init")
+    }, []);
   return (
     <>
         <header>
@@ -22,6 +24,7 @@ function App() {
         </header>
         <main>
             <RadialChart data={data} width={width} height={height} />
+            <button onClick={() => _setData(regenerateArray())}>Regenerate</button>
         </main>
     </>
   )

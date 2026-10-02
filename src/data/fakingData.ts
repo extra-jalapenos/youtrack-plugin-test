@@ -1,4 +1,4 @@
-import { type dataPoint } from "../components/RadialChart/RadialChart";
+import { type dataPointRaw } from "../components/RadialChart/RadialChart";
 
 const firstNames = [
   "alex",
@@ -26,7 +26,7 @@ function randomDateWithinPastThreeYears(): Date {
   return new Date(timestamp);
 }
 
-class DataPoint implements dataPoint {
+class DataPointRaw implements dataPointRaw {
 	duration: {
 		minutes: number;
 	};
@@ -48,6 +48,6 @@ class DataPoint implements dataPoint {
 
 		this.date = randomDateWithinPastThreeYears();
 	}
-};
+}
 
-export default DataPoint
+export default DataPointRaw
