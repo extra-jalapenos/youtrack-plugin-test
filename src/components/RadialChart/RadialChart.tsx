@@ -1,18 +1,7 @@
 import { useRef, useEffect } from "react";
 import * as d3 from "d3";
 import type {InternMap} from "d3";
-// import {configureGlobalControlsHeight} from "@jetbrains/ring-ui-built/components/global/controls-height.js";
-
-export type dataPointRaw = {
-    duration: {
-        minutes: number
-    };
-    category?: string;
-    author: {
-        login: string;
-    };
-    date: Date
-}
+import { type dataPointRaw } from "./types.ts";
 
 type dataPoint = { category: string, author: string, start: number, end: number, value: number }
 

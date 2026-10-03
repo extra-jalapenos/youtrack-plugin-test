@@ -4,6 +4,8 @@ import RadialChart, {type dataPointRaw} from "./components/RadialChart/RadialCha
 import {useEffect, useState} from "react";
 import "./App.css"
 import DataPoint from './data/fakingData.ts';
+import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
+import Button from "@jetbrains/ring-ui-built/components/button/button";
 
 const regenerateArray = () => {
     return Array(100).fill(0).map(_ => new DataPoint());
@@ -19,13 +21,9 @@ function App() {
     }, []);
   return (
     <>
-        <header>
-            <h1>My React App</h1>
-        </header>
-        <main>
-            <RadialChart data={data} width={width} height={height} />
-            <button onClick={() => _setData(regenerateArray())}>Regenerate</button>
-        </main>
+        <Heading>Test</Heading>
+        <RadialChart data={data} width={width} height={height} />
+        <Button onClick={() => _setData(regenerateArray())}>Regenerate Array</Button>
     </>
   )
 }
