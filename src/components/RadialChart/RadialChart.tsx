@@ -177,7 +177,7 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             .outerRadius(d => yScale(d.end))
             .startAngle(d => xScale(d.category))
             .endAngle(d => xScale(d.category) + xScale.bandwidth())
-            .padAngle(1.5 / innerRadius)
+            .padAngle(2 / innerRadius)
             .padRadius(innerRadius);
 
         const colorScale = d3.scaleOrdinal<string, string>()
@@ -186,6 +186,8 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
                 d3.interpolateRdYlBu(i / (series.size - 1))
             ))
             .unknown("pink");
+
+        const colorAlternative = d3.scaleOrdinal(d3.schemeTableau10).domain(series)
 
         // svg.select(".axes g.y").append("g").attr("class", "x").call(d3.axisLeft(yScale));
 
@@ -224,7 +226,7 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
                 update => update.attr("class", "updated"),
                 exit => exit.remove()
             )
-            .attr("fill", d => colorScale(d))
+            .attr("fill", d => colorAlternative(d))
             .attr("id", d => d)
 
         seriesGroups.selectAll("path")

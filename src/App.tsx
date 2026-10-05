@@ -17,7 +17,7 @@ function App() {
   return (
     <>
         <Heading>Test</Heading>
-        <RadialChart from={new Date(new Date().getTime() - 1 * 365 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height} />
+        <RadialChart from={new Date(new Date().getTime() - 48*7 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height} />
     </>
   )
 }
