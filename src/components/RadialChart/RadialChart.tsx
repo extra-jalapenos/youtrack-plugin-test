@@ -46,7 +46,7 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             "key": "month",
             "label": "month",
             "formattingStringCategories": "%Y-%B",
-            "formattingStringTicks": "%b"
+            "formattingStringTicks": "%y-%b"
         },
         {
             "key": "year",
@@ -61,24 +61,23 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
     const categoryFormattingFunction = d3.timeFormat(granularityOptionsMap.get(granularity).formattingStringCategories)
 
     const tickFormattionFunction = d3.timeFormat(granularityOptionsMap.get(granularity).formattingStringTicks)
-    const xCategories = d3.union(allDays.map(date => ({ category: categoryFormattingFunction(date), tickLabel: tickFormattionFunction(date) })))
+    const categories = d3.union(allDays.map(date => ({ category: categoryFormattingFunction(date), tickLabel: tickFormattionFunction(date) })))
 
     const preppedData = data.map(d => {
         const customFields = d.issue.customFields
         const location = customFields.find(cf => cf.name === "location")
         return {
             category: categoryFormattingFunction(new Date(d.date)),
-            series: location ? location.value.name : "no location",
+            series: location.value.name ? location.value.name : "no location",
             minutes: d.duration.minutes
         }
     })
 
-
-    const categories = d3.union(preppedData.map(d => d.category))
     const series = d3.union(preppedData.map(d => d.series).sort())
 
     const stackingFunction = (entries: { category: string, series: string, minutes: number}[]) => {
         const category = entries[0].category
+
         const totalMinutesBySeries = d3.rollup(
             entries,
             D => d3.sum(D, d => d.minutes),
@@ -144,21 +143,22 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
 
         const xScale = d3
             .scaleBand()
-            .domain(d3.map(xCategories, d => d.category))
+            .domain(d3.map(categories, d => d.category))
             .range([0, 2 * Math.PI])
             .align(0);
 
         const maxY = Number(d3.max(flattened.map(d => d.end)))
+
         const yScale = d3
             .scaleRadial()
             .domain([0, maxY])
             .range([innerRadius, outerRadius]);
 
-        const arc = d3.arc<dataPoint>()
+        const arc = d3.arc<{ category: string, start: number, end: number }>()
             .innerRadius(d => yScale(d.start))
             .outerRadius(d => yScale(d.end))
-            .startAngle(d => Number(xScale(d.category)))
-            .endAngle(d => Number(xScale(d.category)) + xScale.bandwidth())
+            .startAngle(d => xScale(d.category))
+            .endAngle(d => xScale(d.category) + xScale.bandwidth())
             .padAngle(1.5 / innerRadius)
             .padRadius(innerRadius);
 
@@ -176,7 +176,7 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             .attr("text-anchor", "middle")
             .attr("class", "x")
             .selectAll()
-            .data(xCategories)
+            .data(categories)
             .join(
                 enter => enter.append("g"),
                 update => update.attr("fill", "gray"),
@@ -187,8 +187,7 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
               translate(${innerRadius},0)
             `)
             .call(g => g.append("line")
-                .attr("x2", -5)
-                .attr("stroke", "#000"))
+                .attr("x2", -5))
             .call(g => g.append("text")
                 .attr("class", "label")
                 .attr("transform", d => (Number(xScale(d.category)) + xScale.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
@@ -211,18 +210,18 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             .attr("id", d => d)
 
         seriesGroups.selectAll("path")
-            .data((d: string): d3.InternMap<string, DataPoint> | [] => {
-                const seriesDatapoints = bySeries.get(d)
-
-                if (!seriesDatapoints) {
+            .data((d: string) => {
+                if (!bySeries.has(d)) {
                     return [];
                 }
 
-                return seriesDatapoints;
+                console.log(bySeries.get(d))
+
+                return bySeries.get(d);
             })
             .join("path")
-            .attr("timeslot", datapoint => datapoint[0])
-            .attr("d", datapoint => arc(datapoint[1]))
+            .attr("category", d => d[0])
+            .attr("d", (d: { category: string, start: number, end: number }) => arc(d[1]))
 
 
     }, [data, width, height]);

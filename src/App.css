@@ -21,6 +21,11 @@ text {
   font-size: var(--ring-font-size);
 }
 
+.label {
+  font-size: var(--ring-font-size);
+  stroke: none;
+}
+
 line {
   stroke: var(--ring-text-color);
 }
