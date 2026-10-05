@@ -13,6 +13,12 @@ const firstNames = [
   "quinn",
 ];
 
+const locations = [
+	"bath", "kitchen", null, "lol"
+]
+
+const getRandomItemFromArray = (array) => array[Math.floor(Math.random() * array.length)];
+
 function randomInteger(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -26,16 +32,29 @@ function randomDateWithinPastThreeYears(): Date {
   return new Date(timestamp);
 }
 
-class DataPoint implements dataPoint {
-	duration: {
-		minutes: number;
+export type CustomField = {
+	name: string;
+	value: {
+		name: string;
 	};
+}
 
+class DataPoint {
+	duration: {
+		minutes: number
+	};
 	author: {
 		login: string;
 	};
-
-	date: Date;
+	date: number;
+	issue: {
+		customFields: {
+			name: string;
+			value: {
+				name: string;
+			};
+		}[]
+	}
 
 	constructor() {
 		this.duration = {
@@ -43,18 +62,27 @@ class DataPoint implements dataPoint {
 		};
 
 		this.author = {
-			login: firstNames[randomInteger(0, firstNames.length - 1)],
+			login: getRandomItemFromArray(firstNames)
 		};
 
-		this.date = randomDateWithinPastThreeYears();
+		this.date = randomDateWithinPastThreeYears().getTime();
+		this.issue = {
+			customFields: [
+				{
+					name:  getRandomItemFromArray(["Test", "Just testing", "some uninteresting category"]),
+					value: {
+						name: getRandomItemFromArray(["bozo", "lol", "JK"])
+					}
+				},
+				{
+					name: "location",
+					value: {
+						name: getRandomItemFromArray(locations)
+					}
+				}
+			]
+		}
 	}
 };
 
-// Example usage
-const point1 = new DataPoint();
-const point2 = new DataPoint();
-
 export default DataPoint
-
-console.log(point1);
-console.log(point2);
