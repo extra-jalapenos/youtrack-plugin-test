@@ -4,6 +4,8 @@ import {useEffect, useState} from "react";
 import "./App.css"
 import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
 import RadialChart from './components/RadialChart/RadialChart.tsx';
+import ColorScheme from "./components/RadialChart/ColorScheme.tsx";
+import LinePlot from "./components/RadialChart/LinePlot.tsx";
 
 function App() {
     const [height, _setHeight] = useState(document.documentElement.clientHeight);
@@ -15,7 +17,8 @@ function App() {
   return (
     <>
         <Heading>Test</Heading>
-        <RadialChart from={new Date(new Date().getTime() - 48*7 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height} />
+        <LinePlot from={new Date(new Date().getTime() - 8 * 7 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height}/>
+        {/*<RadialChart from={new Date(new Date().getTime() - 8 * 7 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height} />*/}
     </>
   )
 }
