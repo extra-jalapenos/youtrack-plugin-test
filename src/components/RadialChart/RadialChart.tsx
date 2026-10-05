@@ -55,41 +55,47 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             "formattingStringTicks": "%Y"
         }
     ]
-    const allDays = d3.timeDays(from, to, 1)
 
-    console.log(allDays)
-    const formatDateToYYYYMM = (date: Date) => `${new Date(date).toLocaleDateString([], { month: "short" })}`
+    const granularityOptionsMap = new Map(granularityOptions.map(option => [option.key, option]))
+    const allDays = d3.timeDays(from, to, 1)
+    const categoryFormattingFunction = d3.timeFormat(granularityOptionsMap.get(granularity).formattingStringCategories)
+
+    const tickFormattionFunction = d3.timeFormat(granularityOptionsMap.get(granularity).formattingStringTicks)
+    const xCategories = d3.union(allDays.map(date => categoryFormattingFunction(date)))
+    const xTicks = d3.union(allDays.map(date => tickFormattionFunction(date)))
 
     const preppedData = data.map(d => {
+        const customFields = d.issue.customFields
+        const location = customFields.find(cf => cf.name === "location")
         return {
-            category: formatDateToYYYYMM(d.date),
-            author: d.author.login,
+            category: categoryFormattingFunction(new Date(d.date)),
+            series: location ? location.value.name : "no location",
             minutes: d.duration.minutes
         }
     })
 
 
-    const categories = d3.sort(d3.union(preppedData.map(d => d.category)))
-    const series = d3.union(preppedData.map(d => d.author).sort())
+    const categories = d3.union(preppedData.map(d => d.category))
+    const series = d3.union(preppedData.map(d => d.series).sort())
 
-    const stackingFunction = (entries: { category: string, author: string, minutes: number}[]) => {
+    const stackingFunction = (entries: { category: string, series: string, minutes: number}[]) => {
         const category = entries[0].category
-        const totalMinutesByAuthor = d3.rollup(
+        const totalMinutesBySeries = d3.rollup(
             entries,
             D => d3.sum(D, d => d.minutes),
-            d => d.author
+            d => d.series
         )
 
         // so order is established
-        const authors = d3.intersection(series, totalMinutesByAuthor.keys())
+        const presentSeries = d3.intersection(series, totalMinutesBySeries.keys())
 
         let currentValue = 0
 
-        const stacked: dataPoint[] = Array.from(authors).map(author => {
-            const valueByAuthor = totalMinutesByAuthor.get(author) || 0
+        const stacked = Array.from(presentSeries).map(serie => {
+            const valueByAuthor = totalMinutesBySeries.get(serie) || 0
             const object = {
                 category,
-                author,
+                series: serie,
                 value: Number(valueByAuthor) || 0,
                 start: Number(currentValue),
                 end: Number(currentValue + valueByAuthor)
@@ -100,16 +106,16 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
         return stacked
     }
 
-    const stackedValuesByCategoryAndPerson = d3.flatRollup(preppedData,
+    const stackedValuesByCategoryAndSeries = d3.flatRollup(preppedData,
         D => stackingFunction(D),
         d => d.category
     )
 
-    const flattened = d3.map(stackedValuesByCategoryAndPerson, d => d[1]).flat()
+    const flattened = d3.map(stackedValuesByCategoryAndSeries, d => d[1]).flat()
 
     const byPerson = d3.index(
         flattened,
-        d => d.author,
+        d => d.series,
         d => d.category
     )
 

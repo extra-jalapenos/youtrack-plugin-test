@@ -11,7 +11,7 @@ const firstNames = [
   "quinn",
 ];
 
-const locations = [
+const locationArray = [
 	"bath", "kitchen", null, "lol"
 ]
 
@@ -75,7 +75,7 @@ class DataPoint {
 				{
 					name: "location",
 					value: {
-						name: getRandomItemFromArray(locations)
+						name: getRandomItemFromArray(locationArray)
 					}
 				}
 			]
