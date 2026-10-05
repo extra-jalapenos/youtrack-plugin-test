@@ -169,8 +169,13 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
         svg.select("g.axes").select("g.y")
             .selectAll("circle")
             .data(ticks)
-            .join("circle")
-            .attr("r", d => yScale(d))
+            .join(enter => enter.append("circle")
+               .attr("r", yScale(0))
+              .transition()
+                .delay((d, i) => i ? ticks[i-1] : 0)
+                .duration(d => d / 2)
+                .attr("r", d => yScale(d))
+            )
 
         const arc = d3.arc<{ category: string, start: number, end: number }>()
             .innerRadius(d => yScale(d.start))
@@ -222,7 +227,11 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             .selectAll("g.series")
             .data(bySeries.keys())
             .join(
-                enter => enter.append("g"),
+                enter => enter.append("g")
+                        .attr("opacity", 0)
+                        .transition()
+                        .delay((d, i) => i * 100)
+                        .attr("opacity", 1),
                 update => update.attr("class", "updated"),
                 exit => exit.remove()
             )
@@ -237,10 +246,13 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
 
                 return bySeries.get(d);
             })
-            .join("path")
+            .join(enter => enter.append("path")
+                        .attr("d", (d: { category: string, start: number, end: number }) => arc(d[1]))
+            )
             .attr("category", d => d[0])
-            .attr("d", (d: { category: string, start: number, end: number }) => arc(d[1]))
 
+            .append("title")
+                .text(d => d[1].value)
 
     }, [rawdata, width, height]);
 
@@ -268,7 +280,7 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             Uhhh
         </div>
         <div className="ring-form__control">
-            <Button onClick={() => fuckwithData()}>Filter Data</Button>
+            <Button onClick={() => fuckwithData()}>Shuffle Shuffle</Button>
         </div>
       </div>
       </div>

@@ -7,7 +7,7 @@ youTrackVibrant,
 youTrackMuted,
 youTrackDarkest,
 youtrackRainbow,
-
+youTrackGreenToPink,
 youTrackGreen,
 youTrackCyan,
 youTrackBlue,
@@ -23,6 +23,7 @@ const colorSchemesToRender = [
 	youTrackVibrant,
 	youTrackMuted,
 	youTrackDarkest,
+
 	youtrackRainbow,
 	youTrackGreen,
 	youTrackCyan,
@@ -30,9 +31,11 @@ const colorSchemesToRender = [
 	youTrackPink,
 	youTrackOrange,
 	youTrackBrown,
-	youTrackTrueRainbow
+
+	youTrackTrueRainbow,
+	youTrackGreenToPink
 ]
-console.log(youtrackRainbow)
+
 const colorScales = colorSchemesToRender.map(scheme => d3.scaleSequential(d3.interpolateRgbBasis(scheme)).domain([0, 100]))
 
 const ColorScheme = () => {
@@ -41,7 +44,7 @@ const ColorScheme = () => {
 	useEffect(() => {
 		// const svg = d3.select(svgRef.current);
 		// _setSVGRef(svg)
-		const svgColors = d3.select("svg.colors").attr("width", "1000").attr("height", "500")
+		const svgColors = d3.select("svg.colors").attr("width", "1000").attr("height", "600")
 			.attr("transform", "translate(10,10)")
 
 		const groups = svgColors.selectAll("g")

@@ -6,91 +6,91 @@
   --color-31-background: #4d4d4d;
   --color-35-background: #1a1a1a;
 
-  /* Column 2 */
+  /* Column green */
   --color-17-background: #e6f6cf;
   --color-14-background: #b7e281;
   --color-10-background: #7dbd36;
   --color-3-background: #409600;
   --color-32-background: #246512;
 
-  /* Column 3 */
+  /* Column cyan */
   --color-15-background: #d8f7f3;
   --color-24-background: #92e1d5;
   --color-28-background: #25beb2;
   --color-7-background: #2f9890;
   --color-33-background: #00665e;
 
-  /* Column 4 */
+  /* Column blue */
   --color-21-background: #e0f1fb;
   --color-25-background: #a6e0fc;
   --color-29-background: #42a3df;
   --color-4-background: #0070e4;
   --color-6-background: #0050a1;
 
-  /* Column 5 */
+  /* Column magenta */
   --color-22-background: #fce5f1;
   --color-19-background: #ffc8ea;
   --color-12-background: #ff7bc3;
   --color-9-background: #dc0083;
   --color-5-background: #900052;
 
-  /* Column 6 */
+  /* Column orange */
   --color-18-background: #ffee9c;
   --color-13-background: #fed74a;
   --color-11-background: #ff7123;
   --color-20-background: #e30000;
   --color-8-background: #8e1600;
 
-  /* Column 7 */
+  /* Column browns */
   --color-23-background: #f7e9c1;
   --color-26-background: #e0c378;
   --color-2-background: #ce6700;
   --color-1-background: #8d5100;
   --color-34-background: #553000;
 
-	  /* Column 1 */
+	  /* Column grey */
   --color-16-foreground: #888;
   --color-27-foreground: #444;
   --color-30-foreground: #fff;
   --color-31-foreground: #fff;
   --color-35-foreground: #fff;
 
-  /* Column 2 */
+  /* Column green */
   --color-17-foreground: #4da400;
   --color-14-foreground: #444;
   --color-10-foreground: #fff;
   --color-3-foreground: #fff;
   --color-32-foreground: #fff;
 
-  /* Column 3 */
+  /* Column cyan */
   --color-15-foreground: #45818e;
   --color-24-foreground: #444;
   --color-28-foreground: #fff;
   --color-7-foreground: #fff;
   --color-33-foreground: #fff;
 
-  /* Column 4 */
+  /* Column blue */
   --color-21-foreground: #3d85c6;
   --color-25-foreground: #444;
   --color-29-foreground: #fff;
   --color-4-foreground: #fff;
   --color-6-foreground: #fff;
 
-  /* Column 5 */
+  /* Column magenta */
   --color-22-foreground: #dc5766;
   --color-19-foreground: #444;
   --color-12-foreground: #fff;
   --color-9-foreground: #fff;
   --color-5-foreground: #fff;
 
-  /* Column 6 */
+  /* Column orange */
   --color-18-foreground: #b45f06;
   --color-13-foreground: #444;
   --color-11-foreground: #fff;
   --color-20-foreground: #fff;
   --color-8-foreground: #fff;
 
-  /* Column 7 */
+  /* Column brown */
   --color-23-foreground: #b45f06;
   --color-26-foreground: #444;
   --color-2-foreground: #fff;
