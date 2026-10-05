@@ -1,4 +1,4 @@
-import {useRef, useEffect, useState} from "react";
+import { useRef, useEffect } from "react";
 import * as d3 from "d3";
 import { configureGlobalControlsHeight } from "@jetbrains/ring-ui-built/components/global/controls-height.js";
 import type { IDataPoint } from "../../data/fakingData";
@@ -10,48 +10,63 @@ interface RadialChartData {
     height: number;
 }
 
-const RadialChart = ({ data, width, height }: RadialChartData) => {
-    const formatDateToYYYYMM = (date: Date) => `${date.getFullYear()}-Q${Math.floor(date.getMonth() / 3)+1}`
+const RadialChart = ({data, width, height}: RadialChartData) => {
 
-    const categories = d3.union(data.map(d => formatDateToYYYYMM(d.date)).sort())
+    const formatDateToYYYYMM = (date: Date) => `${date.toLocaleDateString([], { month: "short" })}`
 
-    const series = d3.union(data.map(d => d.author.login).sort())
+    const preppedData = data.map(d => {
+        return {
+            category: formatDateToYYYYMM(d.date),
+            author: d.author.login,
+            minutes: d.duration.minutes
+        }
+    })
 
-    const stackingFunction = (entries: dataPoint[]) => {
-      const date =  formatDateToYYYYMM(entries[0].date)
-      const totalMinutesByAuthor = d3.rollup(
-        entries,
-        D => d3.sum(D, d => d.duration.minutes),
-        d => d.author.login
-      )
 
-      // so order is established
-      const authors = d3.intersection(series, totalMinutesByAuthor.keys())
+    const categories = d3.sort(d3.union(preppedData.map(d => d.category)))
+    const series = d3.union(preppedData.map(d => d.author).sort())
 
-      let currentValue = 0
-      const stacked = Array.from(authors).map(author => {
-        const valueByAuthor = totalMinutesByAuthor.get(author)
-        const object = { date, author, value: valueByAuthor, start: currentValue, end: currentValue+valueByAuthor}
-        currentValue += valueByAuthor
-        return object
-      })
-      return stacked
+    const stackingFunction = (entries: { category: string, author: string, minutes: number}[]) => {
+        const category = entries[0].category
+        const totalMinutesByAuthor = d3.rollup(
+            entries,
+            D => d3.sum(D, d => d.minutes),
+            d => d.author
+        )
+
+        // so order is established
+        const authors = d3.intersection(series, totalMinutesByAuthor.keys())
+
+        let currentValue = 0
+
+        const stacked: dataPoint[] = Array.from(authors).map(author => {
+            const valueByAuthor = totalMinutesByAuthor.get(author) || 0
+            const object = {
+                category,
+                author,
+                value: Number(valueByAuthor) || 0,
+                start: Number(currentValue),
+                end: Number(currentValue + valueByAuthor)
+            }
+            currentValue += valueByAuthor
+            return object
+        })
+        return stacked
     }
 
-    const minutesPerQuarterAndPerson = d3.flatRollup(data,
-      D => stackingFunction(D),
-      d => formatDateToYYYYMM(d.date)
+    const stackedValuesByCategoryAndPerson = d3.flatRollup(preppedData,
+        D => stackingFunction(D),
+        d => d.category
     )
 
-    const flattened = d3.map(minutesPerQuarterAndPerson, d => d[1]).flat()
+    const flattened = d3.map(stackedValuesByCategoryAndPerson, d => d[1]).flat()
 
     const byPerson = d3.index(
-      flattened,
-      d => d.author,
-      d => d.date)
+        flattened,
+        d => d.author,
+        d => d.category
+    )
 
-    // const testStacking=stackyStack(); // group by stack then series key
-    // console.log(testStacking)
     const svgRef = useRef<SVGSVGElement>(null);
     const margin = {
         left: 25,
@@ -61,99 +76,103 @@ const RadialChart = ({ data, width, height }: RadialChartData) => {
     };
 
 
-    const canvasWidth = width - margin.left - margin.right;
-    const canvasHeight = height - margin.top - margin.bottom;
+    const canvasWidth: number = width - margin.left - margin.right;
+    const canvasHeight: number = height - margin.top - margin.bottom;
 
     // const innerRadius = 180
-    const innerRadius = canvasWidth * 0.333;
-    const outerRadius = Math.min(canvasWidth, canvasHeight) / 2;
+    const innerRadius: number = canvasWidth * 0.2;
+    const outerRadius: number = Math.min(canvasWidth, canvasHeight) / 2;
 
     useEffect(() => {
         const svg = d3.select(svgRef.current);
+        const canvas = svg.select("g.canvas");
+        canvas.selectChildren().remove()
+
+        svg.select(".axes g.x").selectChildren().remove()
+        svg.select(".axes g.y").selectChildren().remove()
 
         const xScale = d3
             .scaleBand()
-            .domain(categories.values())
+            .domain(categories)
             .range([0, 2 * Math.PI])
             .align(0);
 
+        const maxY = Number(d3.max(flattened.map(d => d.end)))
         const yScale = d3
             .scaleRadial()
-            .domain([0, 100])
+            .domain([0, maxY])
             .range([innerRadius, outerRadius]);
 
+        const arc = d3.arc<dataPoint>()
+            .innerRadius(d => yScale(d.start))
+            .outerRadius(d => yScale(d.end))
+            .startAngle(d => Number(xScale(d.category)))
+            .endAngle(d => Number(xScale(d.category)) + xScale.bandwidth())
+            .padAngle(1.5 / innerRadius)
+            .padRadius(innerRadius);
 
-        const arc = d3.arc<{ author: string, start: number, end: number }>()
-              .innerRadius(d => yScale(d.start))
-              .outerRadius(d => yScale(d.end))
-              .startAngle(d => xScale(d.date))
-              .endAngle(d => xScale(d.date) + xScale.bandwidth())
-              .padAngle(1.5 / innerRadius)
-              .padRadius(innerRadius);
+        const colorScale = d3.scaleOrdinal<string, string>()
+            .domain(Array.from(series))
+            .range(Array.from(series).map((_, i) =>
+                d3.interpolateRdYlBu(i / (series.size - 1))
+            ))
+            .unknown("pink");
 
+        // svg.select(".axes g.y").append("g").attr("class", "x").call(d3.axisLeft(yScale));
 
-        const testDataPoint = { date: "2025-Q1", start: 2, end: 100 }
-      console.log(arc({ start: 2, end: 100, author: "quinn" }))
-
-        const color = d3.scaleOrdinal()
-          .domain(series)
-          .range(Array.from(series).map((_, i) =>
-            d3.interpolateBrBG(i / (series.size - 1))
-        ));
-
-        const canvas = svg.select("g.canvas");
-
-
-        // canvas
-        //     .selectAll<SVGRectElement, dataPoint>("rect")
-        //     .data(data)
-        //     .join("rect")
-        //     .attr("x", d => xScale(d.x))
-        //     .attr("y", d => yScale(d.y))
-        //     .attr("width", 2)
-        //     .attr("height", 2);
-
-         // x axis
-        svg.select("g.axes").append("g")
+        // x axis
+        svg.select("g.axes g.x")
             .attr("text-anchor", "middle")
-          .selectAll()
-          .data(xScale.domain())
-          .join("g")
             .attr("class", "x")
+            .selectAll()
+            .data(categories)
+            .join(
+                enter => enter.append("g"),
+                update => update.attr("fill", "gray"),
+                exit => exit.remove()
+            )
             .attr("transform", d => `
-              rotate(${((xScale(d) + xScale.bandwidth() / 2) * 180 / Math.PI - 90)})
+              rotate(${((Number(xScale(d)) + xScale.bandwidth() / 2) * 180 / Math.PI - 90)})
               translate(${innerRadius},0)
             `)
             .call(g => g.append("line")
                 .attr("x2", -5)
                 .attr("stroke", "#000"))
             .call(g => g.append("text")
-                .attr("transform", d => (xScale(d) + xScale.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
+                .attr("class", "label")
+                .attr("transform", d => (Number(xScale(d)) + xScale.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
                     ? "rotate(90)translate(0,16)"
                     : "rotate(-90)translate(0,-9)")
                 .text(d => d));
 
         // A group for each series, and a rect for each element in the series
 
-        svg
-          .select("g.canvas")
-          .selectAll("g.series")
-          .data(byPerson.keys())
-          .join("g")
-            .attr("fill", d => color(String(d)))
-          .selectAll("path")
-          .data(person => byPerson.get(person).keys())
-          .join("path")
-            .attr("timeslot", key => key)
-            // .attr("d", datapoint => console.log(datapoint))
-          // .append("title")
-          //   .text(d => `${d.data[0]} ${d.key}\n${formatValue(d.data[1].get(d.key).population)}`);
+        const seriesGroups = svg
+            .select("g.canvas")
+            .selectAll("g.series")
+            .data(byPerson.keys())
+            .join(
+                enter => enter.append("g"),
+                update => update.attr("class", "updated"),
+                exit => exit.remove()
+            )
+            .attr("fill", d => colorScale(d))
+            .attr("id", d => d)
 
-        svg.select(".axes g.x").selectChildren().remove()
-        // svg.select(".axes g.x").append("g").attr("class", "x").call(d3.axisBottom(xScale));
+        seriesGroups.selectAll("path")
+            .data((d: string): InternMap<string, dataPoint> | [] => {
+                const personDatapoints = byPerson.get(d)
 
-        svg.select(".axes g.y").selectChildren().remove()
-        svg.select(".axes g.y").append("g").attr("class", "x").call(d3.axisLeft(yScale));
+                if (!personDatapoints) {
+                    return [];
+                }
+
+                return personDatapoints;
+            })
+            .join("path")
+            .attr("timeslot", datapoint => datapoint[0])
+            .attr("d", datapoint => arc(datapoint[1]))
+
 
     }, [data, width, height]);
 
@@ -165,7 +184,7 @@ const RadialChart = ({ data, width, height }: RadialChartData) => {
         >
             <g
                 className="canvas"
-                transform={`translate(${margin.left}, ${margin.top})`}
+                transform={`translate(${margin.left + canvasWidth / 2}, ${margin.top + canvasHeight / 2})`}
             >
 
             </g>

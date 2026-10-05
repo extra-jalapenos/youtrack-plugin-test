@@ -1,4 +1,4 @@
-import { type dataPoint } from "../components/RadialChart/RadialChart";
+import { type dataPointRaw } from "../components/RadialChart/RadialChart";
 
 const firstNames = [
   "alex",

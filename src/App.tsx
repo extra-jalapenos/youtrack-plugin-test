@@ -1,37 +1,29 @@
 // You need to import RingUI styles once
 import '@jetbrains/ring-ui-built/components/style.css';
-import RadialChart, {type dataPoint} from "./components/RadialChart/RadialChart.tsx";
-import {useState} from "react";
+import RadialChart, {type dataPointRaw} from "./components/RadialChart/RadialChart.tsx";
+import {useEffect, useState} from "react";
+import "./App.css"
 import DataPoint from './data/fakingData.ts';
+import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
+import Button from "@jetbrains/ring-ui-built/components/button/button";
 
 const regenerateArray = () => {
     return Array(100).fill(0).map(_ => new DataPoint());
 }
-regenerateArray()
 
 function App() {
-    const [height, setHeight] = useState(100);
-    const [data, setData] = useState<Array<dataPoint>>([]);
-    const changeRandomNumber = () => {
-        setHeight(Math.random() * 399);
-    }
+    const [height, _setHeight] = useState(document.documentElement.clientHeight);
+    const [width, _setWidth] = useState(document.documentElement.clientWidth);
+    const [data, _setData] = useState<Array<dataPointRaw>>(regenerateArray());
 
-    const changeData = () => {
-        const newData = regenerateArray();
-        console.log(newData[0]);
-        setData(newData);
-    }
-
+    useEffect(() => {
+        console.log("init")
+    }, []);
   return (
-    // <App/>
     <>
-        <header>
-            <h1>My React App</h1>
-        </header>
-        <main>
-            <RadialChart data={data} width={500} height={500} />
-            <button onClick={changeData}>Regenerate Array</button>
-        </main>
+        <Heading>Test</Heading>
+        <RadialChart data={data} width={width} height={height} />
+        <Button onClick={() => _setData(regenerateArray())}>Regenerate Array</Button>
     </>
   )
 }
