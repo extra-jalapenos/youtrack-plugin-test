@@ -1,28 +1,6 @@
 html,
 body {
-  margin: 0;
-  background-color: var(--ring-content-background-color);
-}
-
-.App {
-  padding: calc(2 * var(--ring-unit));
-  display: flex;
-  flex-direction: column;
-  font-family: var(--ring-font-family);
-  font-size: var(--ring-font-size);
-  background-color: var(--ring-content-background-color);
-  color: var(--ring-text-color);
-  min-height: 100vh;
-}
-
-text {
-  fill: var(--ring-text-color);
-  font-family: var(--ring-font-family);
-  font-size: var(--ring-font-size);
-}
-
-g.axes {
-  fill: none;
+  --ring-font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, sans-serif; --article-sidebar-width: 399px;
 }
 
 .label {
@@ -44,6 +22,18 @@ path {
 
 .component {
   margin: var(--ring-unit);
+}
+
+g.axes circle {
+  fill: none;
+}
+
+g.axes path {
+  stroke: var(--ring-text-color);
+}
+
+g.axes text {
+  fill: var(--ring-text-color);
 }
 
 .popup {

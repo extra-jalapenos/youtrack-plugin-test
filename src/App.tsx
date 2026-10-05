@@ -3,8 +3,6 @@ import '@jetbrains/ring-ui-built/components/style.css';
 import {useEffect, useState} from "react";
 import "./App.css"
 import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
-
-import AnimatedCircles from './components/RadialChart/LinePlot.tsx';
 import RadialChart from './components/RadialChart/RadialChart.tsx';
 
 function App() {
