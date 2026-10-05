@@ -6,6 +6,7 @@ import "./App.css"
 import DataPoint from './data/fakingData.ts';
 import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
+import ButtonGroup from '@jetbrains/ring-ui-built/components/button-group/button-group.js';
 
 const regenerateArray = () => {
     return Array(100).fill(0).map(_ => new DataPoint());
@@ -22,8 +23,11 @@ function App() {
   return (
     <>
         <Heading>Test</Heading>
-        <RadialChart data={data} width={width} height={height} />
-        <Button onClick={() => _setData(regenerateArray())}>Regenerate Array</Button>
+        {/* <RadialChart data={data} width={width} height={height} /> */}
+        <ButtonGroup>
+            <Button onClick={() => _setData(regenerateArray())}>Regenerate Array</Button>
+            <Button active >Another button</Button>
+        </ButtonGroup>
     </>
   )
 }
