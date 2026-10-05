@@ -21,7 +21,7 @@ const regenerateArray = (): DataPoint[] => {
 const RadialChart = ({from, to, width, height}: RadialChartData) => {
     const [data, _setData] = useState(regenerateArray())
     const [showEmptySlots, setShowEmptySlots] = useState<"all"|"within filled slots"|"no">("all")
-    const [granularity, _setGranularity] = useState<"day"|"week"|"month"|"year">("week")
+    const [granularity, _setGranularity] = useState<"day"|"week"|"month"|"year">("month")
 
     const granularityOptions = [
         {
@@ -46,7 +46,7 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             "key": "month",
             "label": "month",
             "formattingStringCategories": "%Y-%B",
-            "formattingStringTicks": "%B"
+            "formattingStringTicks": "%b"
         },
         {
             "key": "year",
@@ -61,8 +61,7 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
     const categoryFormattingFunction = d3.timeFormat(granularityOptionsMap.get(granularity).formattingStringCategories)
 
     const tickFormattionFunction = d3.timeFormat(granularityOptionsMap.get(granularity).formattingStringTicks)
-    const xCategories = d3.union(allDays.map(date => categoryFormattingFunction(date)))
-    const xTicks = d3.union(allDays.map(date => tickFormattionFunction(date)))
+    const xCategories = d3.union(allDays.map(date => ({ category: categoryFormattingFunction(date), tickLabel: tickFormattionFunction(date) })))
 
     const preppedData = data.map(d => {
         const customFields = d.issue.customFields
@@ -113,7 +112,7 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
 
     const flattened = d3.map(stackedValuesByCategoryAndSeries, d => d[1]).flat()
 
-    const byPerson = d3.index(
+    const bySeries = d3.index(
         flattened,
         d => d.series,
         d => d.category
@@ -145,7 +144,7 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
 
         const xScale = d3
             .scaleBand()
-            .domain(categories)
+            .domain(d3.map(xCategories, d => d.category))
             .range([0, 2 * Math.PI])
             .align(0);
 
@@ -177,14 +176,14 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             .attr("text-anchor", "middle")
             .attr("class", "x")
             .selectAll()
-            .data(categories)
+            .data(xCategories)
             .join(
                 enter => enter.append("g"),
                 update => update.attr("fill", "gray"),
                 exit => exit.remove()
             )
             .attr("transform", d => `
-              rotate(${((Number(xScale(d)) + xScale.bandwidth() / 2) * 180 / Math.PI - 90)})
+              rotate(${((Number(xScale(d.category)) + xScale.bandwidth() / 2) * 180 / Math.PI - 90)})
               translate(${innerRadius},0)
             `)
             .call(g => g.append("line")
@@ -192,17 +191,17 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
                 .attr("stroke", "#000"))
             .call(g => g.append("text")
                 .attr("class", "label")
-                .attr("transform", d => (Number(xScale(d)) + xScale.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
+                .attr("transform", d => (Number(xScale(d.category)) + xScale.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
                     ? "rotate(90)translate(0,16)"
                     : "rotate(-90)translate(0,-9)")
-                .text(d => d));
+                .text(d => d.tickLabel));
 
         // A group for each series, and a rect for each element in the series
 
         const seriesGroups = svg
             .select("g.canvas")
             .selectAll("g.series")
-            .data(byPerson.keys())
+            .data(bySeries.keys())
             .join(
                 enter => enter.append("g"),
                 update => update.attr("class", "updated"),
@@ -212,14 +211,14 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             .attr("id", d => d)
 
         seriesGroups.selectAll("path")
-            .data((d: string): InternMap<string, dataPoint> | [] => {
-                const personDatapoints = byPerson.get(d)
+            .data((d: string): d3.InternMap<string, DataPoint> | [] => {
+                const seriesDatapoints = bySeries.get(d)
 
-                if (!personDatapoints) {
+                if (!seriesDatapoints) {
                     return [];
                 }
 
-                return personDatapoints;
+                return seriesDatapoints;
             })
             .join("path")
             .attr("timeslot", datapoint => datapoint[0])
