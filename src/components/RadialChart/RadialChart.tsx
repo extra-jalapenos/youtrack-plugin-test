@@ -4,6 +4,7 @@ import { configureGlobalControlsHeight } from "@jetbrains/ring-ui-built/componen
 import type { IDataPoint } from "../../data/fakingData";
 import DataPoint from "../../data/fakingData";
 import Select from "@jetbrains/ring-ui-built/components/select/select.js";
+import Button from "@jetbrains/ring-ui-built/components/button/button.js";
 
 
 interface RadialChartData {
@@ -14,14 +15,21 @@ interface RadialChartData {
 }
 
 
-const regenerateArray = (): DataPoint[] => {
-    return Array(100).fill(0).map(_ => new DataPoint());
+const regenerateArray = (dayOptions): DataPoint[] => {
+    return Array(100).fill(0).map(_ => new DataPoint(dayOptions));
 }
 
 const RadialChart = ({from, to, width, height}: RadialChartData) => {
-    const [data, _setData] = useState(regenerateArray())
+    const allDays = d3.timeDays(from, to, 1)
+    const [rawdata, _setRawData] = useState(regenerateArray(allDays))
+
+    const fuckwithData = () => {
+        const mod = rawdata.map(item => ({ ...item, minutes: Math.random() * 10 }))
+        _setRawData(mod)
+    }
+    const [renderedData, setRenderedData] = useState(rawdata)
     const [showEmptySlots, setShowEmptySlots] = useState<"all"|"within filled slots"|"no">("all")
-    const [granularity, _setGranularity] = useState<"day"|"week"|"month"|"year">("month")
+    const [granularity, _setGranularity] = useState<"day"|"weekday"|"week"|"month"|"year">("week")
 
     const granularityOptions = [
         {
@@ -39,13 +47,13 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
         {
             "key": "week",
             "label": "week",
-            "formattingStringCategories": "%Y-%V",
+            "formattingStringCategories": "%V",
             "formattingStringTicks": "%V"
         },
         {
             "key": "month",
             "label": "month",
-            "formattingStringCategories": "%Y-%B",
+            "formattingStringCategories": "%Y-%b",
             "formattingStringTicks": "%y-%b"
         },
         {
@@ -57,17 +65,19 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
     ]
 
     const granularityOptionsMap = new Map(granularityOptions.map(option => [option.key, option]))
-    const allDays = d3.timeDays(from, to, 1)
+
     const categoryFormattingFunction = d3.timeFormat(granularityOptionsMap.get(granularity).formattingStringCategories)
 
     const tickFormattionFunction = d3.timeFormat(granularityOptionsMap.get(granularity).formattingStringTicks)
-    const categories = d3.union(allDays.map(date => ({ category: categoryFormattingFunction(date), tickLabel: tickFormattionFunction(date) })))
 
-    const preppedData = data.map(d => {
+    const categories = d3.union(allDays.map((date: Date) => categoryFormattingFunction(date)))
+
+    const preppedData = rawdata.map(d => {
         const customFields = d.issue.customFields
         const location = customFields.find(cf => cf.name === "location")
+
         return {
-            category: categoryFormattingFunction(new Date(d.date)),
+            category: categoryFormattingFunction(new Date(d.date)) || "no category",
             series: location.value.name ? location.value.name : "no location",
             minutes: d.duration.minutes
         }
@@ -90,15 +100,15 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
         let currentValue = 0
 
         const stacked = Array.from(presentSeries).map(serie => {
-            const valueByAuthor = totalMinutesBySeries.get(serie) || 0
+            const valueBySeries = totalMinutesBySeries.get(serie) || 0
             const object = {
                 category,
                 series: serie,
-                value: Number(valueByAuthor) || 0,
+                value: Number(valueBySeries) || 0,
                 start: Number(currentValue),
-                end: Number(currentValue + valueByAuthor)
+                end: Number(currentValue + valueBySeries)
             }
-            currentValue += valueByAuthor
+            currentValue += valueBySeries
             return object
         })
         return stacked
@@ -143,16 +153,24 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
 
         const xScale = d3
             .scaleBand()
-            .domain(d3.map(categories, d => d.category))
+            .domain(categories)
             .range([0, 2 * Math.PI])
             .align(0);
 
         const maxY = Number(d3.max(flattened.map(d => d.end)))
 
         const yScale = d3
-            .scaleRadial()
+            .scaleLinear()
             .domain([0, maxY])
             .range([innerRadius, outerRadius]);
+
+        const ticks = yScale.ticks(5)
+
+        svg.select("g.axes").select("g.y")
+            .selectAll("circle")
+            .data(ticks)
+            .join("circle")
+            .attr("r", d => yScale(d))
 
         const arc = d3.arc<{ category: string, start: number, end: number }>()
             .innerRadius(d => yScale(d.start))
@@ -183,17 +201,17 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
                 exit => exit.remove()
             )
             .attr("transform", d => `
-              rotate(${((Number(xScale(d.category)) + xScale.bandwidth() / 2) * 180 / Math.PI - 90)})
+              rotate(${((xScale(d) + xScale.bandwidth() / 2) * 180 / Math.PI - 90)})
               translate(${innerRadius},0)
             `)
             .call(g => g.append("line")
                 .attr("x2", -5))
             .call(g => g.append("text")
                 .attr("class", "label")
-                .attr("transform", d => (Number(xScale(d.category)) + xScale.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
+                .attr("transform", d => (xScale(d) + xScale.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
                     ? "rotate(90)translate(0,16)"
                     : "rotate(-90)translate(0,-9)")
-                .text(d => d.tickLabel));
+                .text(d => d));
 
         // A group for each series, and a rect for each element in the series
 
@@ -215,8 +233,6 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
                     return [];
                 }
 
-                console.log(bySeries.get(d))
-
                 return bySeries.get(d);
             })
             .join("path")
@@ -224,7 +240,7 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             .attr("d", (d: { category: string, start: number, end: number }) => arc(d[1]))
 
 
-    }, [data, width, height]);
+    }, [rawdata, width, height]);
 
 
     return (
@@ -245,17 +261,20 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
             </Select>
         </div>
       </div>
+      <div className="ring-form__group">
+        <div className="ring-form__label">
+            Uhhh
+        </div>
+        <div className="ring-form__control">
+            <Button onClick={() => fuckwithData()}>Filter Data</Button>
+        </div>
+      </div>
       </div>
         <svg
             ref={svgRef}
             viewBox={`0 0 ${width} ${height}`}
         >
-            <g
-                className="canvas"
-                transform={`translate(${margin.left + canvasWidth / 2}, ${margin.top + canvasHeight / 2})`}
-            >
 
-            </g>
             <g
                 className="axes"
                 transform={`translate(${margin.left + canvasWidth / 2}, ${margin.top + canvasHeight / 2})`}
@@ -270,6 +289,12 @@ const RadialChart = ({from, to, width, height}: RadialChartData) => {
                 >
 
                 </g>
+            </g>
+            <g
+                className="canvas"
+                transform={`translate(${margin.left + canvasWidth / 2}, ${margin.top + canvasHeight / 2})`}
+            >
+
             </g>
         </svg>
       </>

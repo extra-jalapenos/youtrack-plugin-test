@@ -21,15 +21,6 @@ function randomInteger(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function randomDateWithinPastThreeYears(): Date {
-  const now = Date.now();
-  const threeYearsAgo = new Date();
-  threeYearsAgo.setFullYear(threeYearsAgo.getFullYear() - 3);
-
-  const timestamp = randomInteger(threeYearsAgo.getTime(), now);
-  return new Date(timestamp);
-}
-
 export type CustomField = {
 	name: string;
 	value: {
@@ -54,7 +45,7 @@ class DataPoint {
 		}[]
 	}
 
-	constructor() {
+	constructor(dateOptions: Date[]) {
 		this.duration = {
 			minutes: randomInteger(1, 90),
 		};
@@ -63,7 +54,7 @@ class DataPoint {
 			login: getRandomItemFromArray(firstNames)
 		};
 
-		this.date = randomDateWithinPastThreeYears().getTime();
+		this.date = getRandomItemFromArray(dateOptions).getTime();
 		this.issue = {
 			customFields: [
 				{
