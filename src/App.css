@@ -30,6 +30,10 @@ g.axes {
   stroke: none;
 }
 
+.swatch {
+  stroke: none;
+}
+
 line, circle, rect {
   stroke: var(--ring-text-color);
 }

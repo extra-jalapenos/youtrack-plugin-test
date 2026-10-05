@@ -6,6 +6,7 @@ import "./App.css"
 import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
 import Button from "@jetbrains/ring-ui-built/components/button/button";
 import ButtonGroup from '@jetbrains/ring-ui-built/components/button-group/button-group.js';
+import ColorScheme from './components/RadialChart/ColorScheme.tsx';
 
 function App() {
     const [height, _setHeight] = useState(document.documentElement.clientHeight);
@@ -17,7 +18,8 @@ function App() {
   return (
     <>
         <Heading>Test</Heading>
-        <RadialChart from={new Date(new Date().getTime() - 48*7 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height} />
+        <ColorScheme />
+        {/* <RadialChart from={new Date(new Date().getTime() - 48*7 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height} /> */}
     </>
   )
 }
