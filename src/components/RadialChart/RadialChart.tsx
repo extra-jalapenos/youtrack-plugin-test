@@ -1,18 +1,64 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
 import { configureGlobalControlsHeight } from "@jetbrains/ring-ui-built/components/global/controls-height.js";
 import type { IDataPoint } from "../../data/fakingData";
+import DataPoint from "../../data/fakingData";
+import Select from "@jetbrains/ring-ui-built/components/select/select.js";
 
 
 interface RadialChartData {
-    data: IDataPoint[];
+    from: Date;
+    to: Date;
     width: number;
     height: number;
 }
 
-const RadialChart = ({data, width, height}: RadialChartData) => {
 
-    const formatDateToYYYYMM = (date: Date) => `${date.toLocaleDateString([], { month: "short" })}`
+const regenerateArray = (): DataPoint[] => {
+    return Array(100).fill(0).map(_ => new DataPoint());
+}
+
+const RadialChart = ({from, to, width, height}: RadialChartData) => {
+    const [data, _setData] = useState(regenerateArray())
+    const [showEmptySlots, setShowEmptySlots] = useState<"all"|"within filled slots"|"no">("all")
+    const [granularity, _setGranularity] = useState<"day"|"week"|"month"|"year">("week")
+
+    const granularityOptions = [
+        {
+            "key": "day",
+            "label": "day",
+            "formattingStringCategories": "%Y-%m-%d",
+            "formattingStringTicks": "%A"
+        },
+        {
+            "key": "weekday",
+            "label": "weekday",
+            "formattingStringCategories": "%A",
+            "formattingStringTicks": "%A"
+        },
+        {
+            "key": "week",
+            "label": "week",
+            "formattingStringCategories": "%Y-%V",
+            "formattingStringTicks": "%V"
+        },
+        {
+            "key": "month",
+            "label": "month",
+            "formattingStringCategories": "%Y-%B",
+            "formattingStringTicks": "%B"
+        },
+        {
+            "key": "year",
+            "label": "year",
+            "formattingStringCategories": "%Y",
+            "formattingStringTicks": "%Y"
+        }
+    ]
+    const allDays = d3.timeDays(from, to, 1)
+
+    console.log(allDays)
+    const formatDateToYYYYMM = (date: Date) => `${new Date(date).toLocaleDateString([], { month: "short" })}`
 
     const preppedData = data.map(d => {
         return {
@@ -178,6 +224,24 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
 
 
     return (
+      <>
+      <div className="ring-form">
+      <div className="ring-form__group">
+        <div className="ring-form__label">
+            Show empty categories
+        </div>
+        <div className="ring-form__control">
+            <Select
+            className="component"
+            data={["all","within frame","no"].map((item, i) => {
+                return { key: i, label: item }
+            })}
+            onSelect={(e) => console.log(e.label)}
+            >
+            </Select>
+        </div>
+      </div>
+      </div>
         <svg
             ref={svgRef}
             viewBox={`0 0 ${width} ${height}`}
@@ -204,6 +268,7 @@ const RadialChart = ({data, width, height}: RadialChartData) => {
                 </g>
             </g>
         </svg>
+      </>
     )
 }
 

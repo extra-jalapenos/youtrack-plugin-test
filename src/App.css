@@ -15,6 +15,20 @@ body {
   min-height: 100vh;
 }
 
+text {
+  fill: var(--ring-text-color);
+  font-family: var(--ring-font-family);
+  font-size: var(--ring-font-size);
+}
+
+line {
+  stroke: var(--ring-text-color);
+}
+
+path {
+  fill: var(--ring);
+}
+
 .component {
   margin: var(--ring-unit);
 }
