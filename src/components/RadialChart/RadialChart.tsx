@@ -1,19 +1,11 @@
 import {useRef, useEffect, useState} from "react";
 import * as d3 from "d3";
 import { configureGlobalControlsHeight } from "@jetbrains/ring-ui-built/components/global/controls-height.js";
+import type { IDataPoint } from "../../data/fakingData";
 
-export type dataPoint = {
-    duration: {
-      minutes: number
-    };
-    author: {
-      login: string;
-    };
-    date: Date
-}
 
 interface RadialChartData {
-    data: dataPoint[];
+    data: IDataPoint[];
     width: number;
     height: number;
 }
