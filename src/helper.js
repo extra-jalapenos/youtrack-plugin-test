@@ -1,3 +1,14 @@
+export const getWeekdayNames = (localeString = []) => Array(7)
+  .fill(0)
+  .map((_, i) => {
+    const today = new Date();
+    const newDate =  new Date(today.getFullYear(), today.getMonth(), i)
+    return newDate
+}).sort((a, b) => {
+  const [indexA, indexB] = [a.getDay() || 7, b.getDay() || 7]
+  return indexA - indexB
+}).map(d => d.toLocaleDateString(localeString, { weekday: "short" }))
+
 export const monthNames = (localeString) => Array.from({ length: 12 }, (_, i) =>
   new Date(2000, i, 1).toLocaleDateString(localeString, {
     month: "long"
@@ -44,7 +55,7 @@ export const getISOWeek = (date) => {
   };
 };
 
-export const distributionDifference = (leftWeight, rightWeight) => {
+export const distributionDifference = ([leftWeight, rightWeight]) => {
   if (
     !Number.isFinite(leftWeight) ||
     !Number.isFinite(rightWeight) ||
@@ -71,8 +82,17 @@ export const giniIndex = (values) => {
     throw new Error("values must contain only finite numbers");
   }
 
+  if (values.every(value => value === 0)) {
+    return 0
+  }
+
   if (values.some(value => value < 0)) {
     throw new Error("Gini index requires non-negative values");
+  }
+
+  if (values.some(value => value === 0)) {
+    const nonNullPosition = values.findIndex(value => value > 0)
+    return [-1, 1][nonNullPosition]
   }
 
   const sorted = [...values].sort((a, b) => a - b);

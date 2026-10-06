@@ -19,7 +19,7 @@ function App() {
     <>
         <Heading>Test</Heading>
 
-        <TilePlot from={new Date(new Date().getTime() - 8 * 7 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height}/>
+        <TilePlot from={new Date(new Date().getTime() - 30 * 7 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height}/>
         {/*<RadialChart from={new Date(new Date().getTime() - 8 * 7 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height} />*/}
     </>
   )

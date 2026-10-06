@@ -1,7 +1,5 @@
 const firstNames = [
   "alex",
-  "jordan",
-	"taylor",
 	"quinn"
 ];
 

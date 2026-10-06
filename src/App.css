@@ -32,6 +32,10 @@ g.axes path {
   stroke: var(--ring-text-color);
 }
 
+canvas rect {
+  stroke: var(--ring-text-color);
+}
+
 text {
   fill: var(--ring-text-color);
   font-size: var(--ring-font-size);
