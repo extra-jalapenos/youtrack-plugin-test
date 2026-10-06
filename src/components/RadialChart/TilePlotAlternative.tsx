@@ -106,7 +106,6 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
     const render = () => {
         if (renderedData === null)
             return
-        console.log("rendering data")
 
         const svg = d3.select(svgRef.current);
         const canvas = svg.select("g.canvas");
@@ -171,7 +170,6 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
         seriesGroups.selectAll("rect")
             .data(d => renderedData.get(d)) // rows
             .join(enter => enter.append("rect"))
-            .attr("id", d => console.log(d))
             .attr("transform", d => `translate(0, ${yScale(d[0])})`)
             .attr("x", 0)
             .attr("y", 0)
