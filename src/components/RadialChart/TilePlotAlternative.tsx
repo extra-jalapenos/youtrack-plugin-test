@@ -43,6 +43,8 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
     const showPerson = (person: string) => setShowPeople([ ...showPeople, person ])
     const hidePerson = (person: string) =>setShowPeople([...showPeople.filter(d => d !== person)])
 
+    type Mode = "combined" | "comparison" | "individual"
+    const [mode, setMode] = useState<Mode>("combined");
     // process data
     const [renderedData, setRenderedData] = useState(null)
 
@@ -198,44 +200,44 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
 
     return (
         <>
-            <div className="ring-form">
-                <div className="ring-form__group">
-                    <div className="ring-form__label">
-                        Show empty categories
-                    </div>
-                    <div className="ring-form__control">
-                        <ButtonGroup>
-                            {Array.from(allPeople).map(person => {
-                                return (
-                                    <Button
-                                        onClick={() => {
-                                            if (showPeople.includes(person)) {
-                                                hidePerson(person)
-                                            } else {
-                                                showPerson(person)
-                                            }
-                                        }}
-                                        className="component"
-                                        key={person}
-                                        active={showPeople.includes(person)}
-                                        onSelect={(e) => console.log(e)}
-                                    >
-                                        {person}
-                                    </Button>
-                                )
-                            })}
-                        </ButtonGroup>
-                    </div>
-                </div>
-                <div className="ring-form__group">
-                    <div className="ring-form__label">
-                        Uhhh
-                    </div>
-                    <div className="ring-form__control">
-                        <Button onClick={() => fuckwithData()}>Shuffle Shuffle</Button>
-                    </div>
-                </div>
-            </div>
+            <ButtonToolbar>
+
+                <ButtonGroup>
+                    {["combined", "individual"].map(mode => {
+                        return (
+                            <Button
+                                key={mode}
+                                onClick={() => setMode(mode)}
+                            >
+                                {mode}
+                            </Button>
+                        )
+                    })}
+                </ButtonGroup>
+                <ButtonGroup>
+                    {Array.from(allPeople)
+                        .map(person => {
+                            return (
+                                <Button
+                                    onClick={() => {
+                                        if (showPeople.includes(person)) {
+                                            hidePerson(person)
+                                        } else {
+                                            showPerson(person)
+                                        }
+                                    }}
+                                    key={person}
+                                    active={showPeople.includes(person)}
+                                    onSelect={(e) => console.log(e)}
+                                >
+                                    {person}
+                                </Button>
+                            )
+                        })
+                    }
+                </ButtonGroup>
+            </ButtonToolbar>
+
             <svg
                 ref={svgRef}
                 viewBox={`0 0 ${width} ${height}`}
