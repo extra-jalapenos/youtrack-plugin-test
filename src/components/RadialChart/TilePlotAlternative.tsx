@@ -6,6 +6,8 @@ import DataPoint from "../../data/fakingData";
 import Select from "@jetbrains/ring-ui-built/components/select/select.js";
 import Button from "@jetbrains/ring-ui-built/components/button/button.js";
 import { giniIndex, distributionDifference, getWeekdayNames } from "../../helper.js";
+import ButtonGroup from "@jetbrains/ring-ui-built/components/button-group/button-group";
+import ButtonToolbar from "@jetbrains/ring-ui-built/components/button-toolbar/button-toolbar";
 
 interface RadialChartData {
     from: Date;
@@ -29,17 +31,25 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
     // store all sets
     const [rawData, _setRawData] = useState(regenerateArray(allDays))
 
-    // filtering
+    // filtering for e.g. ranges
     const filtered = rawData.filter(d => d)
+
     const [filteredData, setFilteredData] = useState(filtered)
     const allPeople = d3.union(filteredData.map(d => d.author.login).sort())
     let maxY = 100
+
+    const [showPeople, setShowPeople] = useState(Array.from(allPeople))
+
+    const showPerson = (person: string) => setShowPeople([ ...showPeople, person ])
+    const hidePerson = (person: string) =>setShowPeople([...showPeople.filter(d => d !== person)])
+
     // process data
     const [renderedData, setRenderedData] = useState(null)
 
     const processDataForRendering = () => {
         // extract the most needed points & name them appropriately
         const preppedData: { series: string, column: string, minutes: number, row: number }[] = filteredData
+            .filter(d => showPeople.includes(d.author.login) )
             .map(d => {
                 return (
                     {
@@ -90,7 +100,7 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
         setRenderedData(summedValuesBySeriesAndCategory);
     }
 
-    useEffect(processDataForRendering, [filteredData])
+    useEffect(processDataForRendering, [filteredData, showPeople])
 
     const svgRef = useRef<SVGSVGElement>(null);
     const margin = {
@@ -150,7 +160,7 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
         //     .unknown("grey");
 
         const colorScaleGini = d3.scaleLinear([0, 0.5, 1], ["#FF0036", "#CC00FF", "#219BFF"])
-        const colorScaleDistribution = d3.scaleLinear([0, 0.5, 1], ["#FF0036", "#CC00FF", "#219BFF"]).unknown("pink")
+        const colorScaleDistribution = d3.scaleLinear([0, 0.5, 1], ["#FF0036", "#ff00fa", "#0044f3"]).unknown("pink")
         // svg.select(".axes g.y").append("g").attr("class", "x").call(d3.axisLeft(yScale));
 
         // A group for each series, and a rect for each element in the series
@@ -194,14 +204,27 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
                         Show empty categories
                     </div>
                     <div className="ring-form__control">
-                        <Select
-                            className="component"
-                            data={["all","within frame","no"].map((item, i) => {
-                                return { key: i, label: item }
+                        <ButtonGroup>
+                            {Array.from(allPeople).map(person => {
+                                return (
+                                    <Button
+                                        onClick={() => {
+                                            if (showPeople.includes(person)) {
+                                                hidePerson(person)
+                                            } else {
+                                                showPerson(person)
+                                            }
+                                        }}
+                                        className="component"
+                                        key={person}
+                                        active={showPeople.includes(person)}
+                                        onSelect={(e) => console.log(e)}
+                                    >
+                                        {person}
+                                    </Button>
+                                )
                             })}
-                            onSelect={(e) => console.log(e.label)}
-                        >
-                        </Select>
+                        </ButtonGroup>
                     </div>
                 </div>
                 <div className="ring-form__group">
