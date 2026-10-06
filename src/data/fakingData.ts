@@ -1,14 +1,6 @@
 const firstNames = [
   "alex",
-  "jordan",
-  "taylor",
-  "morgan",
-  "casey",
-  "riley",
-  "jamie",
-  "sam",
-  "avery",
-  "quinn",
+  "jordan"
 ];
 
 const locationArray = [

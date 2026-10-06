@@ -19,35 +19,59 @@ const regenerateArray = (dayOptions): DataPoint[] => {
 
 const TilePlot = ({from, to, width, height}: RadialChartData) => {
     const allDays = d3.timeDays(from, to, 1)
-    const ISOWEEK = d3.timeFormat("%Y-%V")
-    const weekday = d3.timeFormat("%u")
-    const allWeeks = d3.union(allDays.map(date => ISOWEEK(date)))
+    const formatDateYearISOWeek = d3.timeFormat("%Y-%V")
+    const formatDateWeekday = d3.timeFormat("%u")
+    const formatDateYmd = d3.timeFormat("%Y-%m-%d")
+    const allWeeks = d3.union(allDays.map(date => formatDateYearISOWeek(date)))
 
     // store all sets
-    const [rawdata, _setRawData] = useState(regenerateArray(allDays))
+    const [rawData, _setRawData] = useState(regenerateArray(allDays))
 
-    const [rawDataFiltered, setRawDataFiltered] = useState(rawdata)
-    const [renderedData, setRenderedData] = useState(rawdata)
-    const formatDate = d3.timeFormat("%Y-%m-%d")
+    // filtering
+    const filtered = rawData.filter(d => d)
+    const [filteredData, setFilteredData] = useState(filtered)
+    let maxY = 100
+    // process data
+    const [renderedData, setRenderedData] = useState(null)
 
-    const preppedData = renderedData.map(d => {
+    const processDataForRendering = () => {
+        // extract the most needed points & name them appropriately
+        const preppedData: { series: string, category: string, minutes: number, weekday: number }[] = filteredData
+            .map(d => {
+                return (
+                    {
+                        series: d.author.login,
+                        date: new Date(formatDateYmd(new Date(d.date))),
+                        category: formatDateYearISOWeek(new Date(d.date)),
+                        weekday: formatDateWeekday(new Date(d.date)),
+                        minutes: d.duration.minutes
+                    }
+                )
+            })
 
-        return (
-            {
-                series: d.author.login,
-                category: formatDate(new Date(d.date)),
-                minutes: d.duration.minutes
-            }
+        const series = d3.union(preppedData.map(d => d.series).sort())
+
+        const maxPerCategory = d3.rollup(preppedData,
+            D => d3.sum(D.map(d => d.minutes)),
+            d => d.category
         )
-    })
+        maxY = d3.max(maxPerCategory, d => d[1])
 
-    const series = d3.union(preppedData.map(d => d.series).sort())
-    const stackingFunction = (entries: DataPoint) => d3.sum(entries, d => d.minutes)
-    const summedValuesBySeriesAndCategory = d3.rollup(preppedData,
-        D => stackingFunction(D),
-        d => d.series,
-        d => d.category
-    )
+        const rollupFunction = (entries) => d3.flatRollup(entries,
+            D => d3.sum(D.map(d => d.minutes)),
+            d => d.category,
+            d => d.weekday
+        ).map(d => ({ category: d[0], weekday: d[1], minutes: d[2] }))
+
+        const summedValuesBySeriesAndCategory = d3.rollup(preppedData,
+            D => rollupFunction(D),
+            d => d.series
+        )
+
+        setRenderedData(summedValuesBySeriesAndCategory);
+    }
+
+    useEffect(processDataForRendering, [filteredData])
 
     const svgRef = useRef<SVGSVGElement>(null);
     const margin = {
@@ -60,7 +84,11 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
     const canvasWidth: number = width - margin.left - margin.right;
     const canvasHeight: number = height - margin.top - margin.bottom;
 
-    useEffect(() => {
+    const render = () => {
+        if (renderedData === null)
+            return
+        console.log("rendering data")
+
         const svg = d3.select(svgRef.current);
         const canvas = svg.select("g.canvas");
         canvas.selectChildren().remove()
@@ -72,16 +100,19 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
             .scaleBand()
             .domain(allWeeks)
             .range([0, canvasWidth]);
-
+            
         xScale.padding(0.3)
 
-        const heightOfY = xScale.bandwidth() + xScale.step() * 6
-        const maxY = Number(d3.max(rawDataFiltered.map(d => d.end)))
+        console.log(maxY)
+        const opacityScale = d3.scaleLinear().domain([0, maxY]).range([0, 1])
+
+        const heightOfY = xScale.step() * 7
 
         const yScale = d3
             .scaleBand()
-            .domain(Array(6).fill(0).map((_, i) => String(i)))
-            .range([0, heightOfY]);
+            .domain(["1", "2", "3", "4", "5", "6", "7"])
+            .range([0, heightOfY])
+            .padding(0.3);
 
         svg.select("g.axes")
             .append("g")
@@ -94,14 +125,14 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
             .attr("transform", `translate(0, ${canvasHeight})`)
             .call(d3.axisBottom(xScale))
 
-        const colorScale = d3.scaleOrdinal<string, string>()
-            .domain(Array.from(series))
-            .range(Array.from(series).map((_, i) =>
-                d3.interpolateRdYlBu(i / (series.size - 1))
-            ))
-            .unknown("pink");
+        // const colorScale = d3.scaleOrdinal()
+        //     .domain(renderedData.keys())
+        //     .range(renderedData.keys().map((_, i) =>
+        //         d3.interpolateRdYlBu(i / (series.size - 1))
+        //     ))
+        //     .unknown("grey");
 
-        const colorAlternative = d3.scaleOrdinal(d3.schemeTableau10).domain(series)
+        const colorAlternative = d3.scaleOrdinal().domain(renderedData.keys()).range(["red", "yellow"])
 
         // svg.select(".axes g.y").append("g").attr("class", "x").call(d3.axisLeft(yScale));
 
@@ -110,27 +141,29 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
         const seriesGroups = svg
             .select("g.canvas")
             .selectAll("g.series")
-            .data(summedValuesBySeriesAndCategory.keys())
+            .data(renderedData.keys())
             .join(
                 enter => enter.append("g"),
                 update => update.attr("class", "updated"),
                 exit => exit.remove()
             )
-            .attr("fill", d => colorScale(d))
+            .attr("fill", d => colorAlternative(d))
             .attr("id", d => d)
 
+        // now we have the weeks
         seriesGroups.selectAll("rect")
-            .data((d) => summedValuesBySeriesAndCategory.get(d))
+            .data((d) => renderedData.get(d))
             .join(enter => enter.append("rect"))
-            .attr("x", d => xScale(d.week))
-            .attr("y", d => yScale(d.))
+            .attr("x", d => xScale(d.category))
+            .attr("y", d => yScale(String(d.weekday)))
             .attr("width", xScale.bandwidth())
-            .attr("height", d => yScale.bandwidth())
-            .attr("category", d => d)
+            .attr("height", yScale.bandwidth())
+            .attr("opacity", d => opacityScale(d.minutes))
+            .attr("category", d => d[0])
             .append("title")
             .text(d => d.minutes)
-
-    }, [rawdata, width, height]);
+    }
+    useEffect(render, [renderedData]);
 
 
     return (
@@ -169,17 +202,6 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
                     className="axes"
                     transform={`translate(${margin.left}, ${margin.top})`}
                 >
-                    <g
-                        className="x"
-                        transform={`translate(0, ${canvasHeight})`}
-                    >
-
-                    </g>
-                    <g
-                        className="y"
-                    >
-
-                    </g>
                 </g>
                 <g
                     className="canvas"
