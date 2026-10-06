@@ -5,6 +5,7 @@ import type { IDataPoint } from "../../data/fakingData";
 import DataPoint from "../../data/fakingData";
 import Select from "@jetbrains/ring-ui-built/components/select/select.js";
 import Button from "@jetbrains/ring-ui-built/components/button/button.js";
+import { giniIndex, distributionDifference } from "../../helper.js";
 
 interface RadialChartData {
     from: Date;
@@ -16,6 +17,7 @@ interface RadialChartData {
 const regenerateArray = (dayOptions): DataPoint[] => {
     return Array(100).fill(0).map(_ => new DataPoint(dayOptions));
 }
+
 
 const TilePlot = ({from, to, width, height}: RadialChartData) => {
     const allDays = d3.timeDays(from, to, 1)
@@ -30,20 +32,21 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
     // filtering
     const filtered = rawData.filter(d => d)
     const [filteredData, setFilteredData] = useState(filtered)
+    const allPeople = d3.union(filteredData.map(d => d.author.login).sort())
     let maxY = 100
     // process data
     const [renderedData, setRenderedData] = useState(null)
 
     const processDataForRendering = () => {
         // extract the most needed points & name them appropriately
-        const preppedData: { series: string, category: string, minutes: number, weekday: number }[] = filteredData
+        const preppedData: { series: string, column: string, minutes: number, row: number }[] = filteredData
             .map(d => {
                 return (
                     {
                         series: d.author.login,
                         date: new Date(formatDateYmd(new Date(d.date))),
-                        category: formatDateYearISOWeek(new Date(d.date)),
-                        weekday: formatDateWeekday(new Date(d.date)),
+                        column: formatDateYearISOWeek(new Date(d.date)),
+                        row: formatDateWeekday(new Date(d.date)),
                         minutes: d.duration.minutes
                     }
                 )
@@ -58,16 +61,29 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
         maxY = d3.max(maxPerCategory, d => d[1])
 
         const rollupFunction = (entries) => d3.flatRollup(entries,
-            D => d3.sum(D.map(d => d.minutes)),
-            d => d.category,
-            d => d.weekday
-        ).map(d => ({ category: d[0], weekday: d[1], minutes: d[2] }))
+            D => {
+                const minutesTotal = d3.sum(D, d => d.minutes)
+                const minutesByPersonAndDay = d3.rollup(entries,
+                    entriesOfPerson => {
+                        return d3.sum(entriesOfPerson, d => d.minutes)
+                        },
+                    d => d.series
+                )
+                const stringLabels = minutesByPersonAndDay.entries().map(([personName, minutes]) => `${personName}: ${minutes} (${(minutes / minutesTotal * 100)}%)`)
+                const label = stringLabels.join("\n")
+                const allPeoplesContributions = Array.from(allPeople.keys()).map(person => minutesByPersonAndDay.get(person) || 0)
+                const gini = giniIndex(allPeoplesContributions)
+                console.log(allPeoplesContributions)
+                return { label, minutesTotal, minutesByPersonAndDay, giniIndex: gini }
+            }
+        )
 
         const summedValuesBySeriesAndCategory = d3.rollup(preppedData,
             D => rollupFunction(D),
-            d => d.series
+            d => d.column,
+            d => d.row
         )
-
+        console.log(summedValuesBySeriesAndCategory)
         setRenderedData(summedValuesBySeriesAndCategory);
     }
 
@@ -100,10 +116,9 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
             .scaleBand()
             .domain(allWeeks)
             .range([0, canvasWidth]);
-            
+
         xScale.padding(0.3)
 
-        console.log(maxY)
         const opacityScale = d3.scaleLinear().domain([0, maxY]).range([0, 1])
 
         const heightOfY = xScale.step() * 7
@@ -154,8 +169,8 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
         seriesGroups.selectAll("rect")
             .data((d) => renderedData.get(d))
             .join(enter => enter.append("rect"))
-            .attr("x", d => xScale(d.category))
-            .attr("y", d => yScale(String(d.weekday)))
+            .attr("x", d => xScale(d.column))
+            .attr("y", d => yScale(d.row))
             .attr("width", xScale.bandwidth())
             .attr("height", yScale.bandwidth())
             .attr("opacity", d => opacityScale(d.minutes))

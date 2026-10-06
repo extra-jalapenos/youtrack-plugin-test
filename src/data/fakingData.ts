@@ -1,6 +1,8 @@
 const firstNames = [
   "alex",
-  "jordan"
+  "jordan",
+	"taylor",
+	"quinn"
 ];
 
 const locationArray = [
@@ -39,7 +41,7 @@ class DataPoint {
 
 	constructor(dateOptions: Date[]) {
 		this.duration = {
-			minutes: randomInteger(1, 90),
+			minutes: randomInteger(1, 30),
 		};
 
 		this.author = {
