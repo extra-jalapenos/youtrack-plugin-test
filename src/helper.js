@@ -44,6 +44,24 @@ export const getISOWeek = (date) => {
   };
 };
 
+export const distributionDifference = (leftWeight, rightWeight) => {
+  if (
+    !Number.isFinite(leftWeight) ||
+    !Number.isFinite(rightWeight) ||
+    leftWeight < 0 ||
+    rightWeight < 0
+  ) {
+    throw new Error("Both values must be finite numbers greater than or equal to 0");
+  }
+
+  const total = leftWeight + rightWeight;
+
+  // Undefined mathematically, but 0 is usually the most useful result.
+  if (total === 0) return 0;
+
+  return (rightWeight - leftWeight) / total;
+}
+
 export const giniIndex = (values) => {
   if (!Array.isArray(values) || values.length === 0) {
     throw new Error("values must be a non-empty array");
