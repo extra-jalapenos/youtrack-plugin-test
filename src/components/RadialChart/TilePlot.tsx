@@ -5,7 +5,7 @@ import type { IDataPoint } from "../../data/fakingData";
 import DataPoint from "../../data/fakingData";
 import Select from "@jetbrains/ring-ui-built/components/select/select.js";
 import Button from "@jetbrains/ring-ui-built/components/button/button.js";
-import { giniIndex, distributionDifference } from "../../helper.js";
+import { giniIndex, distributionDifference, getWeekdayNames } from "../../helper.js";
 
 interface RadialChartData {
     from: Date;
@@ -15,7 +15,7 @@ interface RadialChartData {
 }
 
 const regenerateArray = (dayOptions): DataPoint[] => {
-    return Array(100).fill(0).map(_ => new DataPoint(dayOptions));
+    return Array(500).fill(0).map(_ => new DataPoint(dayOptions));
 }
 
 
@@ -73,8 +73,11 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
                 const label = stringLabels.join("\n")
                 const allPeoplesContributions = Array.from(allPeople.keys()).map(person => minutesByPersonAndDay.get(person) || 0)
                 const gini = giniIndex(allPeoplesContributions)
-                console.log(allPeoplesContributions)
-                return { label, minutesTotal, minutesByPersonAndDay, giniIndex: gini }
+                const object = { label, minutesTotal, minutesByPersonAndDay, giniIndex: gini }
+                if (allPeople.size === 2) {
+                    object["distribution"] = distributionDifference(allPeoplesContributions)
+                }
+                return object
             }
         )
 
@@ -83,7 +86,7 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
             d => d.column,
             d => d.row
         )
-        console.log(summedValuesBySeriesAndCategory)
+
         setRenderedData(summedValuesBySeriesAndCategory);
     }
 
@@ -147,37 +150,41 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
         //     ))
         //     .unknown("grey");
 
-        const colorAlternative = d3.scaleOrdinal().domain(renderedData.keys()).range(["red", "yellow"])
-
+        const colorScaleGini = d3.scaleLinear([0, 0.5, 1], ["#FF0036", "#CC00FF", "#219BFF"])
+        const colorScaleDistribution = d3.scaleLinear([0, 0.5, 1], ["#FF0036", "#CC00FF", "#219BFF"]).unknown("pink")
         // svg.select(".axes g.y").append("g").attr("class", "x").call(d3.axisLeft(yScale));
 
         // A group for each series, and a rect for each element in the series
-
         const seriesGroups = svg
             .select("g.canvas")
-            .selectAll("g.series")
+            .selectAll("g.columns")
             .data(renderedData.keys())
             .join(
                 enter => enter.append("g"),
                 update => update.attr("class", "updated"),
                 exit => exit.remove()
             )
-            .attr("fill", d => colorAlternative(d))
             .attr("id", d => d)
+            .attr("transform", d => `translate(${xScale(d)}, 0)`)
 
         // now we have the weeks
         seriesGroups.selectAll("rect")
-            .data((d) => renderedData.get(d))
+            .data(d => renderedData.get(d)) // rows
             .join(enter => enter.append("rect"))
-            .attr("x", d => xScale(d.column))
-            .attr("y", d => yScale(d.row))
+            .attr("id", d => console.log(d))
+            .attr("transform", d => `translate(0, ${yScale(d[0])})`)
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("rx", 3)
+            .attr("ry", 3)
             .attr("width", xScale.bandwidth())
             .attr("height", yScale.bandwidth())
-            .attr("opacity", d => opacityScale(d.minutes))
-            .attr("category", d => d[0])
+            .attr("fill", d => colorScaleDistribution(d[1].distribution))
+            .attr("opacity", d => opacityScale(d[1].minutesTotal))
             .append("title")
-            .text(d => d.minutes)
+            .text(d => d[1].label)
     }
+
     useEffect(render, [renderedData]);
 
 
