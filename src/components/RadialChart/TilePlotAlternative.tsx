@@ -11,8 +11,7 @@ import ButtonToolbar from "@jetbrains/ring-ui-built/components/button-toolbar/bu
 interface RadialChartData {
     from: Date;
     to: Date;
-    width: number;
-    height: number;
+    squareSize: number;
 }
 
 const regenerateArray = (dayOptions): DataPoint[] => {
@@ -20,15 +19,29 @@ const regenerateArray = (dayOptions): DataPoint[] => {
 }
 
 
-const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
-    const allDays = d3.timeDays(from, to, 1)
+const TilePlotAlternative = ({from, to, squareSize}: RadialChartData) => {
+    const allDays = d3.timeDays(from, to, 1);
+
     const formatDateYearISOWeek = d3.timeFormat("%Y-%V")
     const formatDateWeekday = d3.timeFormat("%u")
     const formatDateYmd = d3.timeFormat("%Y-%m-%d")
-    const allWeeks = d3.union([from, ...d3.utcMondays(from, to, 1), to].map(d => formatDateYearISOWeek(d)))
-    console.log(from, to, allWeeks)
 
-    return (<div>test</div>)
+    const allWeeks = d3.union([from, ...d3.utcMondays(from, to, 1), to].map(d => formatDateYearISOWeek(d)))
+
+
+    const margin = {
+        left: 50,
+        top: 50,
+        right: 25,
+        bottom: 25
+    };
+
+    const padding = 0.3;
+
+    const canvasHeight: number = squareSize * 7 * (1 + padding);
+    const canvasWidth: number = allWeeks.size * squareSize * (1 + padding);
+    const height =  canvasHeight + margin.top + margin.bottom;
+    const width: number = canvasWidth + margin.left + margin.right;
 
     // store all sets
     const [rawData, _setRawData] = useState(regenerateArray(allDays))
@@ -41,9 +54,6 @@ const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
 
     const [showPeople, setShowPeople] = useState(Array.from(allPeople))
     const [perspectivePerson, setPerspective] = useState(Array.from(allPeople)[0])
-
-    const showPerson = (person: string) => setShowPeople([ ...showPeople, person ])
-    const hidePerson = (person: string) =>setShowPeople([...showPeople.filter(d => d !== person)])
 
     // process data
     const [renderedData, setRenderedData] = useState(null)
@@ -74,8 +84,6 @@ const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
             D => d3.sum(D.map(d => d.minutes)),
             d => d.date
         )
-
-        console.log(maxPerCategory)
 
         const rollupFunction = (entries) => d3.flatRollup(entries,
             D => {
@@ -117,15 +125,7 @@ const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
     useEffect(processDataForRendering, [filteredData, showPeople, perspectivePerson])
 
     const svgRef = useRef<SVGSVGElement>(null);
-    const margin = {
-        left: 50,
-        top: 50,
-        right: 25,
-        bottom: 25
-    };
 
-    const canvasWidth: number = width - margin.left - margin.right;
-    const canvasHeight: number = height - margin.top - margin.bottom;
 
     const render = () => {
         if (renderedData === null)
@@ -168,7 +168,7 @@ const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
         const yScale = d3
             .scaleBand()
             .domain(["1", "2", "3", "4", "5", "6", "7"])
-            .range([0, heightOfY])
+            .range([0, canvasHeight])
             .padding(0.3);
 
         svg.select("g.axes")
@@ -179,7 +179,7 @@ const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
         svg.select("g.axes")
             .append("g")
             .attr("class", "x")
-            .attr("transform", `translate(0, ${210})`)
+            .attr("transform", `translate(0, ${canvasHeight})`)
             .call(d3.axisBottom(xScaleTime))
 
         // const colorScale = d3.scaleOrdinal()
@@ -214,10 +214,10 @@ const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
             .attr("transform", d => `translate(0, ${yScale(d[0])})`)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("rx", xScale.bandwidth() / 5)
-            .attr("ry", xScale.bandwidth() / 5)
-            .attr("width", xScale.bandwidth())
-            .attr("height", xScale.bandwidth())
+            .attr("rx", squareSize / 5)
+            .attr("ry", squareSize / 5)
+            .attr("width", squareSize)
+            .attr("height", squareSize)
             .attr("class", d => labelContribution(d[1].contribution))
             .attr("fill", d => colorScaleDistribution(d[1].contribution))
             .append("title")
