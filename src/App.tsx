@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import "./App.css"
 import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
 import TilePlotAlternative from "./components/RadialChart/TilePlotAlternative.tsx";
+import RadialChart from './components/RadialChart/RadialChart.tsx';
 
 function App() {
     const [height, _setHeight] = useState(document.documentElement.clientHeight);
@@ -14,8 +15,7 @@ function App() {
     }, []);
   return (
     <>
-        <TilePlotAlternative from={new Date(new Date().getTime() - 30 * 7 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height}/>
-        {/*<RadialChart from={new Date(new Date().getTime() - 8 * 7 * 24 *60 *60 *1000)} to={new Date()} width={width} height={height} />*/}
+        <TilePlotAlternative from={new Date(2025, 11, 4)} to={new Date(2026,0,4)} width={width} height={height}/>
     </>
   )
 }

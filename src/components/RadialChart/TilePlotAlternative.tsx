@@ -1,11 +1,10 @@
 import { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
-import { configureGlobalControlsHeight } from "@jetbrains/ring-ui-built/components/global/controls-height.js";
-import type { IDataPoint } from "../../data/fakingData";
 import DataPoint from "../../data/fakingData";
+import "./contribution-colors.css"
 import Select from "@jetbrains/ring-ui-built/components/select/select.js";
 import Button from "@jetbrains/ring-ui-built/components/button/button.js";
-import { giniIndex, distributionDifference, getWeekdayNames } from "../../helper.js";
+import { giniIndex, compareContributionToRest, getWeekdayNames } from "../../helper.js";
 import ButtonGroup from "@jetbrains/ring-ui-built/components/button-group/button-group";
 import ButtonToolbar from "@jetbrains/ring-ui-built/components/button-toolbar/button-toolbar";
 
@@ -17,16 +16,19 @@ interface RadialChartData {
 }
 
 const regenerateArray = (dayOptions): DataPoint[] => {
-    return Array(500).fill(0).map(_ => new DataPoint(dayOptions));
+    return Array(1000).fill(0).map(_ => new DataPoint(dayOptions));
 }
 
 
-const TilePlot = ({from, to, width, height}: RadialChartData) => {
+const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
     const allDays = d3.timeDays(from, to, 1)
     const formatDateYearISOWeek = d3.timeFormat("%Y-%V")
     const formatDateWeekday = d3.timeFormat("%u")
     const formatDateYmd = d3.timeFormat("%Y-%m-%d")
-    const allWeeks = d3.union(allDays.map(date => formatDateYearISOWeek(date)))
+    const allWeeks = d3.union([from, ...d3.utcMondays(from, to, 1), to].map(d => formatDateYearISOWeek(d)))
+    console.log(from, to, allWeeks)
+
+    return (<div>test</div>)
 
     // store all sets
     const [rawData, _setRawData] = useState(regenerateArray(allDays))
@@ -36,15 +38,13 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
 
     const [filteredData, setFilteredData] = useState(filtered)
     const allPeople = d3.union(filteredData.map(d => d.author.login).sort())
-    let maxY = 100
 
     const [showPeople, setShowPeople] = useState(Array.from(allPeople))
+    const [perspectivePerson, setPerspective] = useState(Array.from(allPeople)[0])
 
     const showPerson = (person: string) => setShowPeople([ ...showPeople, person ])
     const hidePerson = (person: string) =>setShowPeople([...showPeople.filter(d => d !== person)])
 
-    type Mode = "combined" | "comparison" | "individual"
-    const [mode, setMode] = useState<Mode>("combined");
     // process data
     const [renderedData, setRenderedData] = useState(null)
 
@@ -65,12 +65,17 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
             })
 
         const series = d3.union(preppedData.map(d => d.series).sort())
+        const averageContributionByDay = d3.rollup(preppedData,
+            D => d3.sum(D.map(d => d.minutes)) / D.length,
+            d => d.date
+        )
 
         const maxPerCategory = d3.rollup(preppedData,
             D => d3.sum(D.map(d => d.minutes)),
-            d => d.category
+            d => d.date
         )
-        maxY = d3.max(maxPerCategory, d => d[1])
+
+        console.log(maxPerCategory)
 
         const rollupFunction = (entries) => d3.flatRollup(entries,
             D => {
@@ -81,14 +86,21 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
                         },
                     d => d.series
                 )
-                const stringLabels = minutesByPersonAndDay.entries().map(([personName, minutes]) => `${personName}: ${minutes} (${(minutes / minutesTotal * 100)}%)`)
-                const label = stringLabels.join("\n")
-                const allPeoplesContributions = Array.from(allPeople.keys()).map(person => minutesByPersonAndDay.get(person) || 0)
-                const gini = giniIndex(allPeoplesContributions)
-                const object = { label, minutesTotal, minutesByPersonAndDay, giniIndex: gini }
-                if (allPeople.size === 2) {
-                    object["distribution"] = distributionDifference(allPeoplesContributions)
-                }
+                const dateString = D[0].date.toLocaleDateString(["de-DE"])
+                const allOtherPeople =  Array.from(allPeople.keys())
+                    .filter(person => person !== perspectivePerson)
+
+                const focusPersonContribution = minutesByPersonAndDay.get(perspectivePerson) || 0
+                const allPeoplesContributions = allOtherPeople.map(person => minutesByPersonAndDay.get(person) || 0)
+                const averageContribution = d3.sum(allPeoplesContributions) / allOtherPeople.length
+
+                const contribution = compareContributionToRest([focusPersonContribution, averageContribution])
+                const stringLabels = Array.from(minutesByPersonAndDay.entries())
+                                        .map(([personName, minutes]) => `${personName}: ${minutes} (${(minutes / minutesTotal * 100).toFixed(0)} %)`)
+                const label = dateString + "\n" + `${perspectivePerson}: ${minutesByPersonAndDay.get(perspectivePerson)|| 0} \n\n` + stringLabels.join("\n")
+                + "\n\n" + `avg: ${averageContribution.toFixed(0)} minutes, contribution: ${contribution}`
+                const object = { label, minutesTotal, minutesByPersonAndDay, contribution: contribution }
+
                 return object
             }
         )
@@ -102,7 +114,7 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
         setRenderedData(summedValuesBySeriesAndCategory);
     }
 
-    useEffect(processDataForRendering, [filteredData, showPeople])
+    useEffect(processDataForRendering, [filteredData, showPeople, perspectivePerson])
 
     const svgRef = useRef<SVGSVGElement>(null);
     const margin = {
@@ -133,7 +145,23 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
 
         xScale.padding(0.3)
 
-        const opacityScale = d3.scaleLinear().domain([0, maxY]).range([0, 1])
+        const xScaleTime = d3.scaleTime()
+            .domain(d3.extent(allDays))
+            .range([0, canvasWidth]);
+
+        const contributionCategories = [
+            "nothing",
+            "very little",
+            "less",
+            "equally",
+            "more",
+            "most",
+            "everything"
+        ];
+
+        const labelContribution = d3.scaleQuantize([0, 1], contributionCategories)
+
+        const opacityScale = d3.scaleLinear().domain([0, 1]).range([0, 1])
 
         const heightOfY = xScale.step() * 7
 
@@ -151,8 +179,8 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
         svg.select("g.axes")
             .append("g")
             .attr("class", "x")
-            .attr("transform", `translate(0, ${canvasHeight})`)
-            .call(d3.axisBottom(xScale))
+            .attr("transform", `translate(0, ${210})`)
+            .call(d3.axisBottom(xScaleTime))
 
         // const colorScale = d3.scaleOrdinal()
         //     .domain(renderedData.keys())
@@ -162,7 +190,8 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
         //     .unknown("grey");
 
         const colorScaleGini = d3.scaleLinear([0, 0.5, 1], ["#FF0036", "#CC00FF", "#219BFF"])
-        const colorScaleDistribution = d3.scaleLinear([0, 0.5, 1], ["#FF0036", "#ff00fa", "#0044f3"]).unknown("pink")
+
+        const colorScaleDistribution = d3.scaleDiverging(["#00061F", "#00FF41", "white"]);
         // svg.select(".axes g.y").append("g").attr("class", "x").call(d3.axisLeft(yScale));
 
         // A group for each series, and a rect for each element in the series
@@ -185,49 +214,30 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
             .attr("transform", d => `translate(0, ${yScale(d[0])})`)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("rx", 3)
-            .attr("ry", 3)
+            .attr("rx", xScale.bandwidth() / 5)
+            .attr("ry", xScale.bandwidth() / 5)
             .attr("width", xScale.bandwidth())
-            .attr("height", yScale.bandwidth())
-            .attr("fill", d => colorScaleDistribution(d[1].distribution))
-            .attr("opacity", d => opacityScale(d[1].minutesTotal))
+            .attr("height", xScale.bandwidth())
+            .attr("class", d => labelContribution(d[1].contribution))
+            .attr("fill", d => colorScaleDistribution(d[1].contribution))
             .append("title")
-            .text(d => d[1].label)
+            .text(d => d[1].label + "\n" + labelContribution(d[1].contribution))
     }
 
     useEffect(render, [renderedData]);
 
-
     return (
         <>
+            <p>Compare</p>
             <ButtonToolbar>
-
-                <ButtonGroup>
-                    {["combined", "individual"].map(mode => {
-                        return (
-                            <Button
-                                key={mode}
-                                onClick={() => setMode(mode)}
-                            >
-                                {mode}
-                            </Button>
-                        )
-                    })}
-                </ButtonGroup>
                 <ButtonGroup>
                     {Array.from(allPeople)
                         .map(person => {
                             return (
                                 <Button
-                                    onClick={() => {
-                                        if (showPeople.includes(person)) {
-                                            hidePerson(person)
-                                        } else {
-                                            showPerson(person)
-                                        }
-                                    }}
+                                    onClick={() => setPerspective(person)}
                                     key={person}
-                                    active={showPeople.includes(person)}
+                                    active={perspectivePerson === person}
                                     onSelect={(e) => console.log(e)}
                                 >
                                     {person}
@@ -259,4 +269,4 @@ const TilePlot = ({from, to, width, height}: RadialChartData) => {
     )
 }
 
-export default TilePlot
+export default TilePlotAlternative;

@@ -55,22 +55,23 @@ export const getISOWeek = (date) => {
   };
 };
 
-export const distributionDifference = ([leftWeight, rightWeight]) => {
+export const compareContributionToRest = ([personalContribution, otherContributions]) => {
   if (
-    !Number.isFinite(leftWeight) ||
-    !Number.isFinite(rightWeight) ||
-    leftWeight < 0 ||
-    rightWeight < 0
+    !Number.isFinite(personalContribution) ||
+    !Number.isFinite(otherContributions) ||
+    personalContribution < 0 ||
+    otherContributions < 0
   ) {
     throw new Error("Both values must be finite numbers greater than or equal to 0");
   }
 
-  const total = leftWeight + rightWeight;
+  const total = personalContribution + otherContributions;
 
   // Undefined mathematically, but 0 is usually the most useful result.
-  if (total === 0) return 0;
+  if (total === 0) return .5;
 
-  return (rightWeight - leftWeight) / total;
+
+  return personalContribution / total;
 }
 
 export const giniIndex = (values) => {
