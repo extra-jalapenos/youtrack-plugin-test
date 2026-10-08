@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
 import { configureGlobalControlsHeight } from "@jetbrains/ring-ui-built/components/global/controls-height.js";
-import type { IDataPoint } from "../../data/fakingData";
-import DataPoint from "../../data/fakingData";
+import type { IDataPoint } from "../../data/fakingData.js";
+import DataPoint from "../../data/fakingData.js";
 import Select from "@jetbrains/ring-ui-built/components/select/select.js";
 import Button from "@jetbrains/ring-ui-built/components/button/button.js";
 import { giniIndex, distributionDifference, getWeekdayNames } from "../../helper.js";

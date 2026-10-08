@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
-import DataPoint from "../../data/fakingData";
+import DataPoint from "../../data/fakingData.js";
 import "./contribution-colors.css"
 import Select from "@jetbrains/ring-ui-built/components/select/select.js";
 import Button from "@jetbrains/ring-ui-built/components/button/button.js";

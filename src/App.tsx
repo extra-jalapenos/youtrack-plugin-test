@@ -3,8 +3,8 @@ import '@jetbrains/ring-ui-built/components/style.css';
 import {useEffect, useState} from "react";
 import "./App.css"
 import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
-import TilePlotAlternative from "./components/RadialChart/TilePlotAlternative.tsx";
-import RadialChart from './components/RadialChart/RadialChart.tsx';
+import TilePlotAlternative from "./components/Chart/MyChart.tsx";
+import RadialChart from './components/Chart/RadialChart.tsx';
 
 function App() {
     const [height, _setHeight] = useState(document.documentElement.clientHeight);
