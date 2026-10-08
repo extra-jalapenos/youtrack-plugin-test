@@ -20,15 +20,44 @@ const regenerateArray = (dayOptions): DataPoint[] => {
 }
 
 
-const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
+const MyChart = ({from, to}: RadialChartData) => {
+    const margin = {
+        left: 50,
+        top: 50,
+        right: 25,
+        bottom: 25
+    };
+
+    const [params, setParams] = useState({
+        margin,
+        maxWidth: parent.innerWidth,
+        maxHeight: parent.innerHeight
+    })
+
+    const [cubeSize, setCubeSize] = useState(20)
+    const [width, setWidth] = useState(parent.innerWidth)
+    const [height, setHeight] = useState(cubeSize * 7)
+    const calculateDimensions = () => {
+        console.log("resize", params.maxWidth)
+        console.log(parent)
+        setParams({
+            ...params,
+            maxHeight: parent.innerHeight,
+            maxWidth: parent.innerWidth
+        })
+    };
+
+    const canvasWidth: number = width - margin.left - margin.right;
+    const canvasHeight: number = height - margin.top - margin.bottom;
+
+
+    useEffect(() => calculateDimensions(), [])
+    useEffect(() => window.addEventListener("resize", calculateDimensions), [])
     const allDays = d3.timeDays(from, to, 1)
     const formatDateYearISOWeek = d3.timeFormat("%Y-%V")
     const formatDateWeekday = d3.timeFormat("%u")
     const formatDateYmd = d3.timeFormat("%Y-%m-%d")
     const allWeeks = d3.union([from, ...d3.utcMondays(from, to, 1), to].map(d => formatDateYearISOWeek(d)))
-    console.log(from, to, allWeeks)
-
-    return (<div>test</div>)
 
     // store all sets
     const [rawData, _setRawData] = useState(regenerateArray(allDays))
@@ -75,8 +104,6 @@ const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
             d => d.date
         )
 
-        console.log(maxPerCategory)
-
         const rollupFunction = (entries) => d3.flatRollup(entries,
             D => {
                 const minutesTotal = d3.sum(D, d => d.minutes)
@@ -117,15 +144,7 @@ const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
     useEffect(processDataForRendering, [filteredData, showPeople, perspectivePerson])
 
     const svgRef = useRef<SVGSVGElement>(null);
-    const margin = {
-        left: 50,
-        top: 50,
-        right: 25,
-        bottom: 25
-    };
 
-    const canvasWidth: number = width - margin.left - margin.right;
-    const canvasHeight: number = height - margin.top - margin.bottom;
 
     const render = () => {
         if (renderedData === null)
@@ -269,4 +288,4 @@ const TilePlotAlternative = ({from, to, width, height}: RadialChartData) => {
     )
 }
 
-export default TilePlotAlternative;
+export default MyChart;

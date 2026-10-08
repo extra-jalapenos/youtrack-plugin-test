@@ -3,8 +3,7 @@ import '@jetbrains/ring-ui-built/components/style.css';
 import {useEffect, useState} from "react";
 import "./App.css"
 import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
-import TilePlotAlternative from "./components/Chart/MyChart.tsx";
-import RadialChart from './components/Chart/RadialChart.tsx';
+import MyChart from "./components/Chart/MyChart.tsx";
 
 function App() {
     const [height, _setHeight] = useState(document.documentElement.clientHeight);
@@ -15,7 +14,7 @@ function App() {
     }, []);
   return (
     <>
-        <TilePlotAlternative from={new Date(2025, 11, 4)} to={new Date(2026,0,4)} width={width} height={height}/>
+        <MyChart from={new Date(2025, 11, 4)} to={new Date(2026,0,4)}/>
     </>
   )
 }
