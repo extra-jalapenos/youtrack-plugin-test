@@ -14,7 +14,7 @@ function App() {
     }, []);
   return (
     <>
-        <MyChart from={new Date(2025, 11, 4)} to={new Date(2026,0,4)}/>
+        <MyChart from={new Date(2025, 0, 1)} to={new Date(2026,0,4)}/>
     </>
   )
 }

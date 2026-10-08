@@ -13,7 +13,7 @@ interface MyChartData {
 }
 
 const regenerateArray = (dayOptions): DataPoint[] => {
-    return Array(1000).fill(0).map(_ => new DataPoint(dayOptions));
+    return Array(dayOptions.length*7).fill(0).map(_ => new DataPoint(dayOptions));
 }
 
 
@@ -27,19 +27,52 @@ const MyChart = ({from, to}: MyChartData) => {
 
     const differentWeeksCount = d3.union([from, ...d3.utcMondays(from, to, 1), to]).size
 
+    // store all sets
+    const allDays = d3.timeDays(from, to, 1);
+    const [rawData, _setRawData] = useState(regenerateArray(allDays));
+
+
     const [cellSize, setCellSize] = useState(20)
     const [canvasWidth, setCanvasWidth] = useState(differentWeeksCount * cellSize)
     const [canvasHeight, setCanvasHeight] = useState(cellSize * 7)
 
+    const [filteredData, setFilteredData] = useState([])
+    const [allPeople, setAllPeople] = useState<Set<string>>(new Set())
+    const [showPeople, setShowPeople] = useState([])
+    const [perspectivePerson, setPerspective] = useState(showPeople.length ? showPeople[0] : "")
+
+    // process data
+    const [renderedData, setRenderedData] = useState(null)
+
     const resizeWidth = () => {
-        setCanvasWidth(parent.innerWidth - margin.left - margin.right)
+        if (rawData.length === 0)
+            return
+        const maxCanvasWidth: number = parent.innerWidth - margin.left - margin.right;
+        const neededWidth: number = cellSize * differentWeeksCount;
+        const smallerValue = d3.min([maxCanvasWidth, neededWidth]);
+        setCanvasWidth(d3.min([maxCanvasWidth, neededWidth]));
+
+        const fittingColumns = Math.floor(maxCanvasWidth / 20);
+        const dateXWeeksAgo = new Date(to.getFullYear(), to.getUTCMonth(), to.getDate() - fittingColumns * 7)
+
+        const shownWeeks = d3.union([dateXWeeksAgo, ...d3.utcMondays(dateXWeeksAgo, to, 1), to].map(date => formatDateYearISOWeek(date)))
+        const shownDays = d3.extent(allDays.filter(day => shownWeeks.has(formatDateYearISOWeek(day))))
+
+        const filtered = rawData.filter(d => d.date >= shownDays[0].getTime() && d.date <= shownDays[1].getTime())
+        setAllPeople(d3.union(rawData.map(d => d.author.login).sort()))
+        setFilteredData(filtered)
     };
 
-    useEffect(() => resizeWidth(), [])
+
+    // filtering for e.g. ranges
+    useEffect(() => {
+        if (rawData)
+            resizeWidth()
+        else
+            console.log("no rendered data, no resizing")
+    }, [])
+
     useEffect(() => window.addEventListener("resize", resizeWidth), [])
-
-    const allDays = d3.timeDays(from, to, 1);
-
 
     const formatDateWeekday = d3.timeFormat("%u")
     const formatDateYearISOWeek = d3.timeFormat("%G-%V");
@@ -47,25 +80,11 @@ const MyChart = ({from, to}: MyChartData) => {
 
     const allWeeks = d3.union([from, ...d3.utcMondays(from, to, 1), to].map(date => formatDateYearISOWeek(date)));
 
-    // store all sets
-    const [rawData, _setRawData] = useState(regenerateArray(allDays))
 
-    // filtering for e.g. ranges
-    const filtered = rawData.filter(d => d)
-
-    const [filteredData, setFilteredData] = useState(filtered)
-    const allPeople = d3.union(filteredData.map(d => d.author.login).sort())
-
-    const [showPeople, setShowPeople] = useState(Array.from(allPeople))
-    const [perspectivePerson, setPerspective] = useState(Array.from(allPeople)[0])
-
-    // process data
-    const [renderedData, setRenderedData] = useState(null)
     type preppedDataPoint = { series: string, date: Date, column: string, minutes: number, row: string }
     const processDataForRendering = () => {
         // extract the most needed points & name them appropriately
         const preppedData: preppedDataPoint[] = filteredData
-            .filter(d => showPeople.includes(d.author.login) )
             .map(d => {
                 return (
                     {
@@ -122,7 +141,6 @@ const MyChart = ({from, to}: MyChartData) => {
             d => d.column,
             d => d.row
         )
-
         setRenderedData(summedValuesBySeriesAndCategory);
     }
 
@@ -130,14 +148,17 @@ const MyChart = ({from, to}: MyChartData) => {
 
     const svgRef = useRef<SVGSVGElement>(null);
 
-
     const render = () => {
-        console.log("render")
-        if (renderedData === null)
+        console.log("render start")
+        if (renderedData === null || renderedData.size === 0) {
+            console.log(renderedData)
+
+            console.log("render abort")
             return
+        }
 
+        console.log("really rendering now")
         const svg = d3.select(svgRef.current);
-
 
         const canvas = svg.select("g.canvas");
         canvas.selectChildren().remove()
@@ -145,9 +166,10 @@ const MyChart = ({from, to}: MyChartData) => {
         svg.select(".axes g.x").selectChildren().remove()
         svg.select(".axes g.y").selectChildren().remove()
 
+        const weeks = Array.from(renderedData.keys()).sort()
         const xScale = d3
             .scaleBand()
-            .domain(allWeeks)
+            .domain(d3.union(weeks))
             .range([0, canvasWidth]);
 
         xScale.padding(0.3)
@@ -155,6 +177,7 @@ const MyChart = ({from, to}: MyChartData) => {
         const xScaleTime = d3.scaleTime()
             .domain(d3.extent(allDays))
             .range([0, canvasWidth]);
+
 
         const contributionCategories = [
             "nothing",
@@ -175,7 +198,7 @@ const MyChart = ({from, to}: MyChartData) => {
         const yScale = d3
             .scaleBand()
             .domain(["1", "2", "3", "4", "5", "6", "7"])
-            .range([0, heightOfY])
+            .range([0, canvasHeight])
             .padding(0.3);
 
         svg.select("g.axes")
@@ -186,8 +209,8 @@ const MyChart = ({from, to}: MyChartData) => {
         svg.select("g.axes")
             .append("g")
             .attr("class", "x")
-            .attr("transform", `translate(0, ${210})`)
-            .call(d3.axisBottom(xScaleTime))
+            .attr("transform", `translate(0, ${canvasHeight})`)
+            .call(d3.axisBottom(xScaleTime).ticks(2))
 
         // const colorScale = d3.scaleOrdinal()
         //     .domain(renderedData.keys())
@@ -221,17 +244,17 @@ const MyChart = ({from, to}: MyChartData) => {
             .attr("transform", d => `translate(0, ${yScale(d[0])})`)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("rx", xScale.bandwidth() / 5)
-            .attr("ry", xScale.bandwidth() / 5)
-            .attr("width", xScale.bandwidth())
-            .attr("height", xScale.bandwidth())
+            .attr("rx", cellSize / 5)
+            .attr("ry", cellSize / 5)
+            .attr("width", cellSize * 0.8)
+            .attr("height", cellSize * 0.8)
             .attr("class", d => labelContribution(d[1].contribution))
             .attr("fill", d => colorScaleDistribution(d[1].contribution))
             .append("title")
             .text(d => d[1].label + "\n" + labelContribution(d[1].contribution))
     }
 
-    useEffect(render, [renderedData, canvasWidth]);
+    useEffect(render, [renderedData]);
 
     return (
         <>
