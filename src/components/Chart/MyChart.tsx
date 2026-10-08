@@ -1,34 +1,23 @@
 import { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
-import DataPoint from "../../data/fakingData";
+import DataPoint from "../../data/fakingData.js";
 import "./contribution-colors.css"
-import Select from "@jetbrains/ring-ui-built/components/select/select.js";
 import Button from "@jetbrains/ring-ui-built/components/button/button.js";
-import { giniIndex, compareContributionToRest, getWeekdayNames } from "../../helper.js";
+import { compareContributionToRest } from "../../helper.js";
 import ButtonGroup from "@jetbrains/ring-ui-built/components/button-group/button-group";
 import ButtonToolbar from "@jetbrains/ring-ui-built/components/button-toolbar/button-toolbar";
 
-interface RadialChartData {
+interface MyChartData {
     from: Date;
     to: Date;
-    squareSize: number;
 }
 
 const regenerateArray = (dayOptions): DataPoint[] => {
-    return Array(1000).fill(0).map(_ => new DataPoint(dayOptions));
+    return Array(dayOptions.length*7).fill(0).map(_ => new DataPoint(dayOptions));
 }
 
 
-const TilePlotAlternative = ({from, to, squareSize}: RadialChartData) => {
-    const allDays = d3.timeDays(from, to, 1);
-
-    const formatDateYearISOWeek = d3.timeFormat("%Y-%V")
-    const formatDateWeekday = d3.timeFormat("%u")
-    const formatDateYmd = d3.timeFormat("%Y-%m-%d")
-
-    const allWeeks = d3.union([from, ...d3.utcMondays(from, to, 1), to].map(d => formatDateYearISOWeek(d)))
-
-
+const MyChart = ({from, to}: MyChartData) => {
     const margin = {
         left: 50,
         top: 50,
@@ -36,37 +25,71 @@ const TilePlotAlternative = ({from, to, squareSize}: RadialChartData) => {
         bottom: 25
     };
 
-    const padding = 0.3;
-
-    const canvasHeight: number = squareSize * 7 * (1 + padding);
-    const canvasWidth: number = allWeeks.size * squareSize * (1 + padding);
-    const height =  canvasHeight + margin.top + margin.bottom;
-    const width: number = canvasWidth + margin.left + margin.right;
+    const differentWeeksCount = d3.union([from, ...d3.utcMondays(from, to, 1), to]).size
 
     // store all sets
-    const [rawData, _setRawData] = useState(regenerateArray(allDays))
+    const allDays = d3.timeDays(from, to, 1);
+    const [rawData, _setRawData] = useState(regenerateArray(allDays));
 
-    // filtering for e.g. ranges
-    const filtered = rawData.filter(d => d)
 
-    const [filteredData, setFilteredData] = useState(filtered)
-    const allPeople = d3.union(filteredData.map(d => d.author.login).sort())
+    const [cellSize, setCellSize] = useState(20)
+    const [canvasWidth, setCanvasWidth] = useState(differentWeeksCount * cellSize)
+    const [canvasHeight, setCanvasHeight] = useState(cellSize * 7)
 
-    const [showPeople, setShowPeople] = useState(Array.from(allPeople))
-    const [perspectivePerson, setPerspective] = useState(Array.from(allPeople)[0])
+    const [filteredData, setFilteredData] = useState([])
+    const [allPeople, setAllPeople] = useState<Set<string>>(new Set())
+    const [showPeople, setShowPeople] = useState([])
+    const [perspectivePerson, setPerspective] = useState(showPeople.length ? showPeople[0] : "")
 
     // process data
     const [renderedData, setRenderedData] = useState(null)
 
+    const resizeWidth = () => {
+        if (rawData.length === 0)
+            return
+        const maxCanvasWidth: number = parent.innerWidth - margin.left - margin.right;
+        const neededWidth: number = cellSize * differentWeeksCount;
+        const smallerValue = d3.min([maxCanvasWidth, neededWidth]);
+        setCanvasWidth(d3.min([maxCanvasWidth, neededWidth]));
+
+        const fittingColumns = Math.floor(maxCanvasWidth / 20);
+        const dateXWeeksAgo = new Date(to.getFullYear(), to.getUTCMonth(), to.getDate() - fittingColumns * 7)
+
+        const shownWeeks = d3.union([dateXWeeksAgo, ...d3.utcMondays(dateXWeeksAgo, to, 1), to].map(date => formatDateYearISOWeek(date)))
+        const shownDays = d3.extent(allDays.filter(day => shownWeeks.has(formatDateYearISOWeek(day))))
+
+        const filtered = rawData.filter(d => d.date >= shownDays[0].getTime() && d.date <= shownDays[1].getTime())
+        setAllPeople(d3.union(rawData.map(d => d.author.login).sort()))
+        setFilteredData(filtered)
+    };
+
+
+    // filtering for e.g. ranges
+    useEffect(() => {
+        if (rawData)
+            resizeWidth()
+        else
+            console.log("no rendered data, no resizing")
+    }, [])
+
+    useEffect(() => window.addEventListener("resize", resizeWidth), [])
+
+    const formatDateWeekday = d3.timeFormat("%u")
+    const formatDateYearISOWeek = d3.timeFormat("%G-%V");
+    const formatDateYmd = d3.timeFormat("%Y-%m-%d");
+
+    const allWeeks = d3.union([from, ...d3.utcMondays(from, to, 1), to].map(date => formatDateYearISOWeek(date)));
+
+
+    type preppedDataPoint = { series: string, date: Date, column: string, minutes: number, row: string }
     const processDataForRendering = () => {
         // extract the most needed points & name them appropriately
-        const preppedData: { series: string, column: string, minutes: number, row: number }[] = filteredData
-            .filter(d => showPeople.includes(d.author.login) )
+        const preppedData: preppedDataPoint[] = filteredData
             .map(d => {
                 return (
                     {
                         series: d.author.login,
-                        date: new Date(formatDateYmd(new Date(d.date))),
+                        date: new Date(d.date),
                         column: formatDateYearISOWeek(new Date(d.date)),
                         row: formatDateWeekday(new Date(d.date)),
                         minutes: d.duration.minutes
@@ -85,7 +108,7 @@ const TilePlotAlternative = ({from, to, squareSize}: RadialChartData) => {
             d => d.date
         )
 
-        const rollupFunction = (entries) => d3.flatRollup(entries,
+        const rollupFunction = (entries: preppedDataPoint[]) => d3.flatRollup(entries,
             D => {
                 const minutesTotal = d3.sum(D, d => d.minutes)
                 const minutesByPersonAndDay = d3.rollup(entries,
@@ -118,7 +141,6 @@ const TilePlotAlternative = ({from, to, squareSize}: RadialChartData) => {
             d => d.column,
             d => d.row
         )
-
         setRenderedData(summedValuesBySeriesAndCategory);
     }
 
@@ -126,21 +148,28 @@ const TilePlotAlternative = ({from, to, squareSize}: RadialChartData) => {
 
     const svgRef = useRef<SVGSVGElement>(null);
 
-
     const render = () => {
-        if (renderedData === null)
-            return
+        console.log("render start")
+        if (renderedData === null || renderedData.size === 0) {
+            console.log(renderedData)
 
+            console.log("render abort")
+            return
+        }
+
+        console.log("really rendering now")
         const svg = d3.select(svgRef.current);
+
         const canvas = svg.select("g.canvas");
         canvas.selectChildren().remove()
 
         svg.select(".axes g.x").selectChildren().remove()
         svg.select(".axes g.y").selectChildren().remove()
 
+        const weeks = Array.from(renderedData.keys()).sort()
         const xScale = d3
             .scaleBand()
-            .domain(allWeeks)
+            .domain(d3.union(weeks))
             .range([0, canvasWidth]);
 
         xScale.padding(0.3)
@@ -148,6 +177,7 @@ const TilePlotAlternative = ({from, to, squareSize}: RadialChartData) => {
         const xScaleTime = d3.scaleTime()
             .domain(d3.extent(allDays))
             .range([0, canvasWidth]);
+
 
         const contributionCategories = [
             "nothing",
@@ -180,7 +210,7 @@ const TilePlotAlternative = ({from, to, squareSize}: RadialChartData) => {
             .append("g")
             .attr("class", "x")
             .attr("transform", `translate(0, ${canvasHeight})`)
-            .call(d3.axisBottom(xScaleTime))
+            .call(d3.axisBottom(xScaleTime).ticks(2))
 
         // const colorScale = d3.scaleOrdinal()
         //     .domain(renderedData.keys())
@@ -214,10 +244,10 @@ const TilePlotAlternative = ({from, to, squareSize}: RadialChartData) => {
             .attr("transform", d => `translate(0, ${yScale(d[0])})`)
             .attr("x", 0)
             .attr("y", 0)
-            .attr("rx", squareSize / 5)
-            .attr("ry", squareSize / 5)
-            .attr("width", squareSize)
-            .attr("height", squareSize)
+            .attr("rx", cellSize / 5)
+            .attr("ry", cellSize / 5)
+            .attr("width", cellSize * 0.8)
+            .attr("height", cellSize * 0.8)
             .attr("class", d => labelContribution(d[1].contribution))
             .attr("fill", d => colorScaleDistribution(d[1].contribution))
             .append("title")
@@ -250,7 +280,7 @@ const TilePlotAlternative = ({from, to, squareSize}: RadialChartData) => {
 
             <svg
                 ref={svgRef}
-                viewBox={`0 0 ${width} ${height}`}
+                viewBox={`0 0 ${canvasWidth + margin.left + margin.right} ${canvasHeight + margin.bottom + margin.top}`}
             >
 
                 <g
@@ -269,4 +299,4 @@ const TilePlotAlternative = ({from, to, squareSize}: RadialChartData) => {
     )
 }
 
-export default TilePlotAlternative;
+export default MyChart;
