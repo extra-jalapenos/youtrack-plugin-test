@@ -2,17 +2,14 @@ import { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
 import DataPoint from "../../data/fakingData.js";
 import "./contribution-colors.css"
-import Select from "@jetbrains/ring-ui-built/components/select/select.js";
 import Button from "@jetbrains/ring-ui-built/components/button/button.js";
-import { giniIndex, compareContributionToRest, getWeekdayNames } from "../../helper.js";
+import { compareContributionToRest } from "../../helper.js";
 import ButtonGroup from "@jetbrains/ring-ui-built/components/button-group/button-group";
 import ButtonToolbar from "@jetbrains/ring-ui-built/components/button-toolbar/button-toolbar";
 
-interface RadialChartData {
+interface MyChartData {
     from: Date;
     to: Date;
-    width: number;
-    height: number;
 }
 
 const regenerateArray = (dayOptions): DataPoint[] => {
@@ -20,7 +17,7 @@ const regenerateArray = (dayOptions): DataPoint[] => {
 }
 
 
-const MyChart = ({from, to}: RadialChartData) => {
+const MyChart = ({from, to}: MyChartData) => {
     const margin = {
         left: 50,
         top: 50,
@@ -28,36 +25,27 @@ const MyChart = ({from, to}: RadialChartData) => {
         bottom: 25
     };
 
-    const [params, setParams] = useState({
-        margin,
-        maxWidth: parent.innerWidth,
-        maxHeight: parent.innerHeight
-    })
+    const differentWeeksCount = d3.union([from, ...d3.utcMondays(from, to, 1), to]).size
 
-    const [cubeSize, setCubeSize] = useState(20)
-    const [width, setWidth] = useState(parent.innerWidth)
-    const [height, setHeight] = useState(cubeSize * 7)
-    const calculateDimensions = () => {
-        console.log("resize", params.maxWidth)
-        console.log(parent)
-        setParams({
-            ...params,
-            maxHeight: parent.innerHeight,
-            maxWidth: parent.innerWidth
-        })
+    const [cellSize, setCellSize] = useState(20)
+    const [canvasWidth, setCanvasWidth] = useState(differentWeeksCount * cellSize)
+    const [canvasHeight, setCanvasHeight] = useState(cellSize * 7)
+
+    const resizeWidth = () => {
+        setCanvasWidth(parent.innerWidth - margin.left - margin.right)
     };
 
-    const canvasWidth: number = width - margin.left - margin.right;
-    const canvasHeight: number = height - margin.top - margin.bottom;
+    useEffect(() => resizeWidth(), [])
+    useEffect(() => window.addEventListener("resize", resizeWidth), [])
+
+    const allDays = d3.timeDays(from, to, 1);
 
 
-    useEffect(() => calculateDimensions(), [])
-    useEffect(() => window.addEventListener("resize", calculateDimensions), [])
-    const allDays = d3.timeDays(from, to, 1)
-    const formatDateYearISOWeek = d3.timeFormat("%Y-%V")
     const formatDateWeekday = d3.timeFormat("%u")
-    const formatDateYmd = d3.timeFormat("%Y-%m-%d")
-    const allWeeks = d3.union([from, ...d3.utcMondays(from, to, 1), to].map(d => formatDateYearISOWeek(d)))
+    const formatDateYearISOWeek = d3.timeFormat("%G-%V");
+    const formatDateYmd = d3.timeFormat("%Y-%m-%d");
+
+    const allWeeks = d3.union([from, ...d3.utcMondays(from, to, 1), to].map(date => formatDateYearISOWeek(date)));
 
     // store all sets
     const [rawData, _setRawData] = useState(regenerateArray(allDays))
@@ -71,21 +59,18 @@ const MyChart = ({from, to}: RadialChartData) => {
     const [showPeople, setShowPeople] = useState(Array.from(allPeople))
     const [perspectivePerson, setPerspective] = useState(Array.from(allPeople)[0])
 
-    const showPerson = (person: string) => setShowPeople([ ...showPeople, person ])
-    const hidePerson = (person: string) =>setShowPeople([...showPeople.filter(d => d !== person)])
-
     // process data
     const [renderedData, setRenderedData] = useState(null)
-
+    type preppedDataPoint = { series: string, date: Date, column: string, minutes: number, row: string }
     const processDataForRendering = () => {
         // extract the most needed points & name them appropriately
-        const preppedData: { series: string, column: string, minutes: number, row: number }[] = filteredData
+        const preppedData: preppedDataPoint[] = filteredData
             .filter(d => showPeople.includes(d.author.login) )
             .map(d => {
                 return (
                     {
                         series: d.author.login,
-                        date: new Date(formatDateYmd(new Date(d.date))),
+                        date: new Date(d.date),
                         column: formatDateYearISOWeek(new Date(d.date)),
                         row: formatDateWeekday(new Date(d.date)),
                         minutes: d.duration.minutes
@@ -104,7 +89,7 @@ const MyChart = ({from, to}: RadialChartData) => {
             d => d.date
         )
 
-        const rollupFunction = (entries) => d3.flatRollup(entries,
+        const rollupFunction = (entries: preppedDataPoint[]) => d3.flatRollup(entries,
             D => {
                 const minutesTotal = d3.sum(D, d => d.minutes)
                 const minutesByPersonAndDay = d3.rollup(entries,
@@ -147,10 +132,13 @@ const MyChart = ({from, to}: RadialChartData) => {
 
 
     const render = () => {
+        console.log("render")
         if (renderedData === null)
             return
 
         const svg = d3.select(svgRef.current);
+
+
         const canvas = svg.select("g.canvas");
         canvas.selectChildren().remove()
 
@@ -243,7 +231,7 @@ const MyChart = ({from, to}: RadialChartData) => {
             .text(d => d[1].label + "\n" + labelContribution(d[1].contribution))
     }
 
-    useEffect(render, [renderedData]);
+    useEffect(render, [renderedData, canvasWidth]);
 
     return (
         <>
@@ -269,7 +257,7 @@ const MyChart = ({from, to}: RadialChartData) => {
 
             <svg
                 ref={svgRef}
-                viewBox={`0 0 ${width} ${height}`}
+                viewBox={`0 0 ${canvasWidth + margin.left + margin.right} ${canvasHeight + margin.bottom + margin.top}`}
             >
 
                 <g
