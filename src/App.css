@@ -4,7 +4,6 @@ body {
 }
 
 .label {
-  font-size: var(--ring-font-size);
   stroke: none;
 }
 
@@ -14,10 +13,6 @@ body {
 
 line, circle, rect {
   stroke: var(--ring-text-color);
-}
-
-path {
-  fill: var(--ring);
 }
 
 .component {
@@ -39,7 +34,6 @@ canvas rect {
 text {
   fill: var(--ring-text-color);
   font-size: var(--ring-font-size);
-  font-family: var(--ring-font-family);
 }
 
 .popup {
