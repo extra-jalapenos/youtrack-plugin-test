@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
-import Button from "@jetbrains/ring-ui-built/components/button/button.js";
-import ButtonGroup from "@jetbrains/ring-ui-built/components/button-group/button-group";
 import { categoryColors } from "./colors.ts";
-import type { Granularity, RawDataPoint } from "./types.ts";
-import { aggregateByPeriod, cleanData, computeBars, granularityConfig, stackByCategory } from "./dataHelpers.ts";
+import type { BarRect, Granularity, RawDataPoint } from "./types.ts";
+import { aggregateByPeriod, cleanData, computeBars, granularityConfig, levels, parentKey, stackByCategory } from "./dataHelpers.ts";
 import { useAnimatedBars } from "./useAnimatedBars.ts";
 
 interface InteractiveChartProps {
@@ -17,15 +15,21 @@ const height = 400;
 const transitionDuration = 750;
 /** Roughly how many pixels one x-axis label needs, used to skip labels when there are many periods. */
 const pixelsPerLabel = 70;
-
-const granularities = Object.keys(granularityConfig) as Granularity[];
+/** How long a click waits to see whether it becomes a double-click. */
+const doubleClickDelay = 250;
 
 const InteractiveChart = ({ data, initialGranularity = "month" }: InteractiveChartProps) => {
-    const [granularity, setGranularity] = useState<Granularity>(initialGranularity);
+    // The direction tells the bars whether to split apart (down) or merge together (up)
+    const [view, setView] = useState<{ granularity: Granularity; direction: "down" | "up" }>({
+        granularity: initialGranularity,
+        direction: "down",
+    });
+    const { granularity, direction } = view;
     const [width] = useState(() => document.documentElement.clientWidth - margin.left - margin.right);
 
     const xAxisRef = useRef<SVGGElement>(null);
     const yAxisRef = useRef<SVGGElement>(null);
+    const clickTimeoutRef = useRef<number | undefined>(undefined);
 
     // 1. Clean the data once: drop invalid dates and negative minutes
     const validData = useMemo(() => cleanData(data), [data]);
@@ -56,7 +60,14 @@ const InteractiveChart = ({ data, initialGranularity = "month" }: InteractiveCha
         () => computeBars(series, xScale, yScale, format),
         [series, xScale, yScale, format],
     );
-    const bars = useAnimatedBars(targetBars, height, transitionDuration);
+    // When going up, every bar of the finer level moves into its parent bar of the same category
+    const exitTo = useMemo(() => {
+        if (direction !== "up") return undefined;
+        const childLevel = levels[levels.indexOf(granularity) + 1];
+        const barsByKey = new Map(targetBars.map((bar) => [bar.key, bar]));
+        return (bar: BarRect) => barsByKey.get(parentKey(bar, childLevel, granularity));
+    }, [direction, granularity, targetBars]);
+    const bars = useAnimatedBars(targetBars, height, transitionDuration, exitTo);
 
     // Axes are drawn by d3 into the empty <g> elements below. React never renders inside them.
     useEffect(() => {
@@ -68,16 +79,26 @@ const InteractiveChart = ({ data, initialGranularity = "month" }: InteractiveCha
         d3.select(yAxisRef.current!).transition().duration(transitionDuration).call(d3.axisLeft(yScale));
     }, [xScale, yScale, width]);
 
+    useEffect(() => () => window.clearTimeout(clickTimeoutRef.current), []);
+
+    /** Moves one level down (+1, finer) or up (-1, coarser). Does nothing at either end. */
+    const changeLevel = (step: 1 | -1) => {
+        const next = levels[levels.indexOf(granularity) + step];
+        if (next) setView({ granularity: next, direction: step === 1 ? "down" : "up" });
+    };
+
+    // A double-click also fires two clicks, so a click only goes down once no second click followed
+    const handleAxisClick = () => {
+        window.clearTimeout(clickTimeoutRef.current);
+        clickTimeoutRef.current = window.setTimeout(() => changeLevel(1), doubleClickDelay);
+    };
+    const handleAxisDoubleClick = () => {
+        window.clearTimeout(clickTimeoutRef.current);
+        changeLevel(-1);
+    };
+
     return (
         <div>
-            <ButtonGroup>
-                {granularities.map((g) => (
-                    <Button key={g} active={g === granularity} onClick={() => setGranularity(g)}>
-                        {granularityConfig[g].label}
-                    </Button>
-                ))}
-            </ButtonGroup>
-
             <ul style={{ display: "flex", gap: 16, listStyle: "none", padding: 0 }}>
                 {categories.map((category) => (
                     <li key={category}>
@@ -88,6 +109,9 @@ const InteractiveChart = ({ data, initialGranularity = "month" }: InteractiveCha
                     </li>
                 ))}
             </ul>
+            <p style={{ fontSize: 12 }}>
+                {granularityConfig[granularity].label}: click the time axis to zoom in, double-click it to zoom out.
+            </p>
 
             <svg viewBox={`0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`}>
                 <g transform={`translate(${margin.left}, ${margin.top})`}>
@@ -103,7 +127,16 @@ const InteractiveChart = ({ data, initialGranularity = "month" }: InteractiveCha
                             />
                         ))}
                     </g>
-                    <g ref={xAxisRef} className="x-axis" transform={`translate(0, ${height})`} />
+                    <g
+                        transform={`translate(0, ${height})`}
+                        style={{ cursor: "pointer", userSelect: "none" }}
+                        onClick={handleAxisClick}
+                        onDoubleClick={handleAxisDoubleClick}
+                    >
+                        {/* Invisible hit area, so clicks between the (skipped) labels count too */}
+                        <rect width={width} height={margin.bottom} fill="transparent" />
+                        <g ref={xAxisRef} className="x-axis" />
+                    </g>
                     <g ref={yAxisRef} className="y-axis" />
                     <text transform="rotate(-90)" x={-height / 2} y={-margin.left + 14} textAnchor="middle" fontSize={12}>
                         Minutes

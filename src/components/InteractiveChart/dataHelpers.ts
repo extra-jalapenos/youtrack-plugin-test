@@ -30,6 +30,8 @@ interface GranularityConfig {
     interval: d3.TimeInterval;
     /** Turns a period start into a tick label. */
     format: (periodStart: Date) => string;
+    /** The date that decides which coarser period a period belongs to. Defaults to the period start. */
+    anchor?: (periodStart: Date) => Date;
 }
 
 export const granularityConfig: Record<Granularity, GranularityConfig> = {
@@ -52,7 +54,24 @@ export const granularityConfig: Record<Granularity, GranularityConfig> = {
         label: "ISO week",
         interval: d3.utcMonday, // ISO weeks start on Monday
         format: d3.utcFormat("%G-W%V"), // %G = ISO year, %V = ISO week number
+        // Like ISO assigns weeks to years, a week belongs to the month that contains its Thursday
+        anchor: (d) => d3.utcDay.offset(d, 3),
     },
+    day: {
+        label: "Day",
+        interval: d3.utcDay,
+        format: d3.utcFormat("%Y-%m-%d"),
+    },
+};
+
+/** Granularities from coarsest to finest. Clicking the x-axis moves one step down, double-clicking one step up. */
+export const levels: Granularity[] = ["year", "quarter", "month", "isoWeek", "day"];
+
+/** Key of the bar a bar merges into when going from `childLevel` up to `parentLevel`. Matches the keys from `computeBars`. */
+export const parentKey = (bar: BarRect, childLevel: Granularity, parentLevel: Granularity): string => {
+    const { anchor = (d: Date) => d } = granularityConfig[childLevel];
+    const { interval, format } = granularityConfig[parentLevel];
+    return `${bar.category}|${format(interval.floor(anchor(bar.period)))}`;
 };
 
 /**
@@ -102,6 +121,7 @@ export const computeBars = (
             return {
                 key: `${categorySeries.key}|${label}`,
                 category: categorySeries.key,
+                period: point.data.period,
                 x: xScale(label) ?? 0,
                 y: yScale(top),
                 width: xScale.bandwidth(),
