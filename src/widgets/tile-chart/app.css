@@ -14,26 +14,17 @@ body {
 	padding: 0;
 }
 
-.svgContainer {
-	display: flex;
-	justify-content: flex-end;
-}
-
-
 #root {
 	display: grid;
-	grid-template-areas: "controls"
-	"chart";
-	grid-template-rows: min-content minmax(200px, 1fr);
+	grid-template-rows: min-content 2fr 1fr;
 }
 
 #root > * {
-	background-color: lightblue;
 	border: 1px blue solid;
 }
 
-svg text {
-	fill: var(--ring-text-color);
+g.axes {
+	path: currentcolor;
 }
 
 .component {

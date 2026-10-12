@@ -1,12 +1,55 @@
 import {useEffect, useRef, useState} from "react";
 import type { TileChartConfig } from "./types"
-import { select } from "d3";
+import {
+	select,
+	scaleLinear, scaleTime,
+	axisBottom, axisLeft
+} from "d3";
 
 const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 
 	const svgContainer = useRef<HTMLDivElement>(null);
 
 	const [ratio, setRatio] = useState({ width: 0, height: 0 })
+	const svgRef = useRef<SVGSVGElement>(null);
+	const canvasRef = useRef<SVGGElement>(null);
+	const axesRef = useRef<SVGGElement>(null);
+
+	const margin = {
+		left: 25,
+		right: 10,
+		bottom: 20,
+		top: 10,
+	}
+
+	let canvasWidth = viewBoxWidth - margin.left - margin.right;
+	let canvasHeight = viewBoxHeight - margin.top - margin.bottom;
+
+	console.log(canvasWidth);
+
+	let xScale = scaleTime()
+		.domain([new Date(2025, 10, 1), new Date()])
+		.range([0, canvasWidth]);
+
+	let yScale = scaleLinear()
+		.domain([0, 100])
+		.range([canvasHeight, 0]);
+
+	useEffect(() => {
+		if (!svgRef.current) return;
+
+		const axes = select(axesRef.current);
+		axes.selectChildren().remove()
+		axes.append("g")
+			.attr("class", "x axis")
+			.attr("transform", `translate(0, ${canvasHeight})`)
+			.call(axisBottom(xScale).ticks(4));
+
+		axes.append("g")
+			.attr("class", "y axis")
+			.call(axisLeft(yScale));
+
+	}, [svgRef.current, viewBoxWidth, viewBoxHeight]);
 /*
 
 	const svgWidth = 200
@@ -39,17 +82,23 @@ const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 	return(
 		<>
 			<svg
-				viewBox={`-10 -10 ${viewBoxWidth} ${viewBoxHeight}`}
+				ref={svgRef}
+				viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
 			>
-				<rect
-					x={0}
-					y={0}
-					width={viewBoxWidth - 20}
-					height={viewBoxHeight - 20}
-					fill="red"
+				<g
+					ref={canvasRef}
+					className={`canvas`}
+					transform={`translate(${margin.left}, ${margin.top})`}
 				>
 
-				</rect>
+				</g>
+				<g
+					ref={axesRef}
+					className={`axes`}
+					transform={`translate(${margin.left}, ${margin.top})`}
+				>
+
+				</g>
 			</svg>
 		</>
 	)
