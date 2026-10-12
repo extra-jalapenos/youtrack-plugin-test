@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev_test": "vite serve src/widgets/template",
+    "dev:widget": "vite serve src/widgets/my-widget",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

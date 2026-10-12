@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo, useState } from "react";
 
 import "@jetbrains/ring-ui-built/components/style.css";
 import Popup from "@jetbrains/ring-ui-built/components/popup/popup";
@@ -6,26 +6,23 @@ import Toggle from "@jetbrains/ring-ui-built/components/toggle/toggle";
 import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
 import Dropdown from "@jetbrains/ring-ui-built/components/dropdown/dropdown";
 import Select from "@jetbrains/ring-ui-built/components/select/select";
-import Theme, {
-  ThemeProvider,
-} from "@jetbrains/ring-ui-built/components/global/theme";
 import "./app.css";
 
 const App = () => {
-
+  const [toggle, setToggle] = useState(true)
   return (
-    <ThemeProvider className="App" theme={dark ? Theme.DARK : Theme.LIGHT}>
+    <>
       <Heading className="component">
         Start editing to see some magic happen!
       </Heading>
 
       <section>
         <Toggle
-          defaultChecked={dark}
+          defaultChecked={toggle}
           className="component"
-          onChange={(e) => setDark(e.target.checked)}
+          onChange={(e) => setToggle(e.target.checked)}
         >
-          Dark theme
+          Cool toggle
         </Toggle>
       </section>
 
@@ -43,8 +40,8 @@ const App = () => {
           ]}
         />
       </section>
-    </ThemeProvider>
+    </>
   );
 }
 
-export default App
+export default memo(App)
