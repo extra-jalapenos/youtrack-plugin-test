@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:widget": "vite serve src/widgets/my-widget",
+    "dev:widget": "vite serve src/widgets/tile-chart",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
