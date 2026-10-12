@@ -9,20 +9,9 @@ import Select from "@jetbrains/ring-ui-built/components/select/select";
 import Theme, {
   ThemeProvider,
 } from "@jetbrains/ring-ui-built/components/global/theme";
-
 import "./app.css";
 
-const darkMatcher = window.matchMedia("(prefers-color-scheme: dark)");
-
 const App = () => {
-  const [dark, setDark] = React.useState(darkMatcher.matches);
-
-  React.useEffect(() => {
-    const onChange = (e) => setDark(e.matches);
-    darkMatcher.addEventListener("change", onChange);
-
-    return () => darkMatcher.removeEventListener("change", onChange);
-  }, []);
 
   return (
     <ThemeProvider className="App" theme={dark ? Theme.DARK : Theme.LIGHT}>
