@@ -4,12 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite serve ./src",
+    "dev": "vite",
+    "dev_test": "vite serve src/widgets/template",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@jetbrains/ring-ui-built": "^7.0.129",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },

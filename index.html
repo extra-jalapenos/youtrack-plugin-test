@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Youtrack Mockup UI</title>
+  </head>
+  <style>
+    body {
+      margin: 0;
+      background-color: var(--ring-content-background-color);
+    }
+
+    #root {
+      padding: calc(2 * var(--ring-unit));
+      display: flex;
+      flex-direction: column;
+      font-family: var(--ring-font-family);
+      font-size: var(--ring-font-size);
+      background-color: var(--ring-content-background-color);
+      color: var(--ring-text-color);
+      min-height: 100vh;
+    }
+
+    .widget {
+      height: 100%;
+      padding-left: calc(var(--ring-unit) * 1);
+    }
+
+    .component {
+      margin: var(--ring-unit);
+    }
+  </style>
+  <body>
+    <div id="root" class="ring-ui-manager-dark_b18e ring-ui-theme-dark yt-dark-theme">
+
+        <iframe
+          src="src/widgets/template/index.html"
+          width="50%"
+        >
+        </iframe>
+    </div>
+    <script type="module">
+      import "@jetbrains/ring-ui-built/components/style.css";
+    </script>
+  </body>
+</html>

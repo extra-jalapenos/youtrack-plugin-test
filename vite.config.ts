@@ -5,13 +5,13 @@ console.log(resolve(__dirname, 'index.html'))
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-   input: {
-      main: resolve(__dirname, 'index.html')
-    },
+  input: {
+    main: "indexYoutrack.html"
+  },
    build: {
     rollupOptions: {
       input: {
-          main: resolve(__dirname, 'src/index.html')
+          template: resolve(__dirname, '/widgets/template/index.html')
       }
     },
   },
