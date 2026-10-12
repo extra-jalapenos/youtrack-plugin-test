@@ -14,6 +14,12 @@ body {
 	padding: 0;
 }
 
+.svgContainer {
+	display: flex;
+	justify-content: flex-end;
+}
+
+
 #root {
 	display: grid;
 	grid-template-areas: "controls"

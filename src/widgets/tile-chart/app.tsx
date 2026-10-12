@@ -6,20 +6,21 @@ import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
 import TileChart from "./TileChart";
 
 const App = () => {
-  const containerRef = useRef(null);
-  const [size, setSize] = useState({ width: 0, height: 0 });
+  const svgRef = useRef(null);
+  const [size, setSize] = useState({
+    width: 0,
+    height: 0
+  });
 
   useEffect(() => {
-    const element = containerRef.current;
-    if (!element) return;
+    const docQuerySelected = document.querySelector("section.svgContainer")
+    if (!docQuerySelected)
+      return
 
-    const observer = new ResizeObserver(([entry]) => {
-      const { width, height } = entry.contentRect;
-      setSize({ width, height });
-    });
-
-    observer.observe(element);
-    return () => observer.disconnect();
+    setSize({
+      width: docQuerySelected.clientWidth,
+      height: docQuerySelected.clientHeight
+    })
   }, []);
 
   return (
@@ -27,12 +28,12 @@ const App = () => {
       <Heading className="component">Contribution Chart</Heading>
 
       <section
-        className="component"
-        ref={containerRef}
+        className="component svgContainer"
+        ref={svgRef}
       >
         <TileChart
-          width={size.width}
-          height={100}
+          viewBoxWidth={size.width}
+          viewBoxHeight={size.height}
           data={[]}
         />
       </section>
