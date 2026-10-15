@@ -1,6 +1,5 @@
 #root {
 	padding-left: calc(var(--ring-unit) * 1);
-	border: 1px red solid;
 	height: 100vh;
 	background-color: var(--ring-content-background-color);
 	font-family: var(--ring-font-family);
@@ -8,7 +7,7 @@
 	color: var(--ring-text-color);
 	display: grid;
 	grid-template-rows: min-content;
-  	grid-auto-rows: minmax(250px, 1fr);
+  	grid-auto-rows: 1fr;
 }
 
 body {
@@ -34,4 +33,11 @@ text {
 
 .component {
 	margin: var(--ring-unit);
+}
+
+/* Wide: e.g. 1000 × 400–500 (aspect ratio 2:1 to 2.5:1) */
+@media (max-aspect-ratio: 5/2) {
+  #root {	
+	grid-template-rows: min-content repeat(2, 1fr);
+  }
 }
