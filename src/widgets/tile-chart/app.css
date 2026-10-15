@@ -2,11 +2,13 @@
 	padding-left: calc(var(--ring-unit) * 1);
 	border: 1px red solid;
 	height: 100vh;
-
 	background-color: var(--ring-content-background-color);
 	font-family: var(--ring-font-family);
 	font-size: var(--ring-font-size);
 	color: var(--ring-text-color);
+	display: grid;
+	grid-template-rows: min-content;
+  	grid-auto-rows: minmax(250px, 1fr);
 }
 
 body {
@@ -14,13 +16,8 @@ body {
 	padding: 0;
 }
 
-#root {
+.svgContainer {
 	display: grid;
-	grid-template-rows: min-content 2fr 1fr;
-}
-
-#root > * {
-	border: 1px blue solid;
 }
 
 g.axes path {

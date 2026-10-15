@@ -12,9 +12,16 @@ import {
 	timeDays,
 	timeInterval,
 	timeDay,
-	scaleDiverging
+	scaleDiverging,
+	interpolateCubehelix,
+	scaleSequential,
+	interpolateHsl,
+	type Color,
+	color,
+	interpolateHcl,
+	interpolateBasis
 } from "d3";
-import { getEmptyMap, getMondays } from "./helper";
+import { getEmptyMap } from "./helper";
 
 const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 	const svgRef = useRef<SVGSVGElement>(null);
@@ -23,13 +30,8 @@ const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 
 	const emptyMap = getEmptyMap(from, to)
 
-	const viewBoxDimensions = {
-		width: viewBoxWidth,
-		height: viewBoxHeight
-	}
-
 	const margin = {
-		left: 35,
+		left: 40,
 		right: 10,
 		bottom: 20,
 		top: 10,
@@ -37,6 +39,9 @@ const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 
 	let canvasWidth = viewBoxWidth - margin.left - margin.right;
 	let canvasHeight = viewBoxHeight - margin.top - margin.bottom;
+	const colorScale = scaleSequential([0, 1], interpolateHcl("#0098F7", "#f7004a"))
+
+	const changeOpacity = (colorString: string, opacity: number): string => color(colorString).copy({ opacity }).formatHex8()
 
 	const lastMonday = timeMonday(new Date())
 	const formatAsLocalWeekday = (d: Date) => d.toLocaleDateString([], { weekday: "short" })
@@ -47,8 +52,6 @@ const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 		.padding(0.2);
 
 	// now we know how high one rect is and therefore how wide
-
-	console.log(canvasWidth / yScale.step())
 	const getWeekOffset = (date: Date) => timeMonday.count(timeMonday(date), to)
 	
 
@@ -77,8 +80,16 @@ const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 
 		const weekColumns = canvas.selectAll("rect")
 			.data(emptyMap)
-			.enter()
-			.append("rect")
+			.join(
+				enter => enter
+					.append("rect")
+					.attr("fill", "transparent")
+					.transition()
+					.duration(d => 250 + Math.random() * 750 )
+					.attr("fill", _ => changeOpacity(colorScale(Math.random()), Math.random())),
+				update => update,
+				exit => exit.remove()
+			)
 			.attr("rx", yScale.step() * 0.2)
 			.attr("ry", yScale.step() * 0.2)
 			.attr("x", (d: Date) => (canvasWidth - yScale.step()) - getWeekOffset(d) * yScale.step())
@@ -87,7 +98,7 @@ const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 			.attr("height", yScale.bandwidth())
 			
 		
-	}, [svgRef.current, viewBoxDimensions]);
+	}, [svgRef.current, viewBoxWidth, viewBoxHeight]);
 /*
 
 	const svgWidth = 200

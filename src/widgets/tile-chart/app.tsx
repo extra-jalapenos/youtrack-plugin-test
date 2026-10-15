@@ -4,6 +4,8 @@ import "@jetbrains/ring-ui-built/components/style.css";
 import "./app.css";
 import Heading from "@jetbrains/ring-ui-built/components/heading/heading";
 import TileChart from "./TileChart";
+import ButtonGroup from "@jetbrains/ring-ui-built/components/button-group/button-group.js";
+import ButtonSet from "@jetbrains/ring-ui-built/components/button-set/button-set.js";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -40,6 +42,7 @@ const App = () => {
     if (!svgContainerRef.current) {
       return
     }
+  console.log(    svgContainerRef.current.clientWidth,     svgContainerRef.current.clientHeight)
     setSize({
       width: svgContainerRef.current.clientWidth,
       height: svgContainerRef.current.clientHeight
@@ -54,22 +57,20 @@ const App = () => {
   }, [svgContainerRef]);
 
   if (isResizing) {
-    return (
-      <div>
-        skeleton
-      </div>
-    )
+    return
   }
 
   return (
     <>
-      <Heading className="component">Contribution Chart</Heading>
+      <section>
+        <Heading>Controls</Heading>
+        <p>Select a person's perspective</p>
+      </section>
       <section
         className="component"
         ref={svgContainerRef}
       >
-
-          <TileChart
+          <TileChart     
             from={new Date(2026, 1, 1)}
             to={new Date()}
             viewBoxWidth={size.width}
