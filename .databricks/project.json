@@ -1,0 +1,5 @@
+{
+  "host": "https://adb-7405615332464823.3.azuredatabricks.net/",
+  "authType": "databricks-cli",
+  "databricksPath": "c:\\Users\\R43702\\.vscode\\extensions\\databricks.databricks-1.4.0-win32-x64\\bin\\databricks"
+}

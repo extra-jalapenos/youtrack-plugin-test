@@ -23,8 +23,16 @@ body {
 	border: 1px blue solid;
 }
 
-g.axes {
-	path: currentcolor;
+g.axes path {
+	stroke: currentcolor;
+}
+
+g.axes text {
+	fill: currentcolor;
+}
+
+text {
+	font-size: var(--ring-font-size);
 }
 
 .component {

@@ -1,22 +1,26 @@
 import {useEffect, useRef, useState} from "react";
-import type { TileChartConfig } from "./types"
+import type { TileChartConfig, TileChartDataPoint } from "./types"
 import {
 	select,
+	extent,
 	scaleLinear, scaleTime,
-	axisBottom, axisLeft
+	axisBottom, axisLeft,
+	utcMonday
 } from "d3";
+import { getEmptyMap, getMondays } from "./helper";
 
 const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
-
-	const svgContainer = useRef<HTMLDivElement>(null);
-
-	const [ratio, setRatio] = useState({ width: 0, height: 0 })
 	const svgRef = useRef<SVGSVGElement>(null);
-	const canvasRef = useRef<SVGGElement>(null);
-	const axesRef = useRef<SVGGElement>(null);
+	const [from, setFrom] = useState(new Date(2025, 10, 3));
+	const [to, setTo] = useState(new Date());
+	console.log(getEmptyMap(from, to))
+	const viewBoxDimensions = {
+		width: viewBoxWidth,
+		height: viewBoxHeight
+	}
 
 	const margin = {
-		left: 25,
+		left: 35,
 		right: 10,
 		bottom: 20,
 		top: 10,
@@ -25,10 +29,8 @@ const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 	let canvasWidth = viewBoxWidth - margin.left - margin.right;
 	let canvasHeight = viewBoxHeight - margin.top - margin.bottom;
 
-	console.log(canvasWidth);
-
 	let xScale = scaleTime()
-		.domain([new Date(2025, 10, 1), new Date()])
+		.domain([from, to])
 		.range([0, canvasWidth]);
 
 	let yScale = scaleLinear()
@@ -37,9 +39,13 @@ const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 
 	useEffect(() => {
 		if (!svgRef.current) return;
+		const svg = select(svgRef.current);
+		svg.selectChildren().remove();
 
-		const axes = select(axesRef.current);
-		axes.selectChildren().remove()
+		const axes = svg.append("g")
+			.attr("class", "axes")
+			.attr("transform", `translate(${margin.left}, ${margin.top})`);
+			
 		axes.append("g")
 			.attr("class", "x axis")
 			.attr("transform", `translate(0, ${canvasHeight})`)
@@ -47,9 +53,10 @@ const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 
 		axes.append("g")
 			.attr("class", "y axis")
+			.attr("transform", `translate(${0}, 0)`)
 			.call(axisLeft(yScale));
 
-	}, [svgRef.current, viewBoxWidth, viewBoxHeight]);
+	}, [svgRef.current, viewBoxDimensions]);
 /*
 
 	const svgWidth = 200
@@ -85,20 +92,6 @@ const TileChart = ({ data, viewBoxWidth, viewBoxHeight }: TileChartConfig) => {
 				ref={svgRef}
 				viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
 			>
-				<g
-					ref={canvasRef}
-					className={`canvas`}
-					transform={`translate(${margin.left}, ${margin.top})`}
-				>
-
-				</g>
-				<g
-					ref={axesRef}
-					className={`axes`}
-					transform={`translate(${margin.left}, ${margin.top})`}
-				>
-
-				</g>
 			</svg>
 		</>
 	)

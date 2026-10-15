@@ -1,9 +1,12 @@
 export type TileChartDataPoint = {
 	date: Date,
-	opacity: number
+	author: string,
+	minutes: number
 }
 
 export type TileChartConfig = {
+	from: Date,
+	to: Date,
 	viewBoxWidth: number,
 	viewBoxHeight: number,
 	data: TileChartDataPoint[]
